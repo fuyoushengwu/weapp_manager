@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">commons</string>
+
+    <!-- editable_image_view -->
+    <string name="photo_btn_show">拍 照</string>
+    <string name="choose_pic_btn_show">从手机相册选择</string>
+    <string name="title_show">选择Logo</string>
+</resources>

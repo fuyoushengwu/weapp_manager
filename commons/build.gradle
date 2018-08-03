@@ -1,0 +1,59 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+
+    //沉浸式状态栏
+    implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+
+    //butterknife
+    api 'com.jakewharton:butterknife:8.8.1'
+
+    //rxjava
+    api 'io.reactivex.rxjava2:rxjava:2.0.1'
+    api 'com.github.yalantis:ucrop:2.2.1'
+
+    //图片加载框架
+    api 'com.github.bumptech.glide:glide:3.7.0'
+    //可以单独使用，也可以配合okhttp使用，配合okhttp使用则需要在app上配置
+    api('com.github.bumptech.glide:okhttp3-integration:1.4.0') {
+        //如果使用glide-okhttp3整合  排除以下部分
+        exclude group: 'glide-parent'
+    }
+    api 'cn.aijiamuyingfang:cn.aijiamuyingfang.commons:0.0.1'
+}
+
+apply from: 'maven-release-aar.gradle'

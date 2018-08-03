@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="cn.aijiamuyingfang.weapp.manager.GoodsListActivity">
+
+    <cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetEnd="56dp"
+        app:isShowLeftIcon="true"
+        app:isShowSearchView="false"
+        app:title="商品列表"></cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar>
+
+
+    <com.cjj.MaterialRefreshLayout
+        android:id="@+id/refreshable_mr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:overlay="false"
+        app:progress_colors="@array/material_colors"
+        app:wave_color="#90ffffff"
+        app:wave_height_type="higher"
+        app:wave_show="false">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/refreshable_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.cjj.MaterialRefreshLayout>
+
+</LinearLayout>

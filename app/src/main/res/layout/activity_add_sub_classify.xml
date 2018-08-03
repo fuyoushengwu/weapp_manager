@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetEnd="56dp"
+        app:rightButtonText="添加"
+        app:title="@string/add_sub_classify" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/selector_view_block"
+        android:orientation="vertical"
+        android:padding="@dimen/largePadding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/largePadding"
+            android:paddingTop="@dimen/largePadding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="品牌名"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <View style="@style/line_horizontal" />
+
+            <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                android:id="@+id/edittxt_consignee"
+                style="@style/editText_base"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:hint="请输入品牌名" />
+        </LinearLayout>
+
+        <View style="@style/line_vertical" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/largePadding"
+            android:paddingTop="@dimen/largePadding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="品牌logo"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <View style="@style/line_vertical" />
+
+            <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                android:id="@+id/classify_logo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/company_logo" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

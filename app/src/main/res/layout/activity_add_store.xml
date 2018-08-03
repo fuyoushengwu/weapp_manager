@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_color"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar
+            android:id="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:contentInsetEnd="56dp"
+            app:title="@string/add_store" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/selector_view_block"
+            android:orientation="vertical"
+            android:padding="@dimen/largePadding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="店铺名称"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/store_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入店铺名称"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="开始营业时间"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/store_startWorkTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入开始营业时间"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="结束营业时间"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/store_endWorkTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入结束营业时间"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="联系地址"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <TextView
+                    android:id="@+id/store_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:drawableRight="@drawable/icon_right_64"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="详细地址"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/store_detail_address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入详细地址"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+
+            <ListView
+                android:id="@+id/lv_suggestions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/store_detail_address"
+                android:layout_alignRight="@+id/store_detail_address"
+                android:layout_below="@+id/store_detail_address"
+                android:background="@android:color/white"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="经度"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/store_address_longitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="纬度"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/store_address_latitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="联系电话"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/store_contactNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入联系电话"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="门店封面"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_vertical" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                    android:id="@+id/store_coverImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/company_logo" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="门店图片"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_vertical" />
+
+
+                <android.support.v7.widget.GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:columnCount="3"
+                    app:rowCount="3">
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/store_detailImg_1"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/store_detailImg_2"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/store_detailImg_3"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/store_detailImg_4"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/store_detailImg_5"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/store_detailImg_6"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/store_detailImg_7"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/store_detailImg_8"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/store_detailImg_9"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+                </android.support.v7.widget.GridLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_store"
+                style="@style/bigRedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:text="保存" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

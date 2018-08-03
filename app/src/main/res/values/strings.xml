@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">爱家母婴控制台</string>
+    <string name="store">门店</string>
+    <string name="goods">商品</string>
+    <string name="goodvoucher">兑换券</string>
+    <string name="voucheritem">兑换项</string>
+    <string name="message">消息</string>
+    <string name="top_category_add">添加</string>
+    <string name="add_sub_classify">添加品牌</string>
+    <string name="add_good">添加商品</string>
+    <string name="add_store">添加门店</string>
+
+    <string name="add_logo">http://www.iconpng.com/download/png/70791</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+</resources>

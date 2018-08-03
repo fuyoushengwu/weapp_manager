@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_color"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:contentInsetEnd="56dp"
+            app:rightButtonText="添加"
+            app:title="@string/add_good" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/selector_view_block"
+            android:orientation="vertical"
+            android:padding="@dimen/largePadding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="商品名"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/et_good_name"
+                    style="@style/editText_base"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入商品名" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="规格"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/et_good_pack"
+                    style="@style/editText_base"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入规格" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="段数"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/et_good_level"
+                    style="@style/editText_base"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入段数" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="条形码"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/et_bar_code"
+                    style="@style/editText_base"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入条形码" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="价格"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/et_good_price"
+                    style="@style/editText_base"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入价格" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="数量"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/et_good_count"
+                    style="@style/editText_base"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入数量" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="保质期"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/et_good_lifetime"
+                    style="@style/editText_base"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入保质期" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="商品logo"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_vertical" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                    android:id="@+id/iv_good_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/company_logo" />
+
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="商品详细信息"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_vertical" />
+
+                <android.support.v7.widget.GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:columnCount="3"
+                    app:rowCount="2">
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/iv_good_detail_1"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/iv_good_detail_2"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/iv_good_detail_3"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/iv_good_detail_4"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/iv_good_detail_5"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+
+                    <cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView
+                        android:id="@+id/iv_good_detail_6"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/company_logo" />
+                </android.support.v7.widget.GridLayout>
+
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="商品积分"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View style="@style/line_horizontal" />
+
+                <cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText
+                    android:id="@+id/et_good_score"
+                    style="@style/editText_base"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="请输入商品积分" />
+            </LinearLayout>
+
+            <View style="@style/line_vertical" />
+
+            <Button
+                android:id="@+id/add_goodvoucher"
+                style="@style/bigRedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:text="关联兑换券" />
+
+            <View style="@style/line_vertical" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/refreshable_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <View style="@style/line_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/largePadding"
+                android:paddingTop="@dimen/largePadding">
+
+                <Button
+                    android:id="@+id/btn_good"
+                    style="@style/bigRedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_weight="1"
+                    android:text="保存" />
+
+                <View style="@style/line_horizontal" />
+
+                <Button
+                    android:id="@+id/create_voucheritem"
+                    style="@style/bigRedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_weight="1"
+                    android:text="创建兑换项" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

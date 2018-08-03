@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="增加顶层条目:" />
+
+    <EditText
+        android:id="@+id/classify_name"
+        style="@style/editText_base"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入品牌名">
+
+        <requestFocus />
+
+    </EditText>
+</LinearLayout>

@@ -1,0 +1,82 @@
+apply plugin: 'com.android.application'
+
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    defaultConfig {
+        applicationId "cn.aijiamuyingfang.weapp.manager"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("sign.jks")
+            storePassword 'aijiamuyingfang'
+            keyAlias 'aijiamuyingfang'
+            keyPassword 'aijiamuyingfang'
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        release {
+            storeFile file("sign.jks")
+            storePassword 'aijiamuyingfang'
+            keyAlias 'aijiamuyingfang'
+            keyPassword 'aijiamuyingfang'
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            buildConfigField "boolean", "ISDEBUG", "true"
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            zipAlignEnabled true
+            debuggable true
+            shrinkResources true//去掉不用资源
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+repositories {
+    flatDir {
+        dirs 'libs' //就是你放aar的目录地址
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:gridlayout-v7:27.1.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //三级联动
+    implementation 'com.contrarywind:Android-PickerView:3.2.6'
+
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+
+    implementation project(':widgets-library')
+}

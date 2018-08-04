@@ -15,10 +15,10 @@ pipeline {
             }
         }
 		
-		stage('deploy library') {
+        stage('deploy library') {
             steps {
                 sh 'chmod +x gradlew'
-                sh './gradlew clean upload'
+                sh './gradlew clean upload --info'
             }
         }
 

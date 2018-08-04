@@ -22,7 +22,7 @@ uploadArchives {
             version project.PUBLISH_VERSION
         }
         pom.whenConfigured { pom ->
-            def common = pom.dependencies.find { dep -> dep.groupId == 'weapp_manager' }
+            def common = pom.dependencies.find { dep -> dep.groupId.contains('weapp_manager') }
             if (common != null) {
                 common.groupId = project.PUBLISH_GROUP_ID
                 common.version = project.PUBLISH_VERSION

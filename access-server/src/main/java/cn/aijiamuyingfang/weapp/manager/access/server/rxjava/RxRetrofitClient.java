@@ -23,7 +23,7 @@ public class RxRetrofitClient {
     private Retrofit retrofit;
 
     public RxRetrofitClient() {
-        final OkHttpClient.Builder httpclientBuilder = ClientRestUtils.getOkHttpClientBuilder("192.168.0.102"/*DEFAULT_HOST_NAME*/, DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT, DEFAULT_WRITE_TIMEOUT);
+        final OkHttpClient.Builder httpclientBuilder = ClientRestUtils.getOkHttpClientBuilder("192.168.0.104"/*DEFAULT_HOST_NAME*/, DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT, DEFAULT_WRITE_TIMEOUT);
         PermissionActivity.checkAndRequestPermission(null, Manifest.permission.WRITE_EXTERNAL_STORAGE, new PermissionUtils.PermissionGrantedCallBack() {
             @Override
             public void onPermissionGranted() {
@@ -37,7 +37,7 @@ public class RxRetrofitClient {
         });
         httpclient = httpclientBuilder.build();
 
-        Retrofit.Builder retrofitBuilder = ClientRestUtils.getRetrofitBuilder("https://192.168.0.102:443"/*DEFAULT_BASE_URL*/).addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+        Retrofit.Builder retrofitBuilder = ClientRestUtils.getRetrofitBuilder("https://192.168.0.104:443"/*DEFAULT_BASE_URL*/).addCallAdapterFactory(RxJava2CallAdapterFactory.create());
         retrofit = retrofitBuilder.client(httpclient).build();
     }
 

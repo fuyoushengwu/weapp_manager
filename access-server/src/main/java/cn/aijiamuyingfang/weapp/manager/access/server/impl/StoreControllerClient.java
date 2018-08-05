@@ -17,9 +17,9 @@ import okhttp3.MultipartBody;
  * <p>
  * 客户端调用StoreController的服务
  * </p>
- * 
- * @version 1.0.0
+ *
  * @author ShiWei
+ * @version 1.0.0
  */
 public class StoreControllerClient implements StoreControllerApi {
     private static StoreControllerApi instance;
@@ -30,7 +30,7 @@ public class StoreControllerClient implements StoreControllerApi {
 
     @Override
     public Observable<ResponseBean<GetInUseStoreListResponse>> getInUseStoreList(String token, int currentpage,
-            int pagesize) {
+                                                                                 int pagesize) {
         return instance.getInUseStoreList(token, currentpage, pagesize)
                 .compose(RxTransformerUtils.<ResponseBean<GetInUseStoreListResponse>>switchSchedulers());
     }
@@ -65,11 +65,5 @@ public class StoreControllerClient implements StoreControllerApi {
     @Override
     public Observable<ResponseBean<List<String>>> getStoresCity(String token) {
         return instance.getStoresCity(token).compose(RxTransformerUtils.<ResponseBean<List<String>>>switchSchedulers());
-    }
-
-    @Override
-    public Observable<ResponseBean<Void>> addStoreClassify(String token, String storeid, String classifyid) {
-        return instance.addStoreClassify(token, storeid, classifyid)
-                .compose(RxTransformerUtils.<ResponseBean<Void>>switchSchedulers());
     }
 }

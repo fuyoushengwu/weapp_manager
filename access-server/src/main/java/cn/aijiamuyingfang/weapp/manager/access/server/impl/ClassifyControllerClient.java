@@ -27,11 +27,6 @@ public class ClassifyControllerClient implements ClassifyControllerApi {
     }
 
     @Override
-    public Observable<ResponseBean<List<Classify>>> getStoreTopClassifyList(String token, String storeid) {
-        return instance.getStoreTopClassifyList(token, storeid).compose(RxTransformerUtils.<ResponseBean<List<Classify>>>switchSchedulers());
-    }
-
-    @Override
     public Observable<ResponseBean<List<Classify>>> getTopClassifyList(String token) {
         return instance.getTopClassifyList(token).compose(RxTransformerUtils.<ResponseBean<List<Classify>>>switchSchedulers());
     }

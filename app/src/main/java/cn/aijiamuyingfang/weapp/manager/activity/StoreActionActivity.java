@@ -47,6 +47,12 @@ import cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView;
 import cn.aijiamuyingfang.weapp.manager.widgets.GlideUtils;
 import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -132,24 +138,49 @@ public class StoreActionActivity extends BaseActivity {
      * province.json数据是否加载完成
      */
     private boolean isLoaded = false;
+    private Disposable disposable;
 
     @Override
     protected void init() {
-        Observable.create(e -> {
-            String jsonData = JsonUtils.getJson(StoreActionActivity.this, "province.json");
-            StoreActionActivity.this.provinceList = JsonUtils.json2List(jsonData, ProvinceViewData.class);
-            for (ProvinceViewData provinceJsonBean : StoreActionActivity.this.provinceList) {
-                List<List<CountyViewData>> counties = new ArrayList<>();
-                for (CityViewData cityJsonBean : provinceJsonBean.getCity()) {
-                    counties.add(cityJsonBean.getCounty());
+
+        Observable.create((ObservableOnSubscribe<Boolean>) e -> {
+            try {
+                String jsonData = JsonUtils.getJson(StoreActionActivity.this, "province.json");
+                StoreActionActivity.this.provinceList = JsonUtils.json2List(jsonData, ProvinceViewData.class);
+                for (ProvinceViewData provinceJsonBean : StoreActionActivity.this.provinceList) {
+                    List<List<CountyViewData>> counties = new ArrayList<>();
+                    for (CityViewData cityJsonBean : provinceJsonBean.getCity()) {
+                        counties.add(cityJsonBean.getCounty());
+                    }
+                    StoreActionActivity.this.cityList.add(provinceJsonBean.getCity());
+                    StoreActionActivity.this.countyList.add(counties);
                 }
-                StoreActionActivity.this.cityList.add(provinceJsonBean.getCity());
-                StoreActionActivity.this.countyList.add(counties);
+            } catch (Exception e1) {
+                e.onNext(false);
             }
+            e.onNext(true);
             e.onComplete();
-        }).subscribeOn(Schedulers.io()).subscribe(o ->
-                StoreActionActivity.this.isLoaded = true
-        );
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Boolean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onNext(Boolean value) {
+                StoreActionActivity.this.isLoaded = value;
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "read province.json failed", e);
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "read province.json complete");
+            }
+        });
         initListener();
         initData();
     }
@@ -260,6 +291,14 @@ public class StoreActionActivity extends BaseActivity {
         private class ViewHolder {
             TextView tvTitle;
             TextView tvAddress;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
         }
     }
 

@@ -101,11 +101,11 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
         mAdapter.setOnItemClickListener(getOnItemClickListener());
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        refreshData();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        refreshData();
+//    }
 
     /**
      * 刷新数据

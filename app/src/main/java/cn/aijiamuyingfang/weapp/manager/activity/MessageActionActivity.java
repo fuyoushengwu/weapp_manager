@@ -139,7 +139,7 @@ public class MessageActionActivity extends BaseActivity {
             case R.id.message_save:
                 mSaveButton.setClickable(false);
                 UserMessage userMessage = new UserMessage();
-                userMessage.setUserid("system");
+                userMessage.setUserid(CommonApp.getApplication().getUserId());
                 userMessage.setTitle(mTitleEditText.getText().toString());
                 userMessage.setRoundup(mRoundupEditText.getText().toString());
                 userMessage.setContent(mContentEditText.getText().toString());

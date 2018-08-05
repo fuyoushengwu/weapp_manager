@@ -68,7 +68,7 @@ public class MessageFragment extends RefreshableBaseFragment<UserMessage, GetMes
 
     @Override
     protected Observable<ResponseBean<GetMessagesListResponse>> customGetData(int mCurrPage, int mPageSize) {
-        return userMessageControllerApi.getUserMessageList(CommonApp.getApplication().getUserToken(), "system", mCurrPage, mPageSize);
+        return userMessageControllerApi.getUserMessageList(CommonApp.getApplication().getUserToken(), CommonApp.getApplication().getUserId(), mCurrPage, mPageSize);
     }
 
     @Override

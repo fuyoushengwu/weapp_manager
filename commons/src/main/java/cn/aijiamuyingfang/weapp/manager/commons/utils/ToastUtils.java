@@ -32,12 +32,7 @@ public final class ToastUtils {
     public static void showSafeToast(final Context context, final String text) {
         if (Looper.myLooper() != Looper.getMainLooper()) {//如果不是在主线程弹出吐司，那么抛到主线程弹
             new Handler(Looper.getMainLooper()).post(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            showUIToast(context, text);
-                        }
-                    }
+                    () -> showUIToast(context, text)
             );
         } else {
             showUIToast(context, text);

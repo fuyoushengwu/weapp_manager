@@ -23,24 +23,25 @@ public class RxRetrofitClient {
     private Retrofit retrofit;
 
     public RxRetrofitClient() {
-        final OkHttpClient.Builder httpclientBuilder = ClientRestUtils.getOkHttpClientBuilder("192.168.0.101"/*DEFAULT_HOST_NAME*/, DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT, DEFAULT_WRITE_TIMEOUT);
-        PermissionActivity.checkAndRequestPermission(null, Manifest.permission.WRITE_EXTERNAL_STORAGE, new PermissionUtils.PermissionGrantedCallBack() {
-            @Override
-            public void onPermissionGranted() {
-                RxCacheInterceptor cacheInterceptor = new RxCacheInterceptor();
-                Cache cache = new Cache(new File(CommonApp.getApplication().getDefaultHttpCacheDir())
-                        , 1024 * 1024 * 100);
-                httpclientBuilder.addInterceptor(cacheInterceptor)
-                        .addNetworkInterceptor(cacheInterceptor)
-                        .cache(cache);
-            }
-        });
+        final OkHttpClient.Builder httpclientBuilder = ClientRestUtils.getOkHttpClientBuilder(DEFAULT_HOST_NAME,
+                DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT, DEFAULT_WRITE_TIMEOUT);
+        PermissionActivity.checkAndRequestPermission(null, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                new PermissionUtils.PermissionGrantedCallBack() {
+                    @Override
+                    public void onPermissionGranted() {
+                        RxCacheInterceptor cacheInterceptor = new RxCacheInterceptor();
+                        Cache cache = new Cache(new File(CommonApp.getApplication().getDefaultHttpCacheDir()),
+                                1024 * 1024 * 100);
+                        httpclientBuilder.addInterceptor(cacheInterceptor).addNetworkInterceptor(cacheInterceptor)
+                                .cache(cache);
+                    }
+                });
         httpclient = httpclientBuilder.build();
 
-        Retrofit.Builder retrofitBuilder = ClientRestUtils.getRetrofitBuilder("https://192.168.0.101:443"/*DEFAULT_BASE_URL*/).addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+        Retrofit.Builder retrofitBuilder = ClientRestUtils.getRetrofitBuilder(DEFAULT_BASE_URL)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
         retrofit = retrofitBuilder.client(httpclient).build();
     }
-
 
     private static RxRetrofitClient instance;
 
@@ -51,14 +52,13 @@ public class RxRetrofitClient {
         return instance;
     }
 
-
     public static OkHttpClient getHttpClient() {
         return getInstance().httpclient;
     }
 
     /**
      * @param cls 服务类API
-     * @param <K> 泛型
+     * @param     <K> 泛型
      * @return 创建服务实例
      */
     public static <K> K createGApi(final Class<K> cls) {

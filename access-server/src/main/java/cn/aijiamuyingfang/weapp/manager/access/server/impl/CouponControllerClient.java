@@ -11,7 +11,7 @@ import cn.aijiamuyingfang.commons.domain.coupon.response.GetUserVoucherListRespo
 import cn.aijiamuyingfang.commons.domain.coupon.response.GetVoucherItemListResponse;
 import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
-import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxTransformerUtils;
+import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
 
 /**
@@ -34,61 +34,61 @@ public class CouponControllerClient implements CouponControllerApi {
     public Observable<ResponseBean<GetUserVoucherListResponse>> getUserVoucherList(String token, String userid,
                                                                                    int currentpage, int pagesize) {
         return instance.getUserVoucherList(token, userid, currentpage, pagesize)
-                .compose(RxTransformerUtils.<ResponseBean<GetUserVoucherListResponse>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<GetShopOrderVoucherListResponse>> getUserShopOrderVoucherList(String token,
                                                                                                  String userid, List<String> goodids) {
         return instance.getUserShopOrderVoucherList(token, userid, goodids)
-                .compose(RxTransformerUtils.<ResponseBean<GetShopOrderVoucherListResponse>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<GetGoodVoucherListResponse>> getGoodVoucherList(String token, int currentpage,
                                                                                    int pagesize) {
         return instance.getGoodVoucherList(token, currentpage, pagesize)
-                .compose(RxTransformerUtils.<ResponseBean<GetGoodVoucherListResponse>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<GoodVoucher>> getGoodVoucher(String token, String voucherid) {
         return instance.getGoodVoucher(token, voucherid)
-                .compose(RxTransformerUtils.<ResponseBean<GoodVoucher>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<GoodVoucher>> createGoodVoucher(String token, GoodVoucher request) {
         return instance.createGoodVoucher(token, request)
-                .compose(RxTransformerUtils.<ResponseBean<GoodVoucher>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<Void>> deprecateGoodVoucher(String token, String voucherid) {
         return instance.deprecateGoodVoucher(token, voucherid)
-                .compose(RxTransformerUtils.<ResponseBean<Void>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<GetVoucherItemListResponse>> getVoucherItemList(String token, int currentpage,
                                                                                    int pagesize) {
         return instance.getVoucherItemList(token, currentpage, pagesize)
-                .compose(RxTransformerUtils.<ResponseBean<GetVoucherItemListResponse>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<VoucherItem>> getVoucherItem(String token, String itemid) {
         return instance.getVoucherItem(token, itemid)
-                .compose(RxTransformerUtils.<ResponseBean<VoucherItem>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<VoucherItem>> createVoucherItem(String token, VoucherItem request) {
-        return instance.createVoucherItem(token, request).compose(RxTransformerUtils.<ResponseBean<VoucherItem>>switchSchedulers());
+        return instance.createVoucherItem(token, request).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<Void>> deprecateVoucherItem(String token, String itemid) {
-        return instance.deprecateVoucherItem(token, itemid).compose(RxTransformerUtils.<ResponseBean<Void>>switchSchedulers());
+        return instance.deprecateVoucherItem(token, itemid).compose(RxJavaUtils.switchSchedulers());
     }
 }

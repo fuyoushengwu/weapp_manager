@@ -31,9 +31,11 @@ import butterknife.OnClick;
 import cn.aijiamuyingfang.client.rest.api.StoreControllerApi;
 import cn.aijiamuyingfang.commons.domain.goods.Store;
 import cn.aijiamuyingfang.commons.domain.goods.WorkTime;
+import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.StoreControllerClient;
+import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.bean.CityViewData;
 import cn.aijiamuyingfang.weapp.manager.bean.CountyViewData;
 import cn.aijiamuyingfang.weapp.manager.bean.ProvinceViewData;
@@ -47,10 +49,8 @@ import cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView;
 import cn.aijiamuyingfang.weapp.manager.widgets.GlideUtils;
 import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -59,7 +59,7 @@ import okhttp3.RequestBody;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class StoreActionActivity extends BaseActivity {
-    private static final String TAG = "StoreActionActivity";
+    private static final String TAG = StoreActionActivity.class.getName();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
     @BindView(R.id.store_name)
@@ -104,6 +104,7 @@ public class StoreActionActivity extends BaseActivity {
 
     private Store mCurStore;
     private StoreControllerApi storeControllerApi = new StoreControllerClient();
+    private List<Disposable> storeDisposableList = new ArrayList<>();
 
     private List<ProvinceViewData> provinceList = new ArrayList<>();
     private List<List<CityViewData>> cityList = new ArrayList<>();
@@ -138,7 +139,6 @@ public class StoreActionActivity extends BaseActivity {
      * province.json数据是否加载完成
      */
     private boolean isLoaded = false;
-    private Disposable disposable;
 
     @Override
     protected void init() {
@@ -163,7 +163,7 @@ public class StoreActionActivity extends BaseActivity {
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Boolean>() {
             @Override
             public void onSubscribe(Disposable d) {
-                disposable = d;
+                storeDisposableList.add(d);
             }
 
             @Override
@@ -196,8 +196,10 @@ public class StoreActionActivity extends BaseActivity {
             );
             mStoreNameEditText.setText(mCurStore.getName());
             WorkTime workTime = mCurStore.getWorkTime();
-            mStoreStartWorkTimeEditText.setText(workTime.getStart());
-            mStoreEndWorkTimeEditText.setText(workTime.getEnd());
+            if (workTime != null) {
+                mStoreStartWorkTimeEditText.setText(workTime.getStart());
+                mStoreEndWorkTimeEditText.setText(workTime.getEnd());
+            }
             mStoreContactPhoneEditText.setText(mCurStore.getStoreAddress().getContactor());
 
             String address = "";
@@ -294,13 +296,6 @@ public class StoreActionActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (disposable != null) {
-            disposable.dispose();
-        }
-    }
 
     private static class MyHandler extends Handler {
         private WeakReference<StoreActionActivity> mActivity;
@@ -436,9 +431,29 @@ public class StoreActionActivity extends BaseActivity {
     }
 
     private void deleteStore(String storeid) {
-        storeControllerApi.deprecateStore(CommonApp.getApplication().getUserToken(), storeid).subscribe(responseBean -> {
-            if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                StoreActionActivity.this.finish();
+        storeControllerApi.deprecateStore(CommonApp.getApplication().getUserToken(), storeid).subscribe(new Observer<ResponseBean<Void>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                storeDisposableList.add(d);
+            }
+
+            @Override
+            public void onNext(ResponseBean<Void> responseBean) {
+                if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                    StoreActionActivity.this.finish();
+                } else {
+                    Log.e(TAG, responseBean.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "deprecated store failed", e);
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "deprecated store complete");
             }
         });
     }
@@ -448,9 +463,6 @@ public class StoreActionActivity extends BaseActivity {
             @Override
             public void run() {
                 MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                requestBodyBuilder.addFormDataPart("name", mStoreNameEditText.getText().toString());
-                requestBodyBuilder.addFormDataPart("startWorkTime", mStoreStartWorkTimeEditText.getText().toString());
-                requestBodyBuilder.addFormDataPart("endWorkTime", mStoreEndWorkTimeEditText.getText().toString());
 
                 File coverImg = mStoreCoverImageView.getImageFileSync();
                 RequestBody requestCoverImg = RequestBody.create(MultipartBody.FORM, coverImg);
@@ -471,33 +483,58 @@ public class StoreActionActivity extends BaseActivity {
                     requestBodyBuilder.addFormDataPart("detailImages", detailImageFile.getName(), requestDetail);
                 }
 
+                requestBodyBuilder.addFormDataPart("name", mStoreNameEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("workTime.start", mStoreStartWorkTimeEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("workTime.end", mStoreEndWorkTimeEditText.getText().toString());
 
-                requestBodyBuilder.addFormDataPart("address.location.longitude", mStoreAddressLongitudeTextView.getText().toString());
-                requestBodyBuilder.addFormDataPart("address.location.latitude", mStoreAddressLatitudeTextView.getText().toString());
-                requestBodyBuilder.addFormDataPart("address.detailAddress", mStoreDetailAddressEditText.getText().toString());
-                requestBodyBuilder.addFormDataPart("address.contactNumber", mStoreContactPhoneEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("storeAddress.detail", mStoreDetailAddressEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("storeAddress.phone", mStoreContactPhoneEditText.getText().toString());
+
+                requestBodyBuilder.addFormDataPart("storeAddress.coordinate.longitude", mStoreAddressLongitudeTextView.getText().toString());
+                requestBodyBuilder.addFormDataPart("storeAddress.coordinate.latitude", mStoreAddressLatitudeTextView.getText().toString());
+
                 if (mCurProvinceJsonBean != null) {
-                    requestBodyBuilder.addFormDataPart("address.province.name", mCurProvinceJsonBean.getName());
-                    requestBodyBuilder.addFormDataPart("address.province.code", mCurProvinceJsonBean.getCode());
+                    requestBodyBuilder.addFormDataPart("storeAddress.province.name", mCurProvinceJsonBean.getName());
+                    requestBodyBuilder.addFormDataPart("storeAddress.province.code", mCurProvinceJsonBean.getCode());
                 }
 
                 if (mCurCityJsonBean != null) {
-                    requestBodyBuilder.addFormDataPart("address.city.name", mCurCityJsonBean.getName());
-                    requestBodyBuilder.addFormDataPart("address.city.code", mCurCityJsonBean.getCode());
+                    requestBodyBuilder.addFormDataPart("storeAddress.city.name", mCurCityJsonBean.getName());
+                    requestBodyBuilder.addFormDataPart("storeAddress.city.code", mCurCityJsonBean.getCode());
                 }
 
                 if (mCurCountyJsonBean != null) {
-                    requestBodyBuilder.addFormDataPart("address.county.name", mCurCountyJsonBean.getName());
-                    requestBodyBuilder.addFormDataPart("address.county.code", mCurCountyJsonBean.getCode());
+                    requestBodyBuilder.addFormDataPart("storeAddress.county.name", mCurCountyJsonBean.getName());
+                    requestBodyBuilder.addFormDataPart("storeAddress.county.code", mCurCountyJsonBean.getCode());
                 }
 
                 if (mCurStore != null) {
                     requestBodyBuilder.addFormDataPart("id", mCurStore.getId() + "");
-                    requestBodyBuilder.addFormDataPart("address.id", mCurStore.getStoreAddress().getId() + "");
+                    requestBodyBuilder.addFormDataPart("storeAddress.id", mCurStore.getStoreAddress().getId() + "");
                 }
-                storeControllerApi.createStore(CommonApp.getApplication().getUserToken(), requestBodyBuilder.build()).subscribe(responseBean -> {
-                    if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                        StoreActionActivity.this.finish();
+                storeControllerApi.createStore(CommonApp.getApplication().getUserToken(), requestBodyBuilder.build()).subscribe(new Observer<ResponseBean<Store>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        storeDisposableList.add(d);
+                    }
+
+                    @Override
+                    public void onNext(ResponseBean<Store> responseBean) {
+                        if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                            StoreActionActivity.this.finish();
+                        } else {
+                            Log.e(TAG, responseBean.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "create store failed", e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i(TAG, "create store complete");
                     }
                 });
             }
@@ -551,5 +588,10 @@ public class StoreActionActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxJavaUtils.dispose(storeDisposableList);
+    }
 
 }

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -34,15 +33,10 @@ import java.util.Date;
 import cn.aijiamuyingfang.commons.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
-import cn.aijiamuyingfang.weapp.manager.commons.R;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.PermissionActivity;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.FileUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.IOUtils;
-import cn.aijiamuyingfang.weapp.manager.commons.utils.PermissionUtils;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -53,15 +47,14 @@ import io.reactivex.schedulers.Schedulers;
 public class EditableImageView extends android.support.v7.widget.AppCompatImageView {
     private static final String TAG = EditableImageView.class.getName();
 
-    private String IMG_TARGET_DIR = CommonApp.getApplication().getDefaultImageDir();
+    private static String imageTargetDir = CommonApp.getApplication().getDefaultImageDir();
 
-    private String IMG_DEFAULT = IMG_TARGET_DIR + File.separator + "default.jpg";
+    private static String defaultImagePath = imageTargetDir + File.separator + "default.jpg";
 
     private static final String PIC_AFTER_CROP = "pic_after_crop_";
 
 
     //对话框的对象
-    private AvatarDialog avatarDialog;
     private View avatarRootView;
     //Activity的上下文
     private Context mContext;
@@ -99,39 +92,29 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
         //初始化点击事件
         initClickListener();
 
-        PermissionActivity.checkAndRequestPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE, new PermissionUtils.PermissionGrantedCallBack() {
-            @Override
-            public void onPermissionGranted() {
-                writeExternalGranted = true;
-                //初始化文件相关
-                init();
-            }
+        PermissionActivity.checkAndRequestPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE, () -> {
+            writeExternalGranted = true;
+            //初始化文件相关
+            init();
         });
     }
 
     public void init() {
-        Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> e) {
-                //初始化图片目录
-                initIMGDir();
-                //初始化默认图片
-                initDefaultIMG();
-                //初始化图片文件
-                initFile();
-                e.onComplete();
-            }
-        }).subscribeOn(Schedulers.io()).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                Log.i(TAG, "init finished");
-            }
-        });
+        Observable.create(e -> {
+            //初始化图片目录
+            initIMGDir();
+            //初始化默认图片
+            initDefaultIMG();
+            //初始化图片文件
+            initFile();
+            e.onComplete();
+        }).subscribeOn(Schedulers.io()).subscribe(o -> {
+        }, o -> {
+        }, () -> Log.i(TAG, "init finished"));
     }
 
-
     private void initIMGDir() {
-        File imgDir = new File(IMG_TARGET_DIR);
+        File imgDir = new File(imageTargetDir);
         if (imgDir.exists()) {
             return;
         }
@@ -141,7 +124,7 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
     }
 
     private void initDefaultIMG() {
-        File defaultImg = new File(IMG_DEFAULT);
+        File defaultImg = new File(defaultImagePath);
         if (defaultImg.exists()) {
             return;
         }
@@ -152,9 +135,9 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             try {
-                IOUtils.write(IMG_DEFAULT, stream.toByteArray());
+                IOUtils.write(defaultImagePath, stream.toByteArray());
             } catch (IOException e) {
-                Log.e(TAG, "create default img:" + IMG_DEFAULT + ",failed", e);
+                Log.e(TAG, "create default img:" + defaultImagePath + ",failed", e);
             }
         }
     }
@@ -172,9 +155,9 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
         // 照片命名
         String origFileName = "pic_origin_" + time + ".jpg";
         if (Build.VERSION.SDK_INT >= 24) {
-            mShareUri = FileProvider.getUriForFile(mContext, "cn.aijiamuyingfang.weapp.manager", new File(IMG_TARGET_DIR, origFileName));
+            mShareUri = FileProvider.getUriForFile(mContext, "cn.aijiamuyingfang.weapp.manager", new File(imageTargetDir, origFileName));
         } else {
-            mShareUri = Uri.fromFile(new File(IMG_TARGET_DIR, origFileName)); // Android 7.0 以前使用原来的方法来获取文件的 Uri
+            mShareUri = Uri.fromFile(new File(imageTargetDir, origFileName)); // Android 7.0 以前使用原来的方法来获取文件的 Uri
         }
     }
 
@@ -184,38 +167,28 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
      * 点击的效果为弹出对话框选择拍照或者从相册获取
      */
     private void initClickListener() {
-        avatarDialog = new AvatarDialog(EditableImageView.this.mContext);
-        avatarDialog.setPositiveListener(new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) {
-                startActionCamera(mShareUri);
-                avatarDialog.dismiss();
-            }
+        AvatarDialog avatarDialog = new AvatarDialog(EditableImageView.this.mContext);
+        avatarDialog.setPositiveListener((arg0, arg1) -> {
+            startActionCamera(mShareUri);
+            avatarDialog.dismiss();
         });
-        avatarDialog.setNegativeListener(new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) {
-                startActionPickCrop();
-                avatarDialog.dismiss();
-            }
+        avatarDialog.setNegativeListener((arg0, arg1) -> {
+            startActionPickCrop();
+            avatarDialog.dismiss();
         });
 
-        super.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (writeExternalGranted) {
+        super.setOnClickListener(v -> {
+            if (writeExternalGranted) {
+                avatarDialog.setCancelable(true);
+                avatarDialog.show();
+            } else {
+                PermissionActivity.checkAndRequestPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE, () -> {
+                    writeExternalGranted = true;
+                    //初始化文件相关
+                    init();
                     avatarDialog.setCancelable(true);
                     avatarDialog.show();
-                } else {
-                    PermissionActivity.checkAndRequestPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE, new PermissionUtils.PermissionGrantedCallBack() {
-                        @Override
-                        public void onPermissionGranted() {
-                            writeExternalGranted = true;
-                            //初始化文件相关
-                            init();
-                            avatarDialog.setCancelable(true);
-                            avatarDialog.show();
-                        }
-                    });
-                }
+                });
             }
         });
     }
@@ -266,7 +239,7 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
                 if (Activity.RESULT_OK == resultCode) {
                     long time = new Date().getTime();
                     String cropFileName = PIC_AFTER_CROP + time + ".jpg";
-                    mImageFile = new File(IMG_TARGET_DIR + cropFileName);
+                    mImageFile = new File(imageTargetDir + cropFileName);
                     // 拍照后裁剪
                     startActionCrop(mShareUri, Uri.fromFile(mImageFile));
                 }
@@ -278,7 +251,7 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
                     if (uri != null) {
                         long time = new Date().getTime();
                         String cropFileName = PIC_AFTER_CROP + time + ".jpg";
-                        mImageFile = new File(IMG_TARGET_DIR + cropFileName);
+                        mImageFile = new File(imageTargetDir + cropFileName);
                         startActionCrop(uri, Uri.fromFile(mImageFile));
                     }
                 }
@@ -322,7 +295,7 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
             long time = new Date().getTime();
             String cropFileName = PIC_AFTER_CROP + time + ".jpg";
             // 裁剪头像的绝对路径
-            mImageFile = new File(IMG_TARGET_DIR + cropFileName);
+            mImageFile = new File(imageTargetDir + cropFileName);
         }
         if (!mImageFile.exists() && !StringUtils.isEmpty(mImageURL)) {
             try {
@@ -335,7 +308,7 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
         if (mImageFile.exists()) {
             return mImageFile;
         }
-        return new File(IMG_DEFAULT);
+        return new File(defaultImagePath);
     }
 
     /**
@@ -374,29 +347,18 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
             }
             //拍照按钮控件
             TextView mPhotoBtn = avatarRootView.findViewById(R.id.tv_photo_btn);
-            mPhotoBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PermissionActivity.checkAndRequestPermission(mContext, Manifest.permission.CAMERA, new PermissionUtils.PermissionGrantedCallBack() {
-                        @Override
-                        public void onPermissionGranted() {
-                            dismiss();
-                            if (mPhotoButtonListener != null) {
-                                mPhotoButtonListener.onClick(AvatarDialog.this, BUTTON_POSITIVE);
-                            }
-                        }
-                    });
+            mPhotoBtn.setOnClickListener(v -> PermissionActivity.checkAndRequestPermission(mContext, Manifest.permission.CAMERA, () -> {
+                dismiss();
+                if (mPhotoButtonListener != null) {
+                    mPhotoButtonListener.onClick(AvatarDialog.this, BUTTON_POSITIVE);
                 }
-            });
+            }));
             //选择图片控件
             TextView mChoosePicBtn = avatarRootView.findViewById(R.id.tv_choosepic_btn);
-            mChoosePicBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismiss();
-                    if (mChoosePicListener != null) {
-                        mChoosePicListener.onClick(AvatarDialog.this, BUTTON_NEGATIVE);
-                    }
+            mChoosePicBtn.setOnClickListener(v -> {
+                dismiss();
+                if (mChoosePicListener != null) {
+                    mChoosePicListener.onClick(AvatarDialog.this, BUTTON_NEGATIVE);
                 }
             });
             setContentView(avatarRootView);

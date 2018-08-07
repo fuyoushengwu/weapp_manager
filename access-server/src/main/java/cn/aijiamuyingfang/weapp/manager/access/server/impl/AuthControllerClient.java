@@ -6,7 +6,7 @@ import cn.aijiamuyingfang.commons.domain.user.Gender;
 import cn.aijiamuyingfang.commons.domain.user.User;
 import cn.aijiamuyingfang.commons.domain.user.response.TokenResponse;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
-import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxTransformerUtils;
+import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
 
 /**
@@ -27,16 +27,16 @@ public class AuthControllerClient implements AuthControllerApi {
 
     @Override
     public Observable<ResponseBean<TokenResponse>> getToken(String jsCode, String nickname, String avatar, Gender gender) {
-        return instance.getToken(jsCode, nickname, avatar, gender).compose(RxTransformerUtils.<ResponseBean<TokenResponse>>switchSchedulers());
+        return instance.getToken(jsCode, nickname, avatar, gender).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<User>> registerUser(String token, User user) {
-        return instance.registerUser(token, user).compose(RxTransformerUtils.<ResponseBean<User>>switchSchedulers());
+        return instance.registerUser(token, user).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<TokenResponse>> refreshToken(String token) {
-        return instance.refreshToken(token).compose(RxTransformerUtils.<ResponseBean<TokenResponse>>switchSchedulers());
+        return instance.refreshToken(token).compose(RxJavaUtils.switchSchedulers());
     }
 }

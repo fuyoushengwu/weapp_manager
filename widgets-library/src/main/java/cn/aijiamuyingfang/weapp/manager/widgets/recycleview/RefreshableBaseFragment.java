@@ -5,50 +5,59 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.aijiamuyingfang.commons.domain.PageResponse;
 import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
+import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.fragment.BaseFragment;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;
 import cn.aijiamuyingfang.weapp.manager.widgets.R;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.CommonAdapter;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.OnItemClickListener;
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * 可刷新的Fragment的基类
  */
 public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> extends BaseFragment {
-
+    private static final String TAG = RefreshableBaseFragment.class.getName();
+    /**
+     * 页面状态:初始化
+     */
+    private static final int STATE_INIT = 0;
     /**
      * 页面状态:正常显示
      */
-    private static final int STATE_NORMAL = 0;
+    private static final int STATE_NORMAL = 1;
     /**
      * 页面状态:刷新
      */
-    private static final int STATE_REFRESH = 1;
+    private static final int STATE_REFRESH = 2;
     /**
      * 页面状态:请求更多
      */
-    private static final int STATE_MORE = 2;
+    private static final int STATE_MORE = 3;
 
     /**
      * 页面状态
      */
-    private int mCurState = STATE_NORMAL;
+    private int mCurState = STATE_INIT;
     private int mCurrPage = 1;//当前请求的是第几页
     private int mTotalPage = 1;//一共有多少页
     private MaterialRefreshLayout mRefreshLaout;
     private RecyclerView mRecyclerView;
     protected CommonAdapter<E> mAdapter;
+    private List<Disposable> disposableList = new ArrayList<>();
 
     @Override
     public int getContentResourceId() {
@@ -62,6 +71,7 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
         initRefreshLayout();
         initRecyclerViewAdapter();
         customRecyclerView();
+        getData();
     }
 
     /**
@@ -129,9 +139,14 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
      * 获取数据
      */
     private void getData() {
-        customGetData(mCurrPage, 10).subscribe(new Consumer<ResponseBean<V>>() {
+        customGetData(mCurrPage, 10).subscribe(new Observer<ResponseBean<V>>() {
             @Override
-            public void accept(ResponseBean<V> responseBean) {
+            public void onSubscribe(Disposable d) {
+                disposableList.add(d);
+            }
+
+            @Override
+            public void onNext(ResponseBean<V> responseBean) {
                 if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
                     PageResponse<E> response = responseBean.getData();
                     mCurrPage = response.getCurrentpage();
@@ -142,7 +157,19 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
                         serverDataList.addAll(0, beforeDataList);
                     }
                     showData(serverDataList);
+                } else {
+                    Log.e(TAG, responseBean.getMsg());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "custom get data failed", e);
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "custom get data complete");
             }
         });
     }
@@ -154,6 +181,13 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
     private void showData(List<E> dataList) {
         switch (mCurState) {
             case STATE_NORMAL:
+                break;
+            case STATE_INIT:
+                mAdapter.clearData();
+                mAdapter.setDatas(dataList);
+                mRecyclerView.scrollToPosition(0);
+                mRefreshLaout.finishRefresh();
+                mCurState = STATE_NORMAL;
                 break;
             case STATE_REFRESH:
                 mAdapter.clearData();
@@ -214,4 +248,9 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
      */
     protected abstract List<E> customBeforeServerData();
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RxJavaUtils.dispose(disposableList);
+    }
 }

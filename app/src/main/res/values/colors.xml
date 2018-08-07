@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--浅灰色-->
-    <color name="bg_color">#f1f1f1</color>
     <color name="grey_btn_color_normal">#fff1f1f1</color>
     <color name="gainsboro">#dcdcdc</color>
     <color name="small_base_coloruser">#969696</color>

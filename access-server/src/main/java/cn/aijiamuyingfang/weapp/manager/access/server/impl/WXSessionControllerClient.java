@@ -4,7 +4,7 @@ import cn.aijiamuyingfang.client.rest.api.WXSessionControllerApi;
 import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.commons.domain.wxservice.WXSession;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
-import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxTransformerUtils;
+import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
 
 /**
@@ -25,6 +25,6 @@ public class WXSessionControllerClient implements WXSessionControllerApi {
 
     @Override
     public Observable<ResponseBean<WXSession>> jscode2Session(String jscode) {
-        return instance.jscode2Session(jscode).compose(RxTransformerUtils.<ResponseBean<WXSession>>switchSchedulers());
+        return instance.jscode2Session(jscode).compose(RxJavaUtils.switchSchedulers());
     }
 }

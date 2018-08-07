@@ -16,8 +16,6 @@ import cn.aijiamuyingfang.weapp.manager.commons.R;
  */
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public abstract class BaseActivity extends AppCompatActivity {
-    protected static final String TAG = BaseActivity.class.getName();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         SystemBarTintManager tintManager = new SystemBarTintManager(activity);
         tintManager.setStatusBarTintEnabled(true);
         // 使用颜色资源
-        tintManager.setStatusBarTintResource(R.color.colorPrimary);
+        tintManager.setStatusBarTintResource(R.color.light_blue);
     }
 
     private void setTranslucentStatus(Activity activity) {

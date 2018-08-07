@@ -5,7 +5,7 @@ import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.commons.domain.user.UserMessage;
 import cn.aijiamuyingfang.commons.domain.user.response.GetMessagesListResponse;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
-import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxTransformerUtils;
+import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
 
 /**
@@ -27,25 +27,25 @@ public class UserMessageControllerClient implements UserMessageControllerApi {
     @Override
     public Observable<ResponseBean<Integer>> getUserUnReadMessageCount(String token, String userid) {
         return instance.getUserUnReadMessageCount(token, userid)
-                .compose(RxTransformerUtils.<ResponseBean<Integer>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<GetMessagesListResponse>> getUserMessageList(String token, String userid,
             int currentpage, int pagesize) {
         return instance.getUserMessageList(token, userid, currentpage, pagesize)
-                .compose(RxTransformerUtils.<ResponseBean<GetMessagesListResponse>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<UserMessage>> createMessage(String token, String userid, UserMessage message) {
         return instance.createMessage(token, userid, message)
-                .compose(RxTransformerUtils.<ResponseBean<UserMessage>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<Void>> deleteMessage(String token, String userid, String messageid) {
         return instance.deleteMessage(token, userid, messageid)
-                .compose(RxTransformerUtils.<ResponseBean<Void>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 }

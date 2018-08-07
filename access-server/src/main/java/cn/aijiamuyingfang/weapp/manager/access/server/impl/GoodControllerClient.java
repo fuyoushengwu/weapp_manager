@@ -8,7 +8,7 @@ import cn.aijiamuyingfang.commons.domain.goods.GoodDetail;
 import cn.aijiamuyingfang.commons.domain.goods.response.GetClassifyGoodListResponse;
 import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
-import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxTransformerUtils;
+import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 
@@ -34,33 +34,33 @@ public class GoodControllerClient implements GoodControllerApi {
             int pagesize) {
         return instance.getClassifyGoodList(token, classifyid, packFilter, levelFilter, orderType, orderValue,
                 currentpage, pagesize)
-                .compose(RxTransformerUtils.<ResponseBean<GetClassifyGoodListResponse>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<Good>> createGood(String token, MultipartBody goodRequest) {
-        return instance.createGood(token, goodRequest).compose(RxTransformerUtils.<ResponseBean<Good>>switchSchedulers());
+        return instance.createGood(token, goodRequest).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<Good>> getGood(String token, String goodid) {
-        return instance.getGood(token, goodid).compose(RxTransformerUtils.<ResponseBean<Good>>switchSchedulers());
+        return instance.getGood(token, goodid).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<Void>> deprecateGood(String token, String goodid) {
-        return instance.deprecateGood(token, goodid).compose(RxTransformerUtils.<ResponseBean<Void>>switchSchedulers());
+        return instance.deprecateGood(token, goodid).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<GoodDetail>> getGoodDetail(String token, String goodid) {
         return instance.getGoodDetail(token, goodid)
-                .compose(RxTransformerUtils.<ResponseBean<GoodDetail>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
     public Observable<ResponseBean<Good>> updateGood(String token, String goodid, Good request) {
         return instance.updateGood(token, goodid, request)
-                .compose(RxTransformerUtils.<ResponseBean<Good>>switchSchedulers());
+                .compose(RxJavaUtils.switchSchedulers());
     }
 }

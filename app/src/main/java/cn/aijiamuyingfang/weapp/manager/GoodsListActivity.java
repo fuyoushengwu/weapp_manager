@@ -48,6 +48,7 @@ public class GoodsListActivity extends RefreshableBaseActivity<Good, GetClassify
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (position == 0) {
                     Intent intent = new Intent(GoodsListActivity.this, GoodActionActivity.class);
+                    intent.putExtra(Constant.INTENT_SUB_CLASSIFY_ID, mCurClassifyId);
                     GoodsListActivity.this.startActivity(intent);
                 } else {
                     Intent intent = new Intent(GoodsListActivity.this, GoodActionActivity.class);

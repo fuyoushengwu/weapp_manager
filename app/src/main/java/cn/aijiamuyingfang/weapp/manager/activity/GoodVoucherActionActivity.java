@@ -5,6 +5,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -15,22 +16,27 @@ import butterknife.OnClick;
 import cn.aijiamuyingfang.client.rest.api.CouponControllerApi;
 import cn.aijiamuyingfang.commons.domain.coupon.GoodVoucher;
 import cn.aijiamuyingfang.commons.domain.coupon.VoucherItem;
+import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
 import cn.aijiamuyingfang.weapp.manager.FragmentContainerActivity;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.CouponControllerClient;
+import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.BaseActivity;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;
 import cn.aijiamuyingfang.weapp.manager.fragment.VoucherItemFragment;
 import cn.aijiamuyingfang.weapp.manager.recycleadapter.VoucherItemAdapter;
-import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.OnItemClickListener;
 import cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText;
 import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
+import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.OnItemClickListener;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class GoodVoucherActionActivity extends BaseActivity {
+    private static final String TAG = GoodVoucherActionActivity.class.getName();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
     @BindView(R.id.voucher_name)
@@ -51,6 +57,7 @@ public class GoodVoucherActionActivity extends BaseActivity {
     private ArrayList<VoucherItem> mVoucheritemList;
 
     private CouponControllerApi couponControllerApi = new CouponControllerClient();
+    private List<Disposable> couponDisposableList = new ArrayList<>();
 
     @Override
     protected void init() {
@@ -62,11 +69,31 @@ public class GoodVoucherActionActivity extends BaseActivity {
     private void initToolBar() {
         if (mGoodVoucher != null) {
             mToolBar.setRightButtonText("删除");
-            mToolBar.setRightButtonOnClickListener(v -> couponControllerApi.deprecateGoodVoucher(CommonApp.getApplication().getUserToken(), mGoodVoucher.getId()).subscribe(responseBean -> {
-                        if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                            GoodVoucherActionActivity.this.finish();
-                        } else {
-                            ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "删除兑换券失败");
+            mToolBar.setRightButtonOnClickListener(v ->
+                    couponControllerApi.deprecateGoodVoucher(CommonApp.getApplication().getUserToken(), mGoodVoucher.getId()).subscribe(new Observer<ResponseBean<Void>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            couponDisposableList.add(d);
+                        }
+
+                        @Override
+                        public void onNext(ResponseBean<Void> responseBean) {
+                            if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                                GoodVoucherActionActivity.this.finish();
+                            } else {
+                                Log.e(TAG, responseBean.getMsg());
+                                ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "删除兑换券失败");
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e(TAG, "deprecated good voucher failed", e);
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            Log.i(TAG, "deprecated good voucher complete");
                         }
                     })
             );
@@ -111,9 +138,29 @@ public class GoodVoucherActionActivity extends BaseActivity {
     private void initVoucherItemList(GoodVoucher goodVoucher) {
         List<String> voucheritemidList = goodVoucher.getVoucheritemIdList();
         for (String itemid : voucheritemidList) {
-            couponControllerApi.getVoucherItem(CommonApp.getApplication().getUserToken(), itemid).subscribe(responseBean -> {
-                if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                    this.mVoucheritemList.add(responseBean.getData());
+            couponControllerApi.getVoucherItem(CommonApp.getApplication().getUserToken(), itemid).subscribe(new Observer<ResponseBean<VoucherItem>>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+                    couponDisposableList.add(d);
+                }
+
+                @Override
+                public void onNext(ResponseBean<VoucherItem> responseBean) {
+                    if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                        GoodVoucherActionActivity.this.mVoucheritemList.add(responseBean.getData());
+                    } else {
+                        Log.e(TAG, responseBean.getMsg());
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.e(TAG, "get voucher item failed", e);
+                }
+
+                @Override
+                public void onComplete() {
+                    Log.i(TAG, "get voucher item complete");
                 }
             });
         }
@@ -143,11 +190,30 @@ public class GoodVoucherActionActivity extends BaseActivity {
             voucheritemidList.add(item.getId());
         }
         goodvoucher.setVoucheritemIdList(voucheritemidList);
-        couponControllerApi.createGoodVoucher(CommonApp.getApplication().getUserToken(), goodvoucher).subscribe(responseBean -> {
-            if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                GoodVoucherActionActivity.this.finish();
-            } else {
-                ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "创建兑换券失败");
+        couponControllerApi.createGoodVoucher(CommonApp.getApplication().getUserToken(), goodvoucher).subscribe(new Observer<ResponseBean<GoodVoucher>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                couponDisposableList.add(d);
+            }
+
+            @Override
+            public void onNext(ResponseBean<GoodVoucher> responseBean) {
+                if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                    GoodVoucherActionActivity.this.finish();
+                } else {
+                    Log.e(TAG, responseBean.getMsg());
+                    ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "创建兑换券失败");
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "create good voucher failed", e);
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "create good voucher complete");
             }
         });
     }
@@ -172,5 +238,11 @@ public class GoodVoucherActionActivity extends BaseActivity {
     @Override
     protected int getContentResourceId() {
         return R.layout.activity_add_goodvoucher;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxJavaUtils.dispose(couponDisposableList);
     }
 }

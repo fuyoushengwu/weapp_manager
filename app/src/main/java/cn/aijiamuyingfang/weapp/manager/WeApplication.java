@@ -14,8 +14,7 @@ import cn.aijiamuyingfang.weapp.manager.commons.utils.FileUtils;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class WeApplication extends CommonApp {
 
-    private static final String TAG = "WeApplication";
-
+    private static final String TAG = WeApplication.class.getName();
     @Override
     public void onCreate() {
         super.onCreate();

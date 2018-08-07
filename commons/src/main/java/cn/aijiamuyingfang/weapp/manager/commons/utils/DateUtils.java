@@ -11,6 +11,7 @@ import java.util.Locale;
 
 
 public final class DateUtils {
+    private static final String TAG = DateUtils.class.getName();
     private DateUtils() {
     }
 
@@ -78,7 +79,7 @@ public final class DateUtils {
         try {
             result = inputDf.parse(date);
         } catch (ParseException e) {
-            Log.e(e.toString(), e.toString());
+            Log.e(TAG, e.toString());
         }
         return result;
     }

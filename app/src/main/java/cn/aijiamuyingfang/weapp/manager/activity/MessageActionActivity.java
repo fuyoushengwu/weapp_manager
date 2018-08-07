@@ -12,27 +12,33 @@ import android.widget.CheckedTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.aijiamuyingfang.client.rest.api.UserMessageControllerApi;
+import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
 import cn.aijiamuyingfang.commons.domain.user.UserMessage;
 import cn.aijiamuyingfang.commons.domain.user.UserMessageType;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.UserMessageControllerClient;
+import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.BaseActivity;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.DateUtils;
 import cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText;
 import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class MessageActionActivity extends BaseActivity {
-    private static final String TAG = "MessageActionActivity";
+    private static final String TAG = MessageActionActivity.class.getName();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
     @BindView(R.id.message_title)
@@ -54,6 +60,7 @@ public class MessageActionActivity extends BaseActivity {
     private DatePickerDialog mDatePickerDialog;
 
     private UserMessageControllerApi userMessageControllerApi = new UserMessageControllerClient();
+    private List<Disposable> userDisposableList = new ArrayList<>();
 
     @Override
     protected void init() {
@@ -69,11 +76,31 @@ public class MessageActionActivity extends BaseActivity {
             mToolBar.setRightButtonText("删除");
             mToolBar.setRightButtonOnClickListener(v -> {
                 mToolBar.getRightButton().setClickable(false);
-                userMessageControllerApi.deleteMessage(CommonApp.getApplication().getUserToken(), CommonApp.getApplication().getUserId(), mMessage.getId()).subscribe(responseBean -> {
-                    if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                        MessageActionActivity.this.finish();
+                userMessageControllerApi.deleteMessage(CommonApp.getApplication().getUserToken(), CommonApp.getApplication().getUserId(), mMessage.getId()).subscribe(new Observer<ResponseBean<Void>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        userDisposableList.add(d);
                     }
-                    mToolBar.getRightButton().setClickable(true);
+
+                    @Override
+                    public void onNext(ResponseBean<Void> responseBean) {
+                        if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                            MessageActionActivity.this.finish();
+                        } else {
+                            Log.e(TAG, responseBean.getMsg());
+                        }
+                        mToolBar.getRightButton().setClickable(true);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "delete message failed", e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i(TAG, "delete message complete");
+                    }
                 });
             });
 
@@ -147,13 +174,31 @@ public class MessageActionActivity extends BaseActivity {
                 userMessage.setCreateTime(new Date());
                 userMessage.setFinishTime(mFinishCalendar.getTime());
                 userMessage.setType((UserMessageType) mTypeSpinner.getSelectedItem());
-                userMessageControllerApi.createMessage(CommonApp.getApplication().getUserToken(), CommonApp.getApplication().getUserId(), userMessage).subscribe(responseBean -> {
-                    if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                        MessageActionActivity.this.finish();
-                    } else {
-                        Log.e(TAG, responseBean.getMsg());
+                userMessageControllerApi.createMessage(CommonApp.getApplication().getUserToken(), CommonApp.getApplication().getUserId(), userMessage).subscribe(new Observer<ResponseBean<UserMessage>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        userDisposableList.add(d);
                     }
-                    mSaveButton.setClickable(true);
+
+                    @Override
+                    public void onNext(ResponseBean<UserMessage> responseBean) {
+                        if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                            MessageActionActivity.this.finish();
+                        } else {
+                            Log.e(TAG, responseBean.getMsg());
+                        }
+                        mSaveButton.setClickable(true);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "create message failed", e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i(TAG, "create message complete");
+                    }
                 });
                 break;
             default:
@@ -164,5 +209,11 @@ public class MessageActionActivity extends BaseActivity {
     @Override
     protected int getContentResourceId() {
         return R.layout.activity_message_detail;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxJavaUtils.dispose(userDisposableList);
     }
 }

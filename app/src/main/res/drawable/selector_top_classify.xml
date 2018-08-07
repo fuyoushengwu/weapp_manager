@@ -6,6 +6,6 @@
             <item android:drawable="@android:color/white" android:left="4dp" />
         </layer-list>
     </item>
-    <item android:drawable="@color/bg_color" />
+    <item android:drawable="@color/light_grey" />
 
 </selector>

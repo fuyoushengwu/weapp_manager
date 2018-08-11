@@ -14,6 +14,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_CONNECT_TIMEOUT;
+import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_HOST_NAME;
+import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_BASE_URL;
 import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_READ_TIMEOUT;
 import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_WRITE_TIMEOUT;
 
@@ -22,7 +24,7 @@ public class RxRetrofitClient {
     private Retrofit retrofit;
 
     public RxRetrofitClient() {
-        final OkHttpClient.Builder httpclientBuilder = ClientRestUtils.getOkHttpClientBuilder("192.168.0.104"/*DEFAULT_HOST_NAME*/,
+        final OkHttpClient.Builder httpclientBuilder = ClientRestUtils.getOkHttpClientBuilder(DEFAULT_HOST_NAME,
                 DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT, DEFAULT_WRITE_TIMEOUT);
         PermissionActivity.checkAndRequestPermission(null, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 () -> {
@@ -34,7 +36,7 @@ public class RxRetrofitClient {
                 });
         httpclient = httpclientBuilder.build();
 
-        Retrofit.Builder retrofitBuilder = ClientRestUtils.getRetrofitBuilder("https://192.168.0.104"/*DEFAULT_BASE_URL*/)
+        Retrofit.Builder retrofitBuilder = ClientRestUtils.getRetrofitBuilder(DEFAULT_BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
         retrofit = retrofitBuilder.client(httpclient).build();
     }

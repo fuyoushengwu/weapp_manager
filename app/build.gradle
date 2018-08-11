@@ -50,6 +50,13 @@ android {
         }
     }
 
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = 'weapp_manager.apk'
+        }
+    }
+
+
 
 
     compileOptions {

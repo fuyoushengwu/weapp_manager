@@ -29,7 +29,10 @@ import io.reactivex.Observable;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class StoreFragment extends RefreshableBaseFragment<Store, GetInUseStoreListResponse> {
     @BindView(R.id.toolbar)
-    WeToolBar mToolbar;
+    WeToolBar mToolBar;
+
+    private int mCurrPage; // 当前页
+    private int mTotalPage; // 总页数
     private StoreControllerApi storeControllerApi = new StoreControllerClient();
 
     @NonNull
@@ -58,8 +61,9 @@ public class StoreFragment extends RefreshableBaseFragment<Store, GetInUseStoreL
 
     @Override
     public void customRecyclerView() {
-        mToolbar.setTitle("门店");
-        mToolbar.setRightButtonOnClickListener(v -> {
+        mToolBar.setTitle("门店");
+        mToolBar.setRightButtonText("添加");
+        mToolBar.setRightButtonOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), StoreActionActivity.class);
             StoreFragment.this.startActivity(intent);
         });
@@ -73,5 +77,25 @@ public class StoreFragment extends RefreshableBaseFragment<Store, GetInUseStoreL
     @Override
     protected List<Store> customBeforeServerData() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public int getCurrentPage() {
+        return mCurrPage;
+    }
+
+    @Override
+    public void setCurrentPage(int currentpage) {
+        this.mCurrPage = currentpage;
+    }
+
+    @Override
+    public int getTotalPage() {
+        return this.mTotalPage;
+    }
+
+    @Override
+    public void setTotalPage(int totalpage) {
+        this.mTotalPage = totalpage;
     }
 }

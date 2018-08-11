@@ -8,14 +8,13 @@
     android:orientation="vertical">
 
     <cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar
-        android:id="@id/toolbar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         app:isShowLeftIcon="false"
-        app:isShowSearchView="false"
-        app:rightButtonText="添加" />
+        app:isShowSearchView="false" />
 
     <com.cjj.MaterialRefreshLayout
         android:id="@+id/refreshable_mr"

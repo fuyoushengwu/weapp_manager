@@ -1,7 +1,7 @@
 package cn.aijiamuyingfang.weapp.manager.activity;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnFocusChange;
 import cn.aijiamuyingfang.client.rest.api.UserMessageControllerApi;
 import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
@@ -50,15 +52,15 @@ public class MessageActionActivity extends BaseActivity {
     @BindView(R.id.message_startTime)
     TextView mStartTimeTextView;
     @BindView(R.id.message_finishTime)
-    TextView mFinishTimeTextView;
+    EditText mFinishTimeEditText;
     @BindView(R.id.message_type)
     Spinner mTypeSpinner;
-    @BindView(R.id.message_save)
+    @BindView(R.id.save_message)
     Button mSaveButton;
 
     private Calendar mFinishCalendar;
-    private DatePickerDialog mDatePickerDialog;
-
+    private CustomDatePickerDialogFragment mFinishTimeDialog;
+    private UserMessage mCurMessage;
     private UserMessageControllerApi userMessageControllerApi = new UserMessageControllerClient();
     private List<Disposable> userDisposableList = new ArrayList<>();
 
@@ -71,12 +73,12 @@ public class MessageActionActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        UserMessage mMessage = intent.getParcelableExtra(Constant.INTENT_MESSAGE);
-        if (mMessage != null) {
+        mCurMessage = intent.getParcelableExtra(Constant.INTENT_MESSAGE);
+        if (mCurMessage != null) {
             mToolBar.setRightButtonText("删除");
             mToolBar.setRightButtonOnClickListener(v -> {
                 mToolBar.getRightButton().setClickable(false);
-                userMessageControllerApi.deleteMessage(CommonApp.getApplication().getUserToken(), CommonApp.getApplication().getUserId(), mMessage.getId()).subscribe(new Observer<ResponseBean<Void>>() {
+                userMessageControllerApi.deleteMessage(CommonApp.getApplication().getUserToken(), CommonApp.getApplication().getUserId(), mCurMessage.getId()).subscribe(new Observer<ResponseBean<Void>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         userDisposableList.add(d);
@@ -104,14 +106,14 @@ public class MessageActionActivity extends BaseActivity {
                 });
             });
 
-            mTitleEditText.setText(mMessage.getTitle());
-            mRoundupEditText.setText(mMessage.getRoundup());
-            mContentEditText.setText(mMessage.getContent());
-            mStartTimeTextView.setText(DateUtils.date2String(mMessage.getCreateTime(), DateUtils.YMD_HMS_FORMAT));
+            mTitleEditText.setText(mCurMessage.getTitle());
+            mRoundupEditText.setText(mCurMessage.getRoundup());
+            mContentEditText.setText(mCurMessage.getContent());
+            mStartTimeTextView.setText(DateUtils.date2String(mCurMessage.getCreateTime(), DateUtils.YMD_HMS_FORMAT));
             mFinishCalendar = Calendar.getInstance();
-            mFinishCalendar.setTime(mMessage.getFinishTime());
-            mFinishTimeTextView.setText(DateUtils.date2String(mMessage.getFinishTime(), DateUtils.YMD_HMS_FORMAT));
-            mTypeSpinner.setSelection(mMessage.getType().ordinal());
+            mFinishCalendar.setTime(mCurMessage.getFinishTime());
+            mFinishTimeEditText.setText(DateUtils.date2String(mCurMessage.getFinishTime(), DateUtils.YMD_HMS_FORMAT));
+            mTypeSpinner.setSelection(mCurMessage.getType().ordinal());
         } else {
             mStartTimeTextView.setText(DateUtils.date2String(new Date(), DateUtils.YMD_HMS_FORMAT));
             mFinishCalendar = Calendar.getInstance();
@@ -148,62 +150,111 @@ public class MessageActionActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.message_finishTime, R.id.message_save})
+    @OnClick({R.id.message_finishTime, R.id.save_message})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.message_finishTime:
-                if (null == mDatePickerDialog) {
-                    mDatePickerDialog = new DatePickerDialog(MessageActionActivity.this, (v, year, month, dayOfMonth) -> {
-                        mFinishCalendar.set(Calendar.YEAR, year);
-                        mFinishCalendar.set(Calendar.MONTH, month);
-                        mFinishCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        mFinishTimeTextView.setText(DateUtils.date2String(mFinishCalendar.getTime(), DateUtils.YMD_HMS_FORMAT));
-                    }, mFinishCalendar.get(Calendar.YEAR), mFinishCalendar.get(Calendar.MONTH),
-                            mFinishCalendar.get(Calendar.DAY_OF_MONTH));
-                }
-                mDatePickerDialog.show();
+                showDatePickDlg((EditText) view);
                 break;
-            case R.id.message_save:
-                mSaveButton.setClickable(false);
-                UserMessage userMessage = new UserMessage();
-                userMessage.setUserid(CommonApp.getApplication().getUserId());
-                userMessage.setTitle(mTitleEditText.getText().toString());
-                userMessage.setRoundup(mRoundupEditText.getText().toString());
-                userMessage.setContent(mContentEditText.getText().toString());
-                userMessage.setReaded(false);
-                userMessage.setCreateTime(new Date());
-                userMessage.setFinishTime(mFinishCalendar.getTime());
-                userMessage.setType((UserMessageType) mTypeSpinner.getSelectedItem());
-                userMessageControllerApi.createMessage(CommonApp.getApplication().getUserToken(), CommonApp.getApplication().getUserId(), userMessage).subscribe(new Observer<ResponseBean<UserMessage>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        userDisposableList.add(d);
-                    }
-
-                    @Override
-                    public void onNext(ResponseBean<UserMessage> responseBean) {
-                        if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                            MessageActionActivity.this.finish();
-                        } else {
-                            Log.e(TAG, responseBean.getMsg());
-                        }
-                        mSaveButton.setClickable(true);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, "create message failed", e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i(TAG, "create message complete");
-                    }
-                });
+            case R.id.save_message:
+                saveMessage();
                 break;
             default:
                 break;
         }
+    }
+
+    private void saveMessage() {
+        mSaveButton.setClickable(false);
+        UserMessage userMessage = new UserMessage();
+        userMessage.setUserid(CommonApp.getApplication().getUserId());
+        userMessage.setTitle(mTitleEditText.getText().toString());
+        userMessage.setRoundup(mRoundupEditText.getText().toString());
+        userMessage.setContent(mContentEditText.getText().toString());
+        userMessage.setReaded(false);
+        userMessage.setCreateTime(DateUtils.string2Date(mStartTimeTextView.getText().toString(), DateUtils.YMD_HMS_FORMAT));
+        userMessage.setFinishTime(DateUtils.string2Date(mFinishTimeEditText.getText().toString(), DateUtils.YMD_HMS_FORMAT));
+        userMessage.setType((UserMessageType) mTypeSpinner.getSelectedItem());
+        if (mCurMessage != null) {
+            userMessage.setId(mCurMessage.getId());
+        }
+        userMessageControllerApi.createMessage(CommonApp.getApplication().getUserToken(), CommonApp.getApplication().getUserId(), userMessage).subscribe(new Observer<ResponseBean<UserMessage>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                userDisposableList.add(d);
+            }
+
+            @Override
+            public void onNext(ResponseBean<UserMessage> responseBean) {
+                if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                    MessageActionActivity.this.finish();
+                } else {
+                    Log.e(TAG, responseBean.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "create message failed", e);
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "create message complete");
+                mSaveButton.setClickable(true);
+            }
+        });
+    }
+
+    @OnFocusChange({R.id.message_finishTime})
+    public void onFocusChange(View view, boolean hasFocus) {
+        if (R.id.message_finishTime == view.getId() && hasFocus) {
+            showDatePickDlg((EditText) view);
+        }
+    }
+
+    protected void showDatePickDlg(EditText editText) {
+        if (null == mFinishTimeDialog) {
+            mFinishTimeDialog = createDatePickerDialog(editText);
+        }
+        mFinishTimeDialog.show(getFragmentManager(), CustomDatePickerDialogFragment.class.getSimpleName());
+    }
+
+    private CustomDatePickerDialogFragment createDatePickerDialog(EditText editText) {
+        if (null == mFinishCalendar) {
+            mFinishCalendar = Calendar.getInstance();
+            mFinishCalendar.setTimeInMillis(System.currentTimeMillis());
+            mFinishCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            mFinishCalendar.set(Calendar.MINUTE, 0);
+            mFinishCalendar.set(Calendar.SECOND, 0);
+            mFinishCalendar.set(Calendar.MILLISECOND, 0);
+        }
+
+
+        CustomDatePickerDialogFragment dialogFragment = new CustomDatePickerDialogFragment();
+        dialogFragment.setOnSelectedDateListener((year, monthOfYear, dayOfMonth) -> {
+            StringBuilder sb = new StringBuilder();
+            sb.append(year).append("-");
+            monthOfYear += 1;
+            if (monthOfYear > 9) {
+                sb.append(monthOfYear);
+            } else {
+                sb.append("0" + monthOfYear);
+            }
+            sb.append("-");
+            if (dayOfMonth > 9) {
+                sb.append(dayOfMonth);
+            } else {
+                sb.append("0" + dayOfMonth);
+            }
+
+            editText.setText(sb.toString() + " 00:00:00");
+        });
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(CustomDatePickerDialogFragment.CURRENT_DATE, mFinishCalendar);
+        dialogFragment.setArguments(bundle);
+        return dialogFragment;
     }
 
     @Override

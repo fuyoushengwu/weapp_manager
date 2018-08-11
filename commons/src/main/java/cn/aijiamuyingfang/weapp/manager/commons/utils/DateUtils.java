@@ -12,6 +12,7 @@ import java.util.Locale;
 
 public final class DateUtils {
     private static final String TAG = DateUtils.class.getName();
+
     private DateUtils() {
     }
 
@@ -57,6 +58,9 @@ public final class DateUtils {
      * @return
      */
     public static String date2String(Date date, String format) {
+        if (null == date) {
+            return "";
+        }
         if (null == format) {
             // default format
             format = YMD_HMS_FORMAT;

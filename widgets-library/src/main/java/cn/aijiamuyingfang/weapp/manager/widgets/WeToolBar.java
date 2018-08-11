@@ -71,7 +71,7 @@ public class WeToolBar extends Toolbar {
 
             boolean isShowLeft = a.getBoolean(R.styleable.WeToolBar_isShowLeftIcon, false);
             if (isShowLeft) {
-                setLeftIcon();
+                showLeftButton();
             } else {
                 mLeftButton.setVisibility(GONE);
             }
@@ -145,10 +145,8 @@ public class WeToolBar extends Toolbar {
         }
     }
 
-    private void setLeftIcon() {
-
+    public void showLeftButton() {
         mLeftButton.setVisibility(View.VISIBLE);
-
         mLeftButton.setOnClickListener(view -> {
             ((Activity) context).finish();
             ((Activity) context).overridePendingTransition(0, 0);

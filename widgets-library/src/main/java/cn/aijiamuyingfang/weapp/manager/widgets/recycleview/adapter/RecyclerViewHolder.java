@@ -17,7 +17,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     private View mConvertView;
 
     public static RecyclerViewHolder createViewHolder(Context context, ViewGroup viewGroup, int itemViewId) {
-        View itemView = LayoutInflater.from(context).inflate(itemViewId, viewGroup, false);
+        View itemView = LayoutInflater.from(context).inflate(itemViewId, null);
         return new RecyclerViewHolder(itemView);
     }
 

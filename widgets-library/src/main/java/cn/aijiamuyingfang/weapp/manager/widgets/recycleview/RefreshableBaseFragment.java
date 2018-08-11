@@ -52,12 +52,30 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
      * 页面状态
      */
     private int mCurState = STATE_INIT;
-    private int mCurrPage = 1;//当前请求的是第几页
-    private int mTotalPage = 1;//一共有多少页
     private MaterialRefreshLayout mRefreshLaout;
-    private RecyclerView mRecyclerView;
+    protected RecyclerView mRecyclerView;
     protected CommonAdapter<E> mAdapter;
     private List<Disposable> disposableList = new ArrayList<>();
+
+    /**
+     * @return 当前请求的是第几页
+     */
+    public abstract int getCurrentPage();
+
+    /**
+     * @param currentpage 当前请求的是第几页
+     */
+    public abstract void setCurrentPage(int currentpage);
+
+    /**
+     * @return 一共有多少页
+     */
+    public abstract int getTotalPage();
+
+    /**
+     * @param totalpage 一共有多少页
+     */
+    public abstract void setTotalPage(int totalpage);
 
     @Override
     public int getContentResourceId() {
@@ -71,7 +89,7 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
         initRefreshLayout();
         initRecyclerViewAdapter();
         customRecyclerView();
-        getData();
+        initData();
     }
 
     /**
@@ -88,7 +106,7 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
             @Override
             public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
                 super.onRefreshLoadMore(materialRefreshLayout);
-                if (mCurrPage < mTotalPage) {
+                if (getCurrentPage() < getTotalPage()) {
                     loadMoreData();
                 } else {
                     ToastUtils.showSafeToast(mContext, "没有更多数据啦");
@@ -106,23 +124,33 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.HORIZONTAL));
         mAdapter.setOnItemClickListener(getOnItemClickListener());
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        refreshData();
-//    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initData() {
+        mCurState = STATE_INIT;
+        setCurrentPage(1);
+        setTotalPage(1);
+        getData();
+    }
 
     /**
      * 刷新数据
      */
     public void refreshData() {
         mCurState = STATE_REFRESH;
-        mCurrPage = 1;
+        setCurrentPage(1);
+        setTotalPage(1);
         getData();
     }
 
@@ -131,7 +159,7 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
      */
     public void loadMoreData() {
         mCurState = STATE_MORE;
-        mCurrPage++;
+        setCurrentPage(getCurrentPage() + 1);
         getData();
     }
 
@@ -139,7 +167,7 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
      * 获取数据
      */
     private void getData() {
-        customGetData(mCurrPage, 10).subscribe(new Observer<ResponseBean<V>>() {
+        customGetData(getCurrentPage(), 10).subscribe(new Observer<ResponseBean<V>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposableList.add(d);
@@ -149,8 +177,8 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
             public void onNext(ResponseBean<V> responseBean) {
                 if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
                     PageResponse<E> response = responseBean.getData();
-                    mCurrPage = response.getCurrentpage();
-                    mTotalPage = response.getTotalpage();
+                    setCurrentPage(response.getCurrentpage());
+                    setTotalPage(response.getTotalpage());
                     List<E> serverDataList = response.getDataList();
                     List<E> beforeDataList = customBeforeServerData();
                     if (beforeDataList != null && !beforeDataList.isEmpty()) {

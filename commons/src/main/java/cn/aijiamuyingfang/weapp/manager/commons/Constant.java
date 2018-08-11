@@ -82,9 +82,9 @@ public final class Constant {
     public static final int REQUEST_IMAGE_BY_SDCARD = 2050;
 
     /**
-     * AddGoodActivity打开GoodHolderFragemnt的requestcode
+     * GoodActionActivity打开GoodVoucherFragemnt的requestcode
      */
-    public static final int REQUEST_GOOD_HOLDERCART = 2051;
+    public static final int REQUEST_GOOD_VOUCHER = 2051;
     /**
      * intent中保存shoporderId的key
      */

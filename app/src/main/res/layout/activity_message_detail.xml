@@ -7,10 +7,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:clipToPadding="true"
         android:fitsSystemWindows="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar
@@ -130,15 +130,16 @@
 
             <View style="@style/line_horizontal" />
 
-
             <TextView
                 android:id="@+id/message_startTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
+                android:inputType="none"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
+
         </LinearLayout>
 
         <View style="@style/line_vertical" />
@@ -160,16 +161,17 @@
 
             <View style="@style/line_horizontal" />
 
-
-            <TextView
+            <EditText
                 android:id="@+id/message_finishTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:hint="请输入消息结束时间"
+                android:inputType="none"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
+
         </LinearLayout>
 
         <View style="@style/line_vertical" />
@@ -199,7 +201,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/message_save"
+            android:id="@+id/save_message"
             style="@style/bigRedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

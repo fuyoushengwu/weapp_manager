@@ -28,7 +28,7 @@ import io.reactivex.Observable;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class GoodsListActivity extends RefreshableBaseActivity<Good, GetClassifyGoodListResponse> {
     @BindView(R.id.toolbar)
-    WeToolBar mToolbar;
+    WeToolBar mToolBar;
     /**
      * 当前条目的ID
      */
@@ -67,7 +67,7 @@ public class GoodsListActivity extends RefreshableBaseActivity<Good, GetClassify
     @Override
     public void customRecyclerView() {
         mCurClassifyId = getIntent().getStringExtra(Constant.INTENT_SUB_CLASSIFY_ID);
-        mToolbar.setNavigationOnClickListener(v -> GoodsListActivity.this.finish());
+        mToolBar.setNavigationOnClickListener(v -> GoodsListActivity.this.finish());
     }
 
     @Override

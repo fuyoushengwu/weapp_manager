@@ -26,7 +26,8 @@ public final class GlideUtils {
     }
 
     static {
-        Glide.get(CommonApp.getApplication()).register(GlideUrl.class, InputStream.class,
+        Glide glide = Glide.get(CommonApp.getApplication());
+        glide.register(GlideUrl.class, InputStream.class,
                 new OkHttpUrlLoader.Factory(RxRetrofitClient.getHttpClient()));
     }
 
@@ -35,7 +36,6 @@ public final class GlideUtils {
             ((EditableImageView) iv).setImageUrl(url);
         }
         Glide.with(context).load(url).placeholder(R.drawable.company_logo).into(iv);
-
     }
 
     public static Bitmap getBitmap(Context context, String url) throws ExecutionException, InterruptedException {

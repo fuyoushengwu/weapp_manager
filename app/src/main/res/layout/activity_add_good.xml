@@ -408,7 +408,7 @@
                 android:paddingTop="@dimen/largePadding">
 
                 <Button
-                    android:id="@+id/btn_good"
+                    android:id="@+id/save_good"
                     style="@style/bigRedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -420,7 +420,7 @@
                 <View style="@style/line_horizontal" />
 
                 <Button
-                    android:id="@+id/create_voucheritem"
+                    android:id="@+id/save_voucheritem"
                     style="@style/bigRedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

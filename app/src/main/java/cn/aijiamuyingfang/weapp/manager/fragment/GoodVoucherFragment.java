@@ -33,6 +33,9 @@ import io.reactivex.Observable;
 public class GoodVoucherFragment extends RefreshableBaseFragment<GoodVoucher, GetGoodVoucherListResponse> {
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
+
+    private int mCurrPage; // 当前页
+    private int mTotalPage; // 总页数
     private GoodVoucherAdapter mGoodVoucherAdapter;
     private CouponControllerApi couponControllerApi = new CouponControllerClient();
 
@@ -65,6 +68,7 @@ public class GoodVoucherFragment extends RefreshableBaseFragment<GoodVoucher, Ge
     @Override
     public void customRecyclerView() {
         mToolBar.setTitle("商品兑换券");
+        mToolBar.setRightButtonText("添加");
         Bundle bundle = getArguments();
         if (bundle != null && GoodActionActivity.class.getName().equals(bundle.getString(Constant.INTENT_FRAGMENT_FROM))) {
             mToolBar.setRightButtonText("确认");
@@ -97,5 +101,25 @@ public class GoodVoucherFragment extends RefreshableBaseFragment<GoodVoucher, Ge
     @Override
     protected List<GoodVoucher> customBeforeServerData() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public int getCurrentPage() {
+        return mCurrPage;
+    }
+
+    @Override
+    public void setCurrentPage(int currentpage) {
+        this.mCurrPage = currentpage;
+    }
+
+    @Override
+    public int getTotalPage() {
+        return this.mTotalPage;
+    }
+
+    @Override
+    public void setTotalPage(int totalpage) {
+        this.mTotalPage = totalpage;
     }
 }

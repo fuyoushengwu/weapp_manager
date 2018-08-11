@@ -12,11 +12,10 @@ import android.view.View;
 import android.widget.EditText;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -55,62 +54,43 @@ import okhttp3.RequestBody;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class GoodActionActivity extends BaseActivity {
     private static final String TAG = GoodActionActivity.class.getName();
-
-    @BindView(R.id.et_good_name)
-    ClearEditText mNameEditText;
-
-    @BindView(R.id.et_good_level)
-    ClearEditText mLevelEditText;
-
-    @BindView(R.id.et_bar_code)
-    ClearEditText mBarCodeEditText;
-
-    @BindView(R.id.et_good_price)
-    ClearEditText mPriceEditText;
-
-    @BindView(R.id.et_good_pack)
-    ClearEditText mPackEditText;
-
-    @BindView(R.id.et_good_count)
-    ClearEditText mCountEditText;
-
-    @BindView(R.id.et_good_lifetime_start)
-    EditText mLifeTimeStartEditText;
-
-    @BindView(R.id.et_good_lifetime_end)
-    EditText mLifeTimeEndEditText;
-
-    @BindView(R.id.iv_good_logo)
-    EditableImageView mLogoImageView;
-
-    @BindView(R.id.iv_good_detail_1)
-    EditableImageView mDetail1ImageView;
-
-    @BindView(R.id.iv_good_detail_2)
-    EditableImageView mDetail2ImageView;
-
-    @BindView(R.id.iv_good_detail_3)
-    EditableImageView mDetail3ImageView;
-
-    @BindView(R.id.iv_good_detail_4)
-    EditableImageView mDetail4ImageView;
-
-    @BindView(R.id.iv_good_detail_5)
-    EditableImageView mDetail5ImageView;
-
-    @BindView(R.id.iv_good_detail_6)
-    EditableImageView mDetail6ImageView;
-
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
-
+    @BindView(R.id.et_good_name)
+    ClearEditText mNameEditText;
+    @BindView(R.id.et_good_level)
+    ClearEditText mLevelEditText;
+    @BindView(R.id.et_bar_code)
+    ClearEditText mBarCodeEditText;
+    @BindView(R.id.et_good_price)
+    ClearEditText mPriceEditText;
+    @BindView(R.id.et_good_pack)
+    ClearEditText mPackEditText;
+    @BindView(R.id.et_good_count)
+    ClearEditText mCountEditText;
+    @BindView(R.id.et_good_lifetime_start)
+    EditText mLifeTimeStartEditText;
+    @BindView(R.id.et_good_lifetime_end)
+    EditText mLifeTimeEndEditText;
+    @BindView(R.id.iv_good_logo)
+    EditableImageView mLogoImageView;
+    @BindView(R.id.iv_good_detail_1)
+    EditableImageView mDetail1ImageView;
+    @BindView(R.id.iv_good_detail_2)
+    EditableImageView mDetail2ImageView;
+    @BindView(R.id.iv_good_detail_3)
+    EditableImageView mDetail3ImageView;
+    @BindView(R.id.iv_good_detail_4)
+    EditableImageView mDetail4ImageView;
+    @BindView(R.id.iv_good_detail_5)
+    EditableImageView mDetail5ImageView;
+    @BindView(R.id.iv_good_detail_6)
+    EditableImageView mDetail6ImageView;
     @BindView(R.id.et_good_score)
     ClearEditText mGoodScoreEditText;
-
     @BindView(R.id.refreshable_view)
     RecyclerView mRecyclerView;
     private GoodVoucherAdapter mAdapter;
-
 
     /**
      * 当前子条目ID
@@ -134,13 +114,13 @@ public class GoodActionActivity extends BaseActivity {
     private CustomDatePickerDialogFragment mLifeTimeStartDialog;
     private CustomDatePickerDialogFragment mLifeTimeEndDialog;
 
-    @OnClick({R.id.btn_good, R.id.create_voucheritem, R.id.add_goodvoucher, R.id.et_good_lifetime_start, R.id.et_good_lifetime_end})
+    @OnClick({R.id.save_good, R.id.save_voucheritem, R.id.add_goodvoucher, R.id.et_good_lifetime_start, R.id.et_good_lifetime_end})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_good:
+            case R.id.save_good:
                 saveGood();
                 break;
-            case R.id.create_voucheritem:
+            case R.id.save_voucheritem:
                 Intent intent = new Intent(GoodActionActivity.this, VoucherItemActionActivity.class);
                 intent.putExtra(Constant.INTENT_GOOD, mCurGood);
                 startActivity(intent);
@@ -155,6 +135,119 @@ public class GoodActionActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    private void saveGood() {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                String goodName = mNameEditText.getText().toString();
+                if (StringUtils.isEmpty(goodName)) {
+                    return;
+                }
+                MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                File logo = mLogoImageView.getImageFileSync();
+                RequestBody requestLogo = RequestBody.create(MultipartBody.FORM, logo);
+                requestBodyBuilder.addFormDataPart("coverImage", logo.getName(), requestLogo);
+
+
+                List<File> detailImageList = new ArrayList<>();
+                detailImageList.add(mDetail1ImageView.getImageFileSync());
+                detailImageList.add(mDetail2ImageView.getImageFileSync());
+                detailImageList.add(mDetail3ImageView.getImageFileSync());
+                detailImageList.add(mDetail4ImageView.getImageFileSync());
+                detailImageList.add(mDetail5ImageView.getImageFileSync());
+                detailImageList.add(mDetail6ImageView.getImageFileSync());
+                for (File detailImageFile : detailImageList) {
+                    RequestBody requestDetail = RequestBody.create(MultipartBody.FORM, detailImageFile);
+                    requestBodyBuilder.addFormDataPart("detailImages", detailImageFile.getName(), requestDetail);
+                }
+
+
+                requestBodyBuilder.addFormDataPart("name", goodName);
+                requestBodyBuilder.addFormDataPart("count", mCountEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("barcode", mBarCodeEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("price", mPriceEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("marketprice", mPriceEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("level", mLevelEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("pack", mPackEditText.getText().toString());
+                String scoreStr = mGoodScoreEditText.getText().toString();
+                requestBodyBuilder.addFormDataPart("score", StringUtils.hasContent(scoreStr) ? scoreStr : "0");
+                requestBodyBuilder.addFormDataPart("lifetime.start", mLifeTimeStartEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("lifetime.end", mLifeTimeEndEditText.getText().toString());
+
+
+                if (mCurGood != null) {
+                    requestBodyBuilder.addFormDataPart("id", mCurGood.getId() + "");
+                }
+
+                if (mGoodVoucher != null) {
+                    requestBodyBuilder.addFormDataPart("voucherId", mGoodVoucher.getId() + "");
+                }
+                goodControllerApi.createGood(CommonApp.getApplication().getUserToken(), requestBodyBuilder.build()).subscribe(
+                        new Observer<ResponseBean<Good>>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                disposableList.add(d);
+                            }
+
+                            @Override
+                            public void onNext(ResponseBean<Good> responseBean) {
+                                if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                                    Good createdGood = responseBean.getData();
+                                    if (StringUtils.hasContent(mCurSubClasifyId) && createdGood !=
+                                            null && StringUtils.hasContent(createdGood.getId())) {
+                                        classifyControllerApi.addClassifyGood(CommonApp.getApplication().getUserToken(), mCurSubClasifyId, createdGood.getId())
+                                                .subscribe(new Observer<ResponseBean<Void>>() {
+                                                    @Override
+                                                    public void onSubscribe(Disposable d) {
+                                                        disposableList.add(d);
+                                                    }
+
+                                                    @Override
+                                                    public void onNext(ResponseBean<Void> value) {
+                                                        GoodActionActivity.this.finish();
+                                                    }
+
+                                                    @Override
+                                                    public void onError(Throwable e) {
+                                                        Log.e(TAG, "add classify good failed", e);
+                                                    }
+
+                                                    @Override
+                                                    public void onComplete() {
+                                                        Log.i(TAG, "add classify good complete");
+                                                    }
+                                                });
+                                    } else {
+                                        GoodActionActivity.this.finish();
+                                    }
+                                } else {
+                                    Log.e(TAG, responseBean.getMsg());
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, "create good failed", e);
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.i(TAG, "create good complete");
+                            }
+                        });
+            }
+        };
+        thread.start();
+    }
+
+    private void addGoodVoucher() {
+        Intent intent = new Intent(this, FragmentContainerActivity.class);
+        intent.putExtra(Constant.INTENT_FRAGMENT_NAME, GoodVoucherFragment.class.getName());
+        intent.putExtra(Constant.INTENT_FRAGMENT_FROM, GoodActionActivity.class.getName());
+        intent.putExtra(Constant.INTENT_SELECTED_GOODVOUCHER, mGoodVoucher);
+        startActivityForResult(intent, Constant.REQUEST_GOOD_VOUCHER);
     }
 
     @OnFocusChange({R.id.et_good_lifetime_start, R.id.et_good_lifetime_end})
@@ -226,113 +319,6 @@ public class GoodActionActivity extends BaseActivity {
         bundle.putSerializable(CustomDatePickerDialogFragment.CURRENT_DATE, mCalendar);
         dialogFragment.setArguments(bundle);
         return dialogFragment;
-    }
-
-    private void addGoodVoucher() {
-        Intent intent = new Intent(this, FragmentContainerActivity.class);
-        intent.putExtra(Constant.INTENT_FRAGMENT_NAME, GoodVoucherFragment.class.getName());
-        intent.putExtra(Constant.INTENT_FRAGMENT_FROM, GoodActionActivity.class.getName());
-        intent.putExtra(Constant.INTENT_SELECTED_GOODVOUCHER, mGoodVoucher);
-        startActivityForResult(intent, Constant.REQUEST_GOOD_HOLDERCART);
-    }
-
-
-    private void saveGood() {
-        String goodName = mNameEditText.getText().toString();
-        if (StringUtils.isEmpty(goodName)) {
-            return;
-        }
-        MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        File logo = mLogoImageView.getImageFileSync();
-        RequestBody requestLogo = RequestBody.create(MultipartBody.FORM, logo);
-        requestBodyBuilder.addFormDataPart("coverImage", logo.getName(), requestLogo);
-
-
-        List<File> detailImageList = new ArrayList<>();
-        detailImageList.add(mDetail1ImageView.getImageFileSync());
-        detailImageList.add(mDetail2ImageView.getImageFileSync());
-        detailImageList.add(mDetail3ImageView.getImageFileSync());
-        detailImageList.add(mDetail4ImageView.getImageFileSync());
-        detailImageList.add(mDetail5ImageView.getImageFileSync());
-        detailImageList.add(mDetail6ImageView.getImageFileSync());
-        for (File detailImageFile : detailImageList) {
-            RequestBody requestDetail = RequestBody.create(MultipartBody.FORM, detailImageFile);
-            requestBodyBuilder.addFormDataPart("detailImages", detailImageFile.getName(), requestDetail);
-        }
-
-
-        requestBodyBuilder.addFormDataPart("name", goodName);
-        requestBodyBuilder.addFormDataPart("count", mCountEditText.getText().toString());
-        requestBodyBuilder.addFormDataPart("barcode", mBarCodeEditText.getText().toString());
-        requestBodyBuilder.addFormDataPart("price", mPriceEditText.getText().toString());
-        requestBodyBuilder.addFormDataPart("marketprice", mPriceEditText.getText().toString());
-        requestBodyBuilder.addFormDataPart("level", mLevelEditText.getText().toString());
-        requestBodyBuilder.addFormDataPart("pack", mPackEditText.getText().toString());
-        String scoreStr = mGoodScoreEditText.getText().toString();
-        requestBodyBuilder.addFormDataPart("score", StringUtils.hasContent(scoreStr) ? scoreStr : "0");
-        requestBodyBuilder.addFormDataPart("lifetime.start", mLifeTimeStartEditText.getText().toString());
-        requestBodyBuilder.addFormDataPart("lifetime.end", mLifeTimeEndEditText.getText().toString());
-
-
-        if (mCurGood != null) {
-            requestBodyBuilder.addFormDataPart("id", mCurGood.getId() + "");
-        }
-
-        if (mGoodVoucher != null) {
-            requestBodyBuilder.addFormDataPart("voucherId", mGoodVoucher.getId() + "");
-        }
-        goodControllerApi.createGood(CommonApp.getApplication().getUserToken(), requestBodyBuilder.build()).subscribe(new Observer<ResponseBean<Good>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                disposableList.add(d);
-            }
-
-            @Override
-            public void onNext(ResponseBean<Good> responseBean) {
-                if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                    Good createdGood = responseBean.getData();
-                    if (StringUtils.hasContent(mCurSubClasifyId) && createdGood !=
-                            null && StringUtils.hasContent(createdGood.getId())) {
-                        classifyControllerApi.addClassifyGood(CommonApp.getApplication().getUserToken(), mCurSubClasifyId, createdGood.getId()).subscribe(new Observer<ResponseBean<Void>>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-                                disposableList.add(d);
-                            }
-
-                            @Override
-                            public void onNext(ResponseBean<Void> value) {
-                                GoodActionActivity.this.finish();
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.e(TAG, "add classify good failed", e);
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                Log.i(TAG, "add classify good complete");
-                            }
-                        });
-                    } else {
-                        GoodActionActivity.this.finish();
-                    }
-                } else {
-                    Log.e(TAG, responseBean.getMsg());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "create good failed", e);
-            }
-
-            @Override
-            public void onComplete() {
-                Log.i(TAG, "create good complete");
-            }
-        });
-
     }
 
 
@@ -425,10 +411,9 @@ public class GoodActionActivity extends BaseActivity {
                 public void onNext(ResponseBean<GoodDetail> responseBean) {
                     if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
                         GoodDetail goodDetail = responseBean.getData();
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                         ShelfLife shelfLife = goodDetail.getLifetime();
-                        mLifeTimeStartEditText.setText(dateFormat.format(shelfLife.getStart()));
-                        mLifeTimeEndEditText.setText(dateFormat.format(shelfLife.getEnd()));
+                        mLifeTimeStartEditText.setText(shelfLife.getStart());
+                        mLifeTimeEndEditText.setText(shelfLife.getEnd());
 
 
                         EditableImageView[] imageViews = new EditableImageView[]{mDetail1ImageView, mDetail2ImageView, mDetail3ImageView,
@@ -464,8 +449,9 @@ public class GoodActionActivity extends BaseActivity {
             @Override
             public void onNext(ResponseBean<GoodVoucher> responseBean) {
                 if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                    mAdapter.getDatas().add(mGoodVoucher);
-                    mAdapter.notifyDataSetChanged();
+                    mGoodVoucher = responseBean.getData();
+                    mAdapter.clearData();
+                    mAdapter.setDatas(Arrays.asList(mGoodVoucher));
                 } else {
                     Log.e(TAG, responseBean.getMsg());
                 }
@@ -493,13 +479,12 @@ public class GoodActionActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (Constant.REQUEST_GOOD_HOLDERCART == requestCode) {
+        if (Constant.REQUEST_GOOD_VOUCHER == requestCode) {
             mGoodVoucher = data.getParcelableExtra(Constant.INTENT_SELECTED_GOODVOUCHER);
             mAdapter.clearData();
             if (mGoodVoucher != null) {
-                mAdapter.getDatas().add(mGoodVoucher);
+                mAdapter.setDatas(Arrays.asList(mGoodVoucher));
             }
-            mAdapter.notifyDataSetChanged();
             return;
         }
         //在拍照、选取照片、裁剪Activity结束后，调用的方法

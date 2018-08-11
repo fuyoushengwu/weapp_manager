@@ -14,7 +14,7 @@
         style="@style/editText_base"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入品牌名">
+        android:hint="请输入顶层条目名">
 
         <requestFocus />
 

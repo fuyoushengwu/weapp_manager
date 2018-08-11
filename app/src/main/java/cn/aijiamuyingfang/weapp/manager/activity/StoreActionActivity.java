@@ -570,7 +570,7 @@ public class StoreActionActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.store_address, R.id.btn_store})
+    @OnClick({R.id.store_address, R.id.save_store})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.store_address:
@@ -580,7 +580,7 @@ public class StoreActionActivity extends BaseActivity {
                     ToastUtils.showSafeToast(StoreActionActivity.this, "请稍等,数据获取中");
                 }
                 break;
-            case R.id.btn_store:
+            case R.id.save_store:
                 createStore();
                 break;
             default:

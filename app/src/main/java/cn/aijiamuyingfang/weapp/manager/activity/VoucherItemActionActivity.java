@@ -48,7 +48,7 @@ public class VoucherItemActionActivity extends BaseActivity {
     @BindView(R.id.item_description)
     ClearEditText mItemDescription;
 
-    private VoucherItem mItem;
+    private VoucherItem mCurVoucherItem;
     private Good mCurGood;
     private CouponControllerApi couponControllerApi = new CouponControllerClient();
     private List<Disposable> couponDisposableList = new ArrayList<>();
@@ -61,11 +61,67 @@ public class VoucherItemActionActivity extends BaseActivity {
         initToolBar();
     }
 
+    private void initData() {
+        Intent intent = getIntent();
+        Good good = intent.getParcelableExtra(Constant.INTENT_GOOD);
+        if (good != null) {
+            setGood(good);
+            return;
+        }
+        mCurVoucherItem = intent.getParcelableExtra(Constant.INTENT_VOUCHERITEM);
+        if (null == this.mCurVoucherItem) {
+            return;
+        }
+        String goodId = mCurVoucherItem.getGoodid();
+        mItemNameTV.setText(mCurVoucherItem.getName());
+        mHolderThresholdTV.setText(mCurVoucherItem.getScore() + "");
+        mItemDescription.setText(mCurVoucherItem.getDescription());
+
+        if (null == mCurGood && StringUtils.hasContent(goodId)) {
+            goodControllerApi.getGood(CommonApp.getApplication().getUserToken(), goodId).subscribe(new Observer<ResponseBean<Good>>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+                    goodDisposableList.add(d);
+                }
+
+                @Override
+                public void onNext(ResponseBean<Good> responseBean) {
+                    if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                        setGood(responseBean.getData());
+                    } else {
+                        Log.e(TAG, responseBean.getMsg());
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.e(TAG, "get good failed", e);
+                }
+
+                @Override
+                public void onComplete() {
+                    Log.i(TAG, "get good complete");
+                }
+            });
+        }
+
+    }
+
+    private void setGood(Good good) {
+        if (null == good) {
+            return;
+        }
+        mCurGood = good;
+        mGoodNameTextView.setText(mCurGood.getName());
+        GlideUtils.load(this, mCurGood.getCoverImg(), mGoodCoverIV);
+    }
+
+
     private void initToolBar() {
-        if (mItem != null) {
+        if (mCurVoucherItem != null) {
             mToolBar.setRightButtonText("删除");
             mToolBar.setRightButtonOnClickListener(v ->
-                    couponControllerApi.deprecateVoucherItem(CommonApp.getApplication().getUserToken(), mItem.getId()).subscribe(new Observer<ResponseBean<Void>>() {
+                    couponControllerApi.deprecateVoucherItem(CommonApp.getApplication().getUserToken(), mCurVoucherItem.getId()).subscribe(new Observer<ResponseBean<Void>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
                             couponDisposableList.add(d);
@@ -96,62 +152,20 @@ public class VoucherItemActionActivity extends BaseActivity {
 
     }
 
-    private void initData() {
-        Intent intent = getIntent();
-        this.mCurGood = intent.getParcelableExtra(Constant.INTENT_GOOD);
-        if (this.mCurGood != null) {
-            return;
-        }
-        mItem = intent.getParcelableExtra(Constant.INTENT_VOUCHERITEM);
-        if (null == this.mItem) {
-            return;
-        }
-        String goodId = mItem.getGoodid();
-        mItemNameTV.setText(mItem.getName());
-        mHolderThresholdTV.setText(mItem.getScore() + "");
-        mItemDescription.setText(mItem.getDescription());
-
-        if (StringUtils.hasContent(goodId)) {
-            goodControllerApi.getGood(CommonApp.getApplication().getUserToken(), goodId).subscribe(new Observer<ResponseBean<Good>>() {
-                @Override
-                public void onSubscribe(Disposable d) {
-                    goodDisposableList.add(d);
-                }
-
-                @Override
-                public void onNext(ResponseBean<Good> responseBean) {
-                    if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                        VoucherItemActionActivity.this.mCurGood = responseBean.getData();
-                        if (VoucherItemActionActivity.this.mCurGood != null) {
-                            mGoodNameTextView.setText(VoucherItemActionActivity.this.mCurGood.getName());
-                            GlideUtils.load(VoucherItemActionActivity.this, VoucherItemActionActivity.this.mCurGood.getCoverImg(), mGoodCoverIV);
-                        }
-                    } else {
-                        Log.e(TAG, responseBean.getMsg());
-                    }
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    Log.e(TAG, "get good failed", e);
-                }
-
-                @Override
-                public void onComplete() {
-                    Log.i(TAG, "get good complete");
-                }
-            });
-        }
-
+    @OnClick({R.id.save_voucher_item})
+    public void onClick(View view) {
+        saveVoucherItem();
     }
 
-    @OnClick({R.id.save_goodvoucher_item})
-    public void onClick(View view) {
+    private void saveVoucherItem() {
         VoucherItem item = new VoucherItem();
         item.setGoodid(mCurGood.getId());
         item.setName(mItemNameTV.getText().toString());
         item.setDescription(mItemDescription.getText().toString());
         item.setScore(Integer.valueOf(mHolderThresholdTV.getText().toString()));
+        if (mCurVoucherItem != null) {
+            item.setId(mCurVoucherItem.getId());
+        }
         couponControllerApi.createVoucherItem(CommonApp.getApplication().getUserToken(), item).subscribe(new Observer<ResponseBean<VoucherItem>>() {
             @Override
             public void onSubscribe(Disposable d) {

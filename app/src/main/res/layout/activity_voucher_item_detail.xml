@@ -169,7 +169,7 @@
             <View style="@style/line_vertical" />
 
             <Button
-                android:id="@+id/save_goodvoucher_item"
+                android:id="@+id/save_voucher_item"
                 style="@style/bigRedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

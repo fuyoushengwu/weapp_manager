@@ -35,13 +35,9 @@ public class VoucherItemFragment extends RefreshableBaseFragment<VoucherItem, Ge
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
 
-    /**
-     * 列表项展示
-     */
+    private int mCurrPage; // 当前页
+    private int mTotalPage; // 总页数
     private VoucherItemAdapter mVoucherItemAdapter;
-    /**
-     * 调用兑换券服务
-     */
     private CouponControllerApi couponControllerApi = new CouponControllerClient();
 
     @NonNull
@@ -92,9 +88,11 @@ public class VoucherItemFragment extends RefreshableBaseFragment<VoucherItem, Ge
                     activity.finish();
                 }
             });
+            mToolBar.showLeftButton();
             mVoucherItemAdapter.setCheckboxVisible(View.VISIBLE);
             List<VoucherItem> selectedHolderCartItems = bundle.getParcelableArrayList(Constant.INTENT_SELECTED_VOUCHERITEM);
             mVoucherItemAdapter.setSelectedItems(selectedHolderCartItems);
+            mVoucherItemAdapter.notifyDataSetChanged();
         } else {
             mToolBar.setRightButtonOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), VoucherItemActionActivity.class);
@@ -111,5 +109,25 @@ public class VoucherItemFragment extends RefreshableBaseFragment<VoucherItem, Ge
     @Override
     protected List<VoucherItem> customBeforeServerData() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public int getCurrentPage() {
+        return mCurrPage;
+    }
+
+    @Override
+    public void setCurrentPage(int currentpage) {
+        this.mCurrPage = currentpage;
+    }
+
+    @Override
+    public int getTotalPage() {
+        return this.mTotalPage;
+    }
+
+    @Override
+    public void setTotalPage(int totalpage) {
+        this.mTotalPage = totalpage;
     }
 }

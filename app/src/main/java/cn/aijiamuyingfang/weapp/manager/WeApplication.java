@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.FileUtils;
+import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;
 
 /**
  * Created by pc on 2018/3/30.
@@ -15,6 +16,7 @@ import cn.aijiamuyingfang.weapp.manager.commons.utils.FileUtils;
 public class WeApplication extends CommonApp {
 
     private static final String TAG = WeApplication.class.getName();
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -25,6 +27,7 @@ public class WeApplication extends CommonApp {
                 FileUtils.cleanDirectory(imageDir);
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage(), e);
+                ToastUtils.showSafeToast(this, "清理上一次的图片缓存失败");
             }
         }
     }

@@ -30,6 +30,7 @@ import cn.aijiamuyingfang.weapp.manager.activity.SubClassifyActionActivity;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.commons.fragment.BaseFragment;
+import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;
 import cn.aijiamuyingfang.weapp.manager.recycleadapter.SubClassifyAdapter;
 import cn.aijiamuyingfang.weapp.manager.recycleadapter.TopClassifyRecyclerAdapter;
 import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
@@ -151,12 +152,14 @@ public class ClassifyFragment extends BaseFragment {
                     }
                 } else {
                     Log.e(TAG, responseBean.getMsg());
+                    ToastUtils.showSafeToast(mContext, "因服务端的原因,获取所有顶层条目失败");
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "get top classify list failed", e);
+                ToastUtils.showSafeToast(mContext, "因客户端的原因,获取所有顶层条目失败");
             }
 
             @Override
@@ -186,12 +189,14 @@ public class ClassifyFragment extends BaseFragment {
                     mSubClassifyAdapter.setDatas(responseBean.getData());
                 } else {
                     Log.e(TAG, responseBean.getMsg());
+                    ToastUtils.showSafeToast(mContext, "因服务端的原因,获取顶层条目的所有子条目失败");
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "get sub classify list failed", e);
+                ToastUtils.showSafeToast(mContext, "因客户端的原因,获取顶层条目的所有子条目失败");
             }
 
             @Override
@@ -232,12 +237,14 @@ public class ClassifyFragment extends BaseFragment {
                                 requestTopClassifies();
                             } else {
                                 Log.e(TAG, responseBean.getMsg());
+                                ToastUtils.showSafeToast(mContext, "因服务端的原因,创建顶层条目失败");
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             Log.e(TAG, "create top classify failed", e);
+                            ToastUtils.showSafeToast(mContext, "因客户端的原因,创建顶层条目失败");
                         }
 
                         @Override

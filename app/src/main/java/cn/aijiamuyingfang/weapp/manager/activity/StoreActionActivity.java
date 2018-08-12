@@ -174,6 +174,7 @@ public class StoreActionActivity extends BaseActivity {
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "read province.json failed", e);
+                ToastUtils.showSafeToast(StoreActionActivity.this, "因客户端的原因,加载地域信息失败");
             }
 
             @Override
@@ -388,6 +389,7 @@ public class StoreActionActivity extends BaseActivity {
             @Override
             public void onFailure(int arg0, String arg1, Throwable arg2) {
                 Log.e(TAG, arg1);
+                ToastUtils.showSafeToast(StoreActionActivity.this, "获取地址提示信息失败");
             }
         });
     }
@@ -443,12 +445,14 @@ public class StoreActionActivity extends BaseActivity {
                     StoreActionActivity.this.finish();
                 } else {
                     Log.e(TAG, responseBean.getMsg());
+                    ToastUtils.showSafeToast(StoreActionActivity.this, "因服务端的原因,删除门店失败");
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "deprecated store failed", e);
+                ToastUtils.showSafeToast(StoreActionActivity.this, "因客户端的原因,删除门店失败");
             }
 
             @Override
@@ -524,12 +528,14 @@ public class StoreActionActivity extends BaseActivity {
                             StoreActionActivity.this.finish();
                         } else {
                             Log.e(TAG, responseBean.getMsg());
+                            ToastUtils.showSafeToast(StoreActionActivity.this,"因服务端的原因,保存门店失败");
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "create store failed", e);
+                        ToastUtils.showSafeToast(StoreActionActivity.this,"因客户端的原因,保存门店失败");
                     }
 
                     @Override

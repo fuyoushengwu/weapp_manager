@@ -19,6 +19,7 @@ import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.GoodControllerClient;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
+import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;
 import cn.aijiamuyingfang.weapp.manager.widgets.GlideUtils;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.CommonAdapter;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.RecyclerViewHolder;
@@ -57,12 +58,14 @@ public class VoucherItemAdapter extends CommonAdapter<VoucherItem> {
                     GlideUtils.load(mContext, good.getCoverImg(), (ImageView) viewHolder.getView(R.id.iv_view));
                 } else {
                     Log.e(TAG, responseBean.getMsg());
+                    ToastUtils.showSafeToast(mContext, "因服务端的原因,获取兑换项相关的商品信息失败");
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "get good failed", e);
+                ToastUtils.showSafeToast(mContext, "因客户端的原因,获取兑换项相关的商品信息失败");
             }
 
             @Override

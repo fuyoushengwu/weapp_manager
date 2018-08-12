@@ -19,6 +19,7 @@ import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.BaseActivity;
+import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;
 import cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText;
 import cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView;
 import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
@@ -78,12 +79,14 @@ public class SubClassifyActionActivity extends BaseActivity {
                                 SubClassifyActionActivity.this.finish();
                             } else {
                                 Log.e(TAG, responseBean.getMsg());
+                                ToastUtils.showSafeToast(SubClassifyActionActivity.this,"因服务端的原因,保存子条目失败");
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             Log.e(TAG, "create sub classify failed", e);
+                            ToastUtils.showSafeToast(SubClassifyActionActivity.this,"因客户端的原因,保存子条目失败");
                         }
 
                         @Override

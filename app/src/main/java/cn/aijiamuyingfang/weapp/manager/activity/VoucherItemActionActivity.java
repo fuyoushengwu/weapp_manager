@@ -90,12 +90,14 @@ public class VoucherItemActionActivity extends BaseActivity {
                         setGood(responseBean.getData());
                     } else {
                         Log.e(TAG, responseBean.getMsg());
+                        ToastUtils.showSafeToast(VoucherItemActionActivity.this, "因服务端的原因,获取兑换项相关的商品信息失败");
                     }
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     Log.e(TAG, "get good failed", e);
+                    ToastUtils.showSafeToast(VoucherItemActionActivity.this, "因客户端的原因,获取兑换项相关的商品信息失败");
                 }
 
                 @Override
@@ -133,13 +135,14 @@ public class VoucherItemActionActivity extends BaseActivity {
                                 VoucherItemActionActivity.this.finish();
                             } else {
                                 Log.e(TAG, responseBean.getMsg());
-                                ToastUtils.showSafeToast(VoucherItemActionActivity.this, "删除兑换项失败");
+                                ToastUtils.showSafeToast(VoucherItemActionActivity.this, "因服务端的原因,删除兑换项失败");
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             Log.e(TAG, "deprecated voucher item failed", e);
+                            ToastUtils.showSafeToast(VoucherItemActionActivity.this, "因客户端的原因,删除兑换项失败");
                         }
 
                         @Override
@@ -178,13 +181,14 @@ public class VoucherItemActionActivity extends BaseActivity {
                     VoucherItemActionActivity.this.finish();
                 } else {
                     Log.e(TAG, responseBean.getMsg());
-                    ToastUtils.showSafeToast(VoucherItemActionActivity.this, "保存兑换项失败");
+                    ToastUtils.showSafeToast(VoucherItemActionActivity.this, "因服务端的原因,保存兑换项失败");
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "create voucher item failed", e);
+                ToastUtils.showSafeToast(VoucherItemActionActivity.this, "因客户端的原因,保存兑换项失败");
             }
 
             @Override

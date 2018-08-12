@@ -33,6 +33,7 @@ import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.BaseActivity;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.DateUtils;
+import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;
 import cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText;
 import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
 import io.reactivex.Observer;
@@ -90,6 +91,7 @@ public class MessageActionActivity extends BaseActivity {
                             MessageActionActivity.this.finish();
                         } else {
                             Log.e(TAG, responseBean.getMsg());
+                            ToastUtils.showSafeToast(MessageActionActivity.this, "因服务端的原因,删除系统消息失败");
                         }
                         mToolBar.getRightButton().setClickable(true);
                     }
@@ -97,6 +99,7 @@ public class MessageActionActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "delete message failed", e);
+                        ToastUtils.showSafeToast(MessageActionActivity.this, "因客户端的原因,删除系统消息失败");
                     }
 
                     @Override
@@ -190,12 +193,14 @@ public class MessageActionActivity extends BaseActivity {
                     MessageActionActivity.this.finish();
                 } else {
                     Log.e(TAG, responseBean.getMsg());
+                    ToastUtils.showSafeToast(MessageActionActivity.this, "因服务端的原因,保存系统消息失败");
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "create message failed", e);
+                ToastUtils.showSafeToast(MessageActionActivity.this, "因客户端的原因,保存系统消息失败");
             }
 
             @Override

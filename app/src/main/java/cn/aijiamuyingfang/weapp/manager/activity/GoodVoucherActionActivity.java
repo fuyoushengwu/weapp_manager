@@ -83,13 +83,14 @@ public class GoodVoucherActionActivity extends BaseActivity {
                                 GoodVoucherActionActivity.this.finish();
                             } else {
                                 Log.e(TAG, responseBean.getMsg());
-                                ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "删除兑换券失败");
+                                ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "因服务端的原因,删除兑换券失败");
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             Log.e(TAG, "deprecated good voucher failed", e);
+                            ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "因客户端的原因,删除兑换券失败");
                         }
 
                         @Override
@@ -137,10 +138,10 @@ public class GoodVoucherActionActivity extends BaseActivity {
     }
 
     private void initVoucherItemList(GoodVoucher goodVoucher) {
-        List<String> voucheritemidList = goodVoucher.getVoucheritemIdList();
+        List<String> voucherItemIdList = goodVoucher.getVoucheritemIdList();
         GoodVoucherActionActivity.this.mVoucheritemList.clear();
-        for (String itemid : voucheritemidList) {
-            couponControllerApi.getVoucherItem(CommonApp.getApplication().getUserToken(), itemid).subscribe(new Observer<ResponseBean<VoucherItem>>() {
+        for (String itemId : voucherItemIdList) {
+            couponControllerApi.getVoucherItem(CommonApp.getApplication().getUserToken(), itemId).subscribe(new Observer<ResponseBean<VoucherItem>>() {
                 @Override
                 public void onSubscribe(Disposable d) {
                     couponDisposableList.add(d);
@@ -153,12 +154,14 @@ public class GoodVoucherActionActivity extends BaseActivity {
                         GoodVoucherActionActivity.this.mAdapter.setDatas(GoodVoucherActionActivity.this.mVoucheritemList);
                     } else {
                         Log.e(TAG, responseBean.getMsg());
+                        ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "因服务端的原因,获取兑换项失败");
                     }
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     Log.e(TAG, "get voucher item failed", e);
+                    ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "因客户端的原因,获取兑换项失败");
                 }
 
                 @Override
@@ -208,13 +211,14 @@ public class GoodVoucherActionActivity extends BaseActivity {
                     GoodVoucherActionActivity.this.finish();
                 } else {
                     Log.e(TAG, responseBean.getMsg());
-                    ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "创建兑换券失败");
+                    ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "因服务端的原因,保存兑换券失败");
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "create good voucher failed", e);
+                ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "因客户端的原因,保存兑换券失败");
             }
 
             @Override

@@ -187,12 +187,14 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
                     showData(serverDataList);
                 } else {
                     Log.e(TAG, responseBean.getMsg());
+                    ToastUtils.showSafeToast(mContext, "因服务端的原因,获取服务端数据失败");
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "custom get data failed", e);
+                ToastUtils.showSafeToast(mContext, "因客户端的原因,获取服务端数据失败");
             }
 
             @Override

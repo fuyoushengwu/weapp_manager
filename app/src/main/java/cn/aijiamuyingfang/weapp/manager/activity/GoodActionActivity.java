@@ -39,6 +39,7 @@ import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.BaseActivity;
+import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;
 import cn.aijiamuyingfang.weapp.manager.fragment.GoodVoucherFragment;
 import cn.aijiamuyingfang.weapp.manager.recycleadapter.GoodVoucherAdapter;
 import cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText;
@@ -194,10 +195,10 @@ public class GoodActionActivity extends BaseActivity {
                             @Override
                             public void onNext(ResponseBean<Good> responseBean) {
                                 if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                                    Good createdGood = responseBean.getData();
-                                    if (StringUtils.hasContent(mCurSubClasifyId) && createdGood !=
-                                            null && StringUtils.hasContent(createdGood.getId())) {
-                                        classifyControllerApi.addClassifyGood(CommonApp.getApplication().getUserToken(), mCurSubClasifyId, createdGood.getId())
+                                    mCurGood = responseBean.getData();
+                                    if (StringUtils.hasContent(mCurSubClasifyId) && mCurGood !=
+                                            null && StringUtils.hasContent(mCurGood.getId())) {
+                                        classifyControllerApi.addClassifyGood(CommonApp.getApplication().getUserToken(), mCurSubClasifyId, mCurGood.getId())
                                                 .subscribe(new Observer<ResponseBean<Void>>() {
                                                     @Override
                                                     public void onSubscribe(Disposable d) {
@@ -205,13 +206,19 @@ public class GoodActionActivity extends BaseActivity {
                                                     }
 
                                                     @Override
-                                                    public void onNext(ResponseBean<Void> value) {
-                                                        GoodActionActivity.this.finish();
+                                                    public void onNext(ResponseBean<Void> responseBean) {
+                                                        if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                                                            GoodActionActivity.this.finish();
+                                                        } else {
+                                                            Log.e(TAG, responseBean.getMsg());
+                                                            ToastUtils.showSafeToast(GoodActionActivity.this, "因服务端的原因,将商品添加到条目失败");
+                                                        }
                                                     }
 
                                                     @Override
                                                     public void onError(Throwable e) {
                                                         Log.e(TAG, "add classify good failed", e);
+                                                        ToastUtils.showSafeToast(GoodActionActivity.this, "因客户端的原因,将商品添加到条目失败");
                                                     }
 
                                                     @Override
@@ -224,12 +231,14 @@ public class GoodActionActivity extends BaseActivity {
                                     }
                                 } else {
                                     Log.e(TAG, responseBean.getMsg());
+                                    ToastUtils.showSafeToast(GoodActionActivity.this, "因服务端的原因,保存商品失败");
                                 }
                             }
 
                             @Override
                             public void onError(Throwable e) {
                                 Log.e(TAG, "create good failed", e);
+                                ToastUtils.showSafeToast(GoodActionActivity.this, "因客户端的原因,保存商品失败");
                             }
 
                             @Override
@@ -366,12 +375,14 @@ public class GoodActionActivity extends BaseActivity {
                     GoodActionActivity.this.finish();
                 } else {
                     Log.e(TAG, responseBean.getMsg());
+                    ToastUtils.showSafeToast(GoodActionActivity.this, "因服务端的原因,删除商品失败");
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "deprecated good failed", e);
+                ToastUtils.showSafeToast(GoodActionActivity.this, "因客户端的原因,删除商品失败");
             }
 
             @Override
@@ -423,12 +434,14 @@ public class GoodActionActivity extends BaseActivity {
                         }
                     } else {
                         Log.e(TAG, responseBean.getMsg());
+                        ToastUtils.showSafeToast(GoodActionActivity.this, "因服务端的原因,保存商品详细信息失败");
                     }
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     Log.e(TAG, "get good detail failed", e);
+                    ToastUtils.showSafeToast(GoodActionActivity.this, "因客户端的原因,保存商品详细信息失败");
                 }
 
                 @Override
@@ -454,12 +467,14 @@ public class GoodActionActivity extends BaseActivity {
                     mAdapter.setDatas(Arrays.asList(mGoodVoucher));
                 } else {
                     Log.e(TAG, responseBean.getMsg());
+                    ToastUtils.showSafeToast(GoodActionActivity.this, "因服务端的原因,获取商品的兑换券失败");
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "get good voucher failed", e);
+                ToastUtils.showSafeToast(GoodActionActivity.this, "因客户端的原因,获取商品的兑换券失败");
             }
 
             @Override

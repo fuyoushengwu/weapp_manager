@@ -1,19 +1,14 @@
-// 1.maven-插件
 apply plugin: 'maven'
 
-// 2.maven-信息
 ext {
     PUBLISH_GROUP_ID = 'cn.aijiamuyingfang.android'
     PUBLISH_ARTIFACT_ID = 'cn.aijiamuyingfang.android.widgets'
     PUBLISH_VERSION = android.defaultConfig.versionName
 }
 
-// 3.maven-输出路径
 uploadArchives {
     repositories.mavenDeployer {
-        //这里就是最后输出地址，在自己电脑上新建个文件夹，把文件夹路径粘贴在此
-        //注意”file://“ + 路径，有三个斜杠，别漏了
-        def localMavenRepo = 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+        def localMavenRepo = 'file://' + new File(System.getenv("M2_HOME"),'.m2/repository').absolutePath
         repository(url: localMavenRepo)
 
         pom.project {

@@ -11,13 +11,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.ResponseCode;
+import cn.aijiamuyingfang.client.domain.coupon.VoucherItem;
+import cn.aijiamuyingfang.client.domain.goods.Good;
 import cn.aijiamuyingfang.client.rest.api.CouponControllerApi;
 import cn.aijiamuyingfang.client.rest.api.GoodControllerApi;
-import cn.aijiamuyingfang.commons.domain.coupon.VoucherItem;
-import cn.aijiamuyingfang.commons.domain.goods.Good;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
-import cn.aijiamuyingfang.commons.utils.StringUtils;
+import cn.aijiamuyingfang.client.rest.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.CouponControllerClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.GoodControllerClient;
@@ -35,6 +35,10 @@ import io.reactivex.disposables.Disposable;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class VoucherItemActionActivity extends BaseActivity {
     private static final String TAG = VoucherItemActionActivity.class.getName();
+    private static final CouponControllerApi couponControllerApi = new CouponControllerClient();
+    private static final GoodControllerApi goodControllerApi = new GoodControllerClient();
+    private final List<Disposable> couponDisposableList = new ArrayList<>();
+    private final List<Disposable> goodDisposableList = new ArrayList<>();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
     @BindView(R.id.item_name)
@@ -50,10 +54,6 @@ public class VoucherItemActionActivity extends BaseActivity {
 
     private VoucherItem mCurVoucherItem;
     private Good mCurGood;
-    private CouponControllerApi couponControllerApi = new CouponControllerClient();
-    private List<Disposable> couponDisposableList = new ArrayList<>();
-    private GoodControllerApi goodControllerApi = new GoodControllerClient();
-    private List<Disposable> goodDisposableList = new ArrayList<>();
 
     @Override
     protected void init() {
@@ -68,17 +68,17 @@ public class VoucherItemActionActivity extends BaseActivity {
             setGood(good);
             return;
         }
-        mCurVoucherItem = intent.getParcelableExtra(Constant.INTENT_VOUCHERITEM);
+        mCurVoucherItem = intent.getParcelableExtra(Constant.INTENT_VOUCHER_ITEM);
         if (null == this.mCurVoucherItem) {
             return;
         }
-        String goodId = mCurVoucherItem.getGoodid();
+        String goodId = mCurVoucherItem.getGoodId();
         mItemNameTV.setText(mCurVoucherItem.getName());
         mHolderThresholdTV.setText(mCurVoucherItem.getScore() + "");
         mItemDescription.setText(mCurVoucherItem.getDescription());
 
         if (null == mCurGood && StringUtils.hasContent(goodId)) {
-            goodControllerApi.getGood(CommonApp.getApplication().getUserToken(), goodId).subscribe(new Observer<ResponseBean<Good>>() {
+            goodControllerApi.getGood(goodId).subscribe(new Observer<ResponseBean<Good>>() {
                 @Override
                 public void onSubscribe(Disposable d) {
                     goodDisposableList.add(d);
@@ -115,7 +115,7 @@ public class VoucherItemActionActivity extends BaseActivity {
         }
         mCurGood = good;
         mGoodNameTextView.setText(mCurGood.getName());
-        GlideUtils.load(this, mCurGood.getCoverImg(), mGoodCoverIV);
+        GlideUtils.load(this, mCurGood.getCoverImg().getUrl(), mGoodCoverIV);
     }
 
 
@@ -123,7 +123,7 @@ public class VoucherItemActionActivity extends BaseActivity {
         if (mCurVoucherItem != null) {
             mToolBar.setRightButtonText("删除");
             mToolBar.setRightButtonOnClickListener(v ->
-                    couponControllerApi.deprecateVoucherItem(CommonApp.getApplication().getUserToken(), mCurVoucherItem.getId()).subscribe(new Observer<ResponseBean<Void>>() {
+                    couponControllerApi.deprecateVoucherItem(mCurVoucherItem.getId(), CommonApp.getApplication().getUserToken()).subscribe(new Observer<ResponseBean<Void>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
                             couponDisposableList.add(d);
@@ -162,14 +162,14 @@ public class VoucherItemActionActivity extends BaseActivity {
 
     private void saveVoucherItem() {
         VoucherItem item = new VoucherItem();
-        item.setGoodid(mCurGood.getId());
+        item.setGoodId(mCurGood.getId());
         item.setName(mItemNameTV.getText().toString());
         item.setDescription(mItemDescription.getText().toString());
         item.setScore(Integer.valueOf(mHolderThresholdTV.getText().toString()));
         if (mCurVoucherItem != null) {
             item.setId(mCurVoucherItem.getId());
         }
-        couponControllerApi.createVoucherItem(CommonApp.getApplication().getUserToken(), item).subscribe(new Observer<ResponseBean<VoucherItem>>() {
+        couponControllerApi.createVoucherItem(item, CommonApp.getApplication().getUserToken()).subscribe(new Observer<ResponseBean<VoucherItem>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 couponDisposableList.add(d);

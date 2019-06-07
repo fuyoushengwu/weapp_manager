@@ -7,14 +7,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="增加顶层条目:" />
+        android:text="@string/Add_Classify_Dialog_Name" />
 
     <EditText
         android:id="@+id/classify_name"
         style="@style/editText_base"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入顶层条目名">
+        android:hint="@string/Add_Classify_Dialog_Name_Tip"
+        android:inputType="text">
 
         <requestFocus />
 

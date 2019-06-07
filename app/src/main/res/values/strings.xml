@@ -9,8 +9,92 @@
     <string name="add_sub_classify">添加品牌</string>
     <string name="add_good">添加商品</string>
     <string name="add_store">添加门店</string>
-
     <string name="add_logo">http://www.iconpng.com/download/png/70791</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="Activity_Add_Good_Good_Name">商品名</string>
+    <string name="Activity_Add_Good_Good_Name_Tip">请输入商品名</string>
+    <string name="Activity_Add_Good_Good_Pack">规格</string>
+    <string name="Activity_Add_Good_Good_Pack_Tip">请输入规格</string>
+    <string name="Activity_Add_Good_Good_Level">段数</string>
+    <string name="Activity_Add_Good_Good_Level_Tip">请输入段数</string>
+    <string name="Activity_Add_Good_Good_BarCode">条形码</string>
+    <string name="Activity_Add_Good_Good_BarCode_Tip">请输入条形码</string>
+    <string name="Activity_Add_Good_Good_Price">价格</string>
+    <string name="Activity_Add_Good_Good_Price_Tip">请输入价格</string>
+    <string name="Activity_Add_Good_Good_Count">数量</string>
+    <string name="Activity_Add_Good_Good_Count_Tip">请输入数量</string>
+    <string name="Activity_Add_Good_Good_LifeTime">保质期</string>
+    <string name="Activity_Add_Good_Good_LifeTime_Start_Tip">请输入开始时间</string>
+    <string name="Activity_Add_Good_Good_LifeTime_End_Tip">请输入结束时间</string>
+    <string name="Activity_Add_Good_Good_Logo">商品logo</string>
+    <string name="Activity_Add_Good_Good_Detail">商品详细信息</string>
+    <string name="Activity_Add_Good_Good_Score">商品积分</string>
+    <string name="Activity_Add_Good_Good_Score_Tip">请输入商品积分</string>
+    <string name="Activity_Add_Good_GoodVoucher_Button">关联兑换券</string>
+    <string name="Activity_Add_Good_Save_Button">保存</string>
+    <string name="Activity_Add_Good_Create_Voucher_Item_Button">创建兑换项</string>
+
+    <string name="Activity_Add_GoodVoucher_Name">兑换券</string>
+    <string name="Activity_Add_GoodVoucher_Name_Tip">请输入兑换券名称</string>
+    <string name="Activity_Add_GoodVoucher_Score">兑换券分值</string>
+    <string name="Activity_Add_GoodVoucher_Score_Tip">请输入兑换券分值</string>
+    <string name="Activity_Add_GoodVoucher_Description">兑换券描述</string>
+    <string name="Activity_Add_GoodVoucher_Description_Tip">请输入兑换券描述</string>
+    <string name="Activity_Add_GoodVoucher_Add_VoucherItem_Button">选择兑换项</string>
+    <string name="Activity_Add_GoodVoucher_Save_Button">保存</string>
+
+    <string name="Activity_Add_Store_Name">店铺名称</string>
+    <string name="Activity_Add_Store_Name_Tip">请输入店铺名称</string>
+    <string name="Activity_Add_Store_Start_Time">开始营业时间</string>
+    <string name="Activity_Add_Store_Start_Time_Tip">请输入开始营业时间</string>
+    <string name="Activity_Add_Store_End_Time">结束营业时间</string>
+    <string name="Activity_Add_Store_End_Time_Tip">请输入结束营业时间</string>
+    <string name="Activity_Add_Store_Address">联系地址</string>
+    <string name="Activity_Add_Store_Detail_Address">详细地址</string>
+    <string name="Activity_Add_Store_Detail_Address_Tip">请输入详细地址</string>
+    <string name="Activity_Add_Store_Longitude">经度</string>
+    <string name="Activity_Add_Store_Latitude">纬度</string>
+    <string name="Activity_Add_Store_Contact">联系电话</string>
+    <string name="Activity_Add_Store_Contact_Tip">请输入联系电话</string>
+    <string name="Activity_Add_Store_Logo">门店封面</string>
+    <string name="Activity_Add_Store_Picture">门店图片</string>
+    <string name="Activity_Add_Store_Save_Button">保存</string>
+
+    <string name="Activity_Add_Sub_Classify_Name">品牌名</string>
+    <string name="Activity_Add_Sub_Classify_Name_Tip">请输入品牌名</string>
+    <string name="Activity_Add_Sub_Classify_Logo">品牌logo</string>
+
+    <string name="Activity_Login_Title">登录界面</string>
+    <string name="Activity_Login_UserName">请输入登录账户</string>
+    <string name="Activity_Login_Password">请输入登录密码</string>
+    <string name="Activity_Login_Button">登录</string>
+
+    <string name="Activity_Message_Detail_Title">消息标题</string>
+    <string name="Activity_Message_Detail_Title_Tip">请输入消息标题</string>
+    <string name="Activity_Message_Detail_Roundup">消息摘要</string>
+    <string name="Activity_Message_Detail_Roundup_Tip">请输入消息摘要</string>
+    <string name="Activity_Message_Detail_Content">消息内容</string>
+    <string name="Activity_Message_Detail_Content_Tip">请输入消息内容</string>
+    <string name="Activity_Message_Detail_Start_Time">消息开始时间</string>
+    <string name="Activity_Message_Detail_Start_Time_Tip">请输入消息开始时间</string>
+    <string name="Activity_Message_Detail_End_Time">消息结束时间</string>
+    <string name="Activity_Message_Detail_End_Time_Tip">请输入消息结束时间</string>
+    <string name="Activity_Message_Detail_Type">消息类型</string>
+    <string name="Activity_Message_Detail_Save_Button">保存</string>
+
+    <string name="Activity_Voucher_Item_Detail_Name">兑换项</string>
+    <string name="Activity_Voucher_Item_Detail_Name_Tip">请输入兑换项名称</string>
+    <string name="Activity_Voucher_Item_Detail_Good">兑换的商品</string>
+    <string name="Activity_Voucher_Item_Detail_Score">兑换值</string>
+    <string name="Activity_Voucher_Item_Detail_Description">兑换信息</string>
+    <string name="Activity_Voucher_Item_Detail_Save_Button">保存</string>
+    
+    <string name="Add_Classify_Dialog_Name">增加顶层条目:</string>
+    <string name="Add_Classify_Dialog_Name_Tip">请输入顶层条目名</string>
+
+    <string name="Dialog_Date_Picker_Layout_Back">返回</string>
+    <string name="Dialog_Date_Picker_Layout_Ensure">确认</string>
+
+    <string name="Item_Store_Button_Goto_Store">进入店铺</string>
 </resources>

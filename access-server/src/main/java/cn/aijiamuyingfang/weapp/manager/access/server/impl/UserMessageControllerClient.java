@@ -1,9 +1,9 @@
 package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.message.UserMessage;
+import cn.aijiamuyingfang.client.domain.message.response.GetMessagesListResponse;
 import cn.aijiamuyingfang.client.rest.api.UserMessageControllerApi;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.user.UserMessage;
-import cn.aijiamuyingfang.commons.domain.user.response.GetMessagesListResponse;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
@@ -13,39 +13,34 @@ import io.reactivex.Observable;
  * <p>
  * 客户端调用UserMessageController的服务
  * </p>
- * 
- * @version 1.0.0
+ *
  * @author ShiWei
+ * @version 1.0.0
  */
 public class UserMessageControllerClient implements UserMessageControllerApi {
-    private static UserMessageControllerApi instance;
+    private static final UserMessageControllerApi instance;
 
     static {
         instance = RxRetrofitClient.createGApi(UserMessageControllerApi.class);
     }
 
     @Override
-    public Observable<ResponseBean<Integer>> getUserUnReadMessageCount(String token, String userid) {
-        return instance.getUserUnReadMessageCount(token, userid)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<Integer>> getUserUnReadMessageCount(String username, String accessToken) {
+        return instance.getUserUnReadMessageCount(username, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<GetMessagesListResponse>> getUserMessageList(String token, String userid,
-            int currentpage, int pagesize) {
-        return instance.getUserMessageList(token, userid, currentpage, pagesize)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<GetMessagesListResponse>> getUserMessageList(String username, int currentPage, int pageSize, String accessToken) {
+        return instance.getUserMessageList(username, currentPage, pageSize, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<UserMessage>> createMessage(String token, String userid, UserMessage message) {
-        return instance.createMessage(token, userid, message)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<UserMessage>> createMessage(String username, UserMessage message, String accessToken) {
+        return instance.createMessage(username, message, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<Void>> deleteMessage(String token, String userid, String messageid) {
-        return instance.deleteMessage(token, userid, messageid)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<Void>> deleteMessage(String username, String messageId, String accessToken) {
+        return instance.deleteMessage(username, messageId, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 }

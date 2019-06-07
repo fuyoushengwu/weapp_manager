@@ -6,12 +6,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+        android:layout_height="wrap_content"
         android:background="@color/light_grey"
         android:clipToPadding="true"
         android:fitsSystemWindows="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar
@@ -35,14 +35,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="兑换项"
+                    android:text="@string/Activity_Voucher_Item_Detail_Name"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入兑换项名称"
+                    android:hint="@string/Activity_Voucher_Item_Detail_Name_Tip"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -65,14 +65,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="兑换的商品"
+                    android:text="@string/Activity_Voucher_Item_Detail_Good"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -99,6 +99,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
+                        android:contentDescription="@string/Default_Content_Description"
                         android:src="@drawable/company_logo" />
 
                 </LinearLayout>
@@ -112,14 +113,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="兑换值"
+                    android:text="@string/Activity_Voucher_Item_Detail_Score"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -142,14 +143,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="兑换信息"
+                    android:text="@string/Activity_Voucher_Item_Detail_Description"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -173,9 +174,9 @@
                 style="@style/bigRedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:text="保存" />
+                android:layout_alignParentBottom="true"
+                android:text="@string/Activity_Voucher_Item_Detail_Save_Button" />
 
         </LinearLayout>
 

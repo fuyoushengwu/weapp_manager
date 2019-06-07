@@ -4,11 +4,13 @@ import com.bigkoo.pickerview.model.IPickerViewData;
 
 import java.util.List;
 
+import cn.aijiamuyingfang.client.domain.address.City;
+
 /**
  * Created by pc on 2018/5/4.
  */
 
-public class CityViewData extends cn.aijiamuyingfang.commons.domain.address.City implements IPickerViewData {
+public class CityViewData extends City implements IPickerViewData {
     private List<CountyViewData> county;
 
     public List<CountyViewData> getCounty() {

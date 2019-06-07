@@ -10,13 +10,13 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.aijiamuyingfang.client.domain.ImageSource;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.classify.response.GetClassifyGoodListResponse;
+import cn.aijiamuyingfang.client.domain.goods.Good;
 import cn.aijiamuyingfang.client.rest.api.GoodControllerApi;
-import cn.aijiamuyingfang.commons.domain.goods.Good;
-import cn.aijiamuyingfang.commons.domain.goods.response.GetClassifyGoodListResponse;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.GoodControllerClient;
 import cn.aijiamuyingfang.weapp.manager.activity.GoodActionActivity;
-import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.recycleadapter.GoodListAdapter;
 import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
@@ -27,13 +27,14 @@ import io.reactivex.Observable;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class GoodsListActivity extends RefreshableBaseActivity<Good, GetClassifyGoodListResponse> {
+    private static final GoodControllerApi goodControllerApi = new GoodControllerClient();
+
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
     /**
      * 当前条目的ID
      */
     private String mCurClassifyId;
-    private GoodControllerApi goodControllerApi = new GoodControllerClient();
 
     @NonNull
     @Override
@@ -72,7 +73,7 @@ public class GoodsListActivity extends RefreshableBaseActivity<Good, GetClassify
 
     @Override
     protected Observable<ResponseBean<GetClassifyGoodListResponse>> customGetData(int mCurrPage, int mPageSize) {
-        return goodControllerApi.getClassifyGoodList(CommonApp.getApplication().getUserToken(), mCurClassifyId, null,
+        return goodControllerApi.getClassifyGoodList(mCurClassifyId, null,
                 null, null, null, mCurrPage, mPageSize);
     }
 
@@ -81,7 +82,7 @@ public class GoodsListActivity extends RefreshableBaseActivity<Good, GetClassify
         List<Good> goodList = new ArrayList<>();
         Good good = new Good();
         good.setName("添加");
-        good.setCoverImg(getString(R.string.add_logo));
+        good.setCoverImg(new ImageSource("", getString(R.string.add_logo)));
         goodList.add(good);
         return goodList;
     }

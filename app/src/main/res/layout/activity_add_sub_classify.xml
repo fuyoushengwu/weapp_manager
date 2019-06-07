@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:background="@color/light_grey"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar
@@ -32,14 +31,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/largePadding"
-            android:paddingTop="@dimen/largePadding">
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:text="品牌名"
+                android:text="@string/Activity_Add_Sub_Classify_Name"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -52,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:hint="请输入品牌名" />
+                android:hint="@string/Activity_Add_Sub_Classify_Name_Tip" />
         </LinearLayout>
 
         <View style="@style/line_vertical" />
@@ -61,14 +60,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/largePadding"
-            android:paddingTop="@dimen/largePadding">
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:text="品牌logo"
+                android:text="@string/Activity_Add_Sub_Classify_Logo"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 

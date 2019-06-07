@@ -32,10 +32,9 @@ import cn.aijiamuyingfang.weapp.manager.widgets.Tab;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getName();
+    private final TabSelectBroadCastReciever broadCastReciever = new TabSelectBroadCastReciever();
     @BindView(android.R.id.tabhost)
     FragmentTabHost mTabHost;
-
-    private TabSelectBroadCastReciever broadCastReciever = new TabSelectBroadCastReciever();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

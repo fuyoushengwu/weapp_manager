@@ -13,9 +13,9 @@ import com.cjj.MaterialRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.aijiamuyingfang.commons.domain.PageResponse;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
+import cn.aijiamuyingfang.client.domain.PageResponse;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.ResponseCode;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.BaseActivity;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;
@@ -31,6 +31,7 @@ import io.reactivex.disposables.Disposable;
  */
 public abstract class RefreshableBaseActivity<E, V extends PageResponse<E>> extends BaseActivity {
     private static final String TAG = RefreshableBaseActivity.class.getName();
+    private final List<Disposable> disposableList = new ArrayList<>();
     /**
      * 页面状态:正常显示
      */
@@ -53,8 +54,6 @@ public abstract class RefreshableBaseActivity<E, V extends PageResponse<E>> exte
     private MaterialRefreshLayout mRefreshLaout;
     private RecyclerView mRecyclerView;
     protected CommonAdapter<E> mAdapter;
-
-    private List<Disposable> disposableList = new ArrayList<>();
 
     @Override
     public int getContentResourceId() {
@@ -145,7 +144,7 @@ public abstract class RefreshableBaseActivity<E, V extends PageResponse<E>> exte
             public void onNext(ResponseBean<V> responseBean) {
                 if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
                     PageResponse<E> response = responseBean.getData();
-                    mCurrPage = response.getCurrentpage();
+                    mCurrPage = response.getCurrentPage();
                     mTotalPage = response.getTotalpage();
                     List<E> serverDataList = response.getDataList();
                     List<E> beforeDataList = customBeforeServerData();

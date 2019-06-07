@@ -9,7 +9,8 @@ import android.support.v4.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.aijiamuyingfang.commons.utils.StringUtils;
+import cn.aijiamuyingfang.client.rest.utils.StringUtils;
+
 
 /**
  * Created by pc on 2018/4/3.

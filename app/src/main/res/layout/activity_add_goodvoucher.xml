@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:background="@color/light_grey"
@@ -42,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="兑换券"
+                    android:text="@string/Activity_Add_GoodVoucher_Name"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入兑换券名称"
+                    android:hint="@string/Activity_Add_GoodVoucher_Name_Tip"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="兑换券分值"
+                    android:text="@string/Activity_Add_GoodVoucher_Score"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入兑换券分值"
+                    android:hint="@string/Activity_Add_GoodVoucher_Score_Tip"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="兑换券描述"
+                    android:text="@string/Activity_Add_GoodVoucher_Description"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入兑换券描述"
+                    android:hint="@string/Activity_Add_GoodVoucher_Description_Tip"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -126,9 +126,7 @@
                 style="@style/bigRedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:text="选择兑换项" />
+                android:text="@string/Activity_Add_GoodVoucher_Add_VoucherItem_Button" />
 
             <View style="@style/line_vertical" />
 
@@ -144,9 +142,7 @@
                 style="@style/bigRedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:text="保存" />
+                android:text="@string/Activity_Add_GoodVoucher_Save_Button" />
 
         </LinearLayout>
 

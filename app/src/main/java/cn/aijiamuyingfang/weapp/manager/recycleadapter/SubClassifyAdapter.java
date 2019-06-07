@@ -3,9 +3,10 @@ package cn.aijiamuyingfang.weapp.manager.recycleadapter;
 import android.content.Context;
 import android.widget.ImageView;
 
+
 import java.util.List;
 
-import cn.aijiamuyingfang.commons.domain.goods.Classify;
+import cn.aijiamuyingfang.client.domain.classify.Classify;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.CommonAdapter;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.RecyclerViewHolder;
@@ -19,6 +20,6 @@ public class SubClassifyAdapter extends CommonAdapter<Classify> {
     @Override
     protected void convert(RecyclerViewHolder viewHolder, Classify itemData, int position) {
         viewHolder.setText(R.id.tv_name, itemData.getName());
-        GlideUtils.load(mContext, itemData.getCoverImg(), (ImageView) viewHolder.getView(R.id.iv_view));
+        GlideUtils.load(mContext, itemData.getCoverImg().getUrl(), (ImageView) viewHolder.getView(R.id.iv_view));
     }
 }

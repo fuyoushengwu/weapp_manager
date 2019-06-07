@@ -4,7 +4,6 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
 
-
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -33,19 +32,12 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-
-    //沉浸式状态栏
-    implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-
-    //butterknife
-    api 'com.jakewharton:butterknife:8.8.1'
-
-    //rxjava
     api 'io.reactivex.rxjava2:rxjava:2.0.1'
+    api 'com.google.code.gson:gson:2.8.2'
+    api 'cn.aijiamuyingfang:cn.aijiamuyingfang.client.commons:0.0.2'
+    // butterknife
+    api 'com.jakewharton:butterknife:8.8.1'
     api 'com.github.yalantis:ucrop:2.2.1'
-
     //图片加载框架
     api 'com.github.bumptech.glide:glide:3.7.0'
     //可以单独使用，也可以配合okhttp使用，配合okhttp使用则需要在app上配置
@@ -53,7 +45,13 @@ dependencies {
         //如果使用glide-okhttp3整合  排除以下部分
         exclude group: 'glide-parent'
     }
-    api 'cn.aijiamuyingfang:cn.aijiamuyingfang.commons:0.0.1'
+
+    annotationProcessor 'org.projectlombok:lombok:1.16.18'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    //沉浸式状态栏
+    implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
 }
 
 apply from: 'maven-release-aar.gradle'

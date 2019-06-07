@@ -2,11 +2,12 @@ package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
 import java.util.List;
 
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.store.Store;
+import cn.aijiamuyingfang.client.domain.store.StoreAddress;
+import cn.aijiamuyingfang.client.domain.store.response.GetDefaultStoreIdResponse;
+import cn.aijiamuyingfang.client.domain.store.response.GetInUseStoreListResponse;
 import cn.aijiamuyingfang.client.rest.api.StoreControllerApi;
-import cn.aijiamuyingfang.commons.domain.goods.Store;
-import cn.aijiamuyingfang.commons.domain.goods.response.GetDefaultStoreIdResponse;
-import cn.aijiamuyingfang.commons.domain.goods.response.GetInUseStoreListResponse;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
@@ -22,48 +23,49 @@ import okhttp3.MultipartBody;
  * @version 1.0.0
  */
 public class StoreControllerClient implements StoreControllerApi {
-    private static StoreControllerApi instance;
+    private static final StoreControllerApi instance;
 
     static {
         instance = RxRetrofitClient.createGApi(StoreControllerApi.class);
     }
 
     @Override
-    public Observable<ResponseBean<GetInUseStoreListResponse>> getInUseStoreList(String token, int currentpage,
-                                                                                 int pagesize) {
-        return instance.getInUseStoreList(token, currentpage, pagesize)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<GetInUseStoreListResponse>> getInUseStoreList(int currentPage, int pageSize) {
+        return instance.getInUseStoreList(currentPage, pageSize).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<Store>> createStore(String token, MultipartBody storeRequest) {
-        return instance.createStore(token, storeRequest).compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<Store>> createStore(MultipartBody storeRequest, String accessToken) {
+        return instance.createStore(storeRequest, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<Store>> getStore(String token, String storeid) {
-        return instance.getStore(token, storeid).compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<Store>> getStore(String storeId) {
+        return instance.getStore(storeId).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<Store>> updateStore(String token, String storeid, Store storeRequest) {
-        return instance.updateStore(token, storeid, storeRequest)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<StoreAddress>> getStoreAddressByAddressId(String addressId) {
+        return instance.getStoreAddressByAddressId(addressId).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<Void>> deprecateStore(String token, String storeid) {
-        return instance.deprecateStore(token, storeid).compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<Store>> updateStore(String storeId, Store storeRequest, String accessToken) {
+        return instance.updateStore(storeId, storeRequest, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<GetDefaultStoreIdResponse>> getDefaultStoreId(String token) {
-        return instance.getDefaultStoreId(token)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<Void>> deprecateStore(String storeId, String accessToken) {
+        return instance.deprecateStore(storeId, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<List<String>>> getStoresCity(String token) {
-        return instance.getStoresCity(token).compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<GetDefaultStoreIdResponse>> getDefaultStoreId() {
+        return instance.getDefaultStoreId().compose(RxJavaUtils.switchSchedulers());
+    }
+
+    @Override
+    public Observable<ResponseBean<List<String>>> getStoresCity() {
+        return instance.getStoresCity().compose(RxJavaUtils.switchSchedulers());
     }
 }

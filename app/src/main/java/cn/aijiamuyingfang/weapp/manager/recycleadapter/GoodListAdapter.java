@@ -5,7 +5,7 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.commons.domain.goods.Good;
+import cn.aijiamuyingfang.client.domain.goods.Good;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.CommonAdapter;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.RecyclerViewHolder;
@@ -18,7 +18,7 @@ public class GoodListAdapter extends CommonAdapter<Good> {
 
     @Override
     protected void convert(RecyclerViewHolder viewHolder, final Good itemData, int position) {
-        GlideUtils.load(mContext, itemData.getCoverImg(), (ImageView) viewHolder.getView(R.id.iv_view));
+        GlideUtils.load(mContext, itemData.getCoverImg().getUrl(), (ImageView) viewHolder.getView(R.id.iv_view));
         viewHolder.setText(R.id.text_title, itemData.getName());
         viewHolder.setText(R.id.text_price, "￥" + itemData.getPrice());
         viewHolder.setText(R.id.text_count, "库存:" + itemData.getCount());

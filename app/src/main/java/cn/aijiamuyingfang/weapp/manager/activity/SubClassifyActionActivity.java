@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.ResponseCode;
+import cn.aijiamuyingfang.client.domain.classify.Classify;
 import cn.aijiamuyingfang.client.rest.api.ClassifyControllerApi;
-import cn.aijiamuyingfang.commons.domain.goods.Classify;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
-import cn.aijiamuyingfang.commons.utils.StringUtils;
+import cn.aijiamuyingfang.client.rest.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.ClassifyControllerClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
@@ -31,12 +31,12 @@ import okhttp3.RequestBody;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class SubClassifyActionActivity extends BaseActivity {
     private static final String TAG = SubClassifyActionActivity.class.getName();
+    private static final ClassifyControllerApi classifyControllerApi = new ClassifyControllerClient();
+    private final List<Disposable> classifyDisposableList = new ArrayList<>();
     @BindView(R.id.classify_logo)
     EditableImageView mEditableImageView;
-
     @BindView(R.id.edittxt_consignee)
     ClearEditText mEditText;
-
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
 
@@ -44,10 +44,6 @@ public class SubClassifyActionActivity extends BaseActivity {
      * 当前顶层条目的ID
      */
     private String mCurTopClassifyId;
-
-
-    private ClassifyControllerApi classifyControllerApi = new ClassifyControllerClient();
-    private List<Disposable> classifyDisposableList = new ArrayList<>();
 
     @Override
     protected void init() {
@@ -67,7 +63,7 @@ public class SubClassifyActionActivity extends BaseActivity {
                     RequestBody requestLogo = RequestBody.create(MultipartBody.FORM, cropLogo);
                     requestBodyBuilder.addFormDataPart("coverImage", cropLogo.getName(), requestLogo);
 
-                    classifyControllerApi.createSubClassify(CommonApp.getApplication().getUserToken(), mCurTopClassifyId, requestBodyBuilder.build()).subscribe(new Observer<ResponseBean<Classify>>() {
+                    classifyControllerApi.createSubClassify(mCurTopClassifyId, requestBodyBuilder.build(), CommonApp.getApplication().getUserToken()).subscribe(new Observer<ResponseBean<Classify>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
                             classifyDisposableList.add(d);
@@ -79,14 +75,14 @@ public class SubClassifyActionActivity extends BaseActivity {
                                 SubClassifyActionActivity.this.finish();
                             } else {
                                 Log.e(TAG, responseBean.getMsg());
-                                ToastUtils.showSafeToast(SubClassifyActionActivity.this,"因服务端的原因,保存子条目失败");
+                                ToastUtils.showSafeToast(SubClassifyActionActivity.this, "因服务端的原因,保存子条目失败");
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             Log.e(TAG, "create sub classify failed", e);
-                            ToastUtils.showSafeToast(SubClassifyActionActivity.this,"因客户端的原因,保存子条目失败");
+                            ToastUtils.showSafeToast(SubClassifyActionActivity.this, "因客户端的原因,保存子条目失败");
                         }
 
                         @Override

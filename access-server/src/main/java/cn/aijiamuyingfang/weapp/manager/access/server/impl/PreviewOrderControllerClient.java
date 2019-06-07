@@ -2,10 +2,10 @@ package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
 import java.util.List;
 
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.previeworder.PreviewOrder;
+import cn.aijiamuyingfang.client.domain.previeworder.PreviewOrderItem;
 import cn.aijiamuyingfang.client.rest.api.PreviewOrderControllerApi;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.shoporder.PreviewOrder;
-import cn.aijiamuyingfang.commons.domain.shoporder.PreviewOrderItem;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
@@ -20,29 +20,24 @@ import io.reactivex.Observable;
  * @version 1.0.0
  */
 public class PreviewOrderControllerClient implements PreviewOrderControllerApi {
-    private static PreviewOrderControllerApi instance;
+    private static final PreviewOrderControllerApi instance;
 
     static {
         instance = RxRetrofitClient.createGApi(PreviewOrderControllerApi.class);
     }
 
     @Override
-    public Observable<ResponseBean<PreviewOrderItem>> updatePreviewOrderItem(String token, String userid, String itemid,
-                                                                             PreviewOrderItem request) {
-        return instance.updatePreviewOrderItem(token, userid, itemid, request)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<PreviewOrderItem>> updatePreviewOrderItem(String username, String previewItemId, PreviewOrderItem request, String accessToken) {
+        return instance.updatePreviewOrderItem(username, previewItemId, request, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<Void>> deletePreviewOrderItem(String token, String userid, String itemid) {
-        return instance.deletePreviewOrderItem(token, userid, itemid)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<Void>> deletePreviewOrderItem(String username, String previewItemId, String accessToken) {
+        return instance.deletePreviewOrderItem(username, previewItemId, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<PreviewOrder>> generatePreviewOrder(String token, String userid,
-                                                                       List<String> goodids) {
-        return instance.generatePreviewOrder(token, userid, goodids)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<PreviewOrder>> generatePreviewOrder(String username, List<String> goodIdList, String accessToken) {
+        return instance.generatePreviewOrder(username, goodIdList, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 }

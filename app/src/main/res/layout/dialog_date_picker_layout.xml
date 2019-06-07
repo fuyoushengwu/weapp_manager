@@ -32,7 +32,7 @@
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="返回"
+            android:text="@strig/Dialog_Date_Picker_Layout_Back"
             android:textColor="@android:color/black" />
 
         <View
@@ -50,7 +50,7 @@
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="确认"
+            android:text="@string/Dialog_Date_Picker_Layout_Ensure"
             android:textColor="@android:color/black"
             android:visibility="gone" />
 

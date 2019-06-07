@@ -30,13 +30,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import cn.aijiamuyingfang.commons.utils.StringUtils;
+import cn.aijiamuyingfang.client.rest.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.PermissionActivity;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.FileUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.IOUtils;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -46,19 +48,13 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EditableImageView extends android.support.v7.widget.AppCompatImageView {
     private static final String TAG = EditableImageView.class.getName();
-
-    private static String imageTargetDir = CommonApp.getApplication().getDefaultImageDir();
-
-    private static String defaultImagePath = imageTargetDir + File.separator + "default.jpg";
-
+    private static final String imageTargetDir = CommonApp.getApplication().getDefaultImageDir();
+    private static final String defaultImagePath = imageTargetDir + File.separator + "default.jpg";
     private static final String PIC_AFTER_CROP = "pic_after_crop_";
-
-
-    //对话框的对象
-    private View avatarRootView;
     //Activity的上下文
-    private Context mContext;
+    private final Context mContext;
 
+    private View avatarRootView;
     private Uri mShareUri;
     private File mImageFile;
     private String mImageURL;
@@ -133,12 +129,15 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
         if (drawable != null) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            try {
-                IOUtils.write(defaultImagePath, stream.toByteArray());
-            } catch (IOException e) {
-                Log.e(TAG, "create default img:" + defaultImagePath + ",failed", e);
-            }
+            Completable.create(e -> bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)).subscribeOn(Schedulers.io()).subscribe(() -> {
+                try {
+                    IOUtils.write(defaultImagePath, stream.toByteArray());
+                } catch (IOException e) {
+                    Log.e(TAG, "create default img:" + defaultImagePath + ",failed", e);
+                }
+            });
+
+
         }
     }
 
@@ -316,14 +315,12 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
      * 提示用户选择拍照或者从相册选择
      */
     public class AvatarDialog extends AlertDialog {
-
+        //保存上下文
+        private final Context mContext;
         //按钮的点击事件
         private OnClickListener mPhotoButtonListener;
         private OnClickListener mChoosePicListener;
 
-
-        //保存上下文
-        Context mContext;
 
         private AvatarDialog(Context context) {
             super(context);

@@ -1,13 +1,9 @@
 package cn.aijiamuyingfang.weapp.manager.access.server.utils;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.commons.utils.CollectionUtils;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -35,7 +31,7 @@ public final class RxJavaUtils {
      * @param disposableList
      */
     public static void dispose(List<Disposable> disposableList) {
-        if (CollectionUtils.isEmpty(disposableList)) {
+        if (null == disposableList || disposableList.isEmpty()) {
             Log.i(TAG, "disposable list is empty");
             return;
         }

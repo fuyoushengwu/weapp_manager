@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/light_grey"
         android:clipToPadding="true"
         android:fitsSystemWindows="true"
@@ -35,14 +35,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="商品名"
+                    android:text="@string/Activity_Add_Good_Good_Name"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入商品名" />
+                    android:hint="@string/Activity_Add_Good_Good_Name_Tip" />
             </LinearLayout>
 
             <View style="@style/line_vertical" />
@@ -64,14 +64,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="规格"
+                    android:text="@string/Activity_Add_Good_Good_Pack"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入规格" />
+                    android:hint="@string/Activity_Add_Good_Good_Pack_Tip" />
             </LinearLayout>
 
             <View style="@style/line_vertical" />
@@ -93,14 +93,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="段数"
+                    android:text="@string/Activity_Add_Good_Good_Level"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -113,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入段数" />
+                    android:hint="@string/Activity_Add_Good_Good_Level_Tip" />
             </LinearLayout>
 
             <View style="@style/line_vertical" />
@@ -122,14 +122,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="条形码"
+                    android:text="@string/Activity_Add_Good_Good_BarCode"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入条形码" />
+                    android:hint="@string/Activity_Add_Good_Good_BarCode_Tip" />
             </LinearLayout>
 
             <View style="@style/line_vertical" />
@@ -151,14 +151,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="价格"
+                    android:text="@string/Activity_Add_Good_Good_Price"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -171,7 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入价格" />
+                    android:hint="@string/Activity_Add_Good_Good_Price_Tip" />
             </LinearLayout>
 
             <View style="@style/line_vertical" />
@@ -180,14 +180,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="数量"
+                    android:text="@string/Activity_Add_Good_Good_Count"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -200,21 +200,21 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入数量" />
+                    android:hint="@string/Activity_Add_Good_Good_Count_Tip" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="保质期"
+                    android:text="@string/Activity_Add_Good_Good_LifeTime"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -230,8 +230,7 @@
                         android:id="@+id/et_good_lifetime_start"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="请输入开始时间"
+                        android:hint="@string/Activity_Add_Good_Good_LifeTime_Start_Tip"
                         android:inputType="none"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
@@ -243,8 +242,7 @@
                         android:id="@+id/et_good_lifetime_end"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="请输入结束时间"
+                        android:hint="@string/Activity_Add_Good_Good_LifeTime_End_Tip"
                         android:inputType="none"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
@@ -258,14 +256,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="商品logo"
+                    android:text="@string/Activity_Add_Good_Good_Logo"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -275,7 +273,6 @@
                     android:id="@+id/iv_good_logo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:src="@drawable/company_logo" />
 
             </LinearLayout>
@@ -286,14 +283,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="商品详细信息"
+                    android:text="@string/Activity_Add_Good_Good_Detail"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -356,14 +353,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="商品积分"
+                    android:text="@string/Activity_Add_Good_Good_Score"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -376,7 +373,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入商品积分" />
+                    android:hint="@string/Activity_Add_Good_Good_Score_Tip" />
             </LinearLayout>
 
             <View style="@style/line_vertical" />
@@ -386,9 +383,7 @@
                 style="@style/bigRedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:text="关联兑换券" />
+                android:text="@string/Activity_Add_Good_GoodVoucher_Button" />
 
             <View style="@style/line_vertical" />
 
@@ -403,18 +398,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <Button
                     android:id="@+id/save_good"
                     style="@style/bigRedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
                     android:layout_weight="1"
-                    android:text="保存" />
+                    android:text="@string/Activity_Add_Good_Save_Button" />
 
                 <View style="@style/line_horizontal" />
 
@@ -423,10 +416,8 @@
                     style="@style/bigRedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
                     android:layout_weight="1"
-                    android:text="创建兑换项" />
+                    android:text="@string/Activity_Add_Good_Create_Voucher_Item_Button" />
 
 
             </LinearLayout>

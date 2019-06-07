@@ -31,18 +31,19 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    api project(':commons')
+    api 'cn.aijiamuyingfang:cn.aijiamuyingfang.client.android:0.0.2'
     api 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
     api 'com.squareup.retrofit2:retrofit:2.3.0'
     api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     api 'com.squareup.retrofit2:converter-gson:2.3.0'
     api 'com.squareup.retrofit2:converter-scalars:2.3.0'
     api 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 
-    api 'cn.aijiamuyingfang:cn.aijiamuyingfang.client.rest.android:0.0.1'
-    api project(':commons')
+    annotationProcessor 'org.projectlombok:lombok:1.16.18'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.1.1'
 }
 
 apply from: 'maven-release-aar.gradle'

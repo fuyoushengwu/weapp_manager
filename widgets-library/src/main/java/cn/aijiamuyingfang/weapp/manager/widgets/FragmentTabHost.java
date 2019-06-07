@@ -20,12 +20,11 @@ import java.util.List;
  * Created by pc on 2018/3/30.
  */
 
-public class FragmentTabHost extends TabHost implements
-        TabHost.OnTabChangeListener {
+public class FragmentTabHost extends TabHost implements TabHost.OnTabChangeListener {
     /**
      * 所有Tab信息
      */
-    private List<TabInfo> mTabInfos = new ArrayList<>();
+    private final List<TabInfo> mTabInfos = new ArrayList<>();
     /**
      * 最后一次操作的Tab
      */

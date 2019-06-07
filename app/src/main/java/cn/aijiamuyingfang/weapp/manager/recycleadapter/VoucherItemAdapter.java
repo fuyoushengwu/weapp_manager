@@ -11,14 +11,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.ResponseCode;
+import cn.aijiamuyingfang.client.domain.coupon.VoucherItem;
+import cn.aijiamuyingfang.client.domain.goods.Good;
 import cn.aijiamuyingfang.client.rest.api.GoodControllerApi;
-import cn.aijiamuyingfang.commons.domain.coupon.VoucherItem;
-import cn.aijiamuyingfang.commons.domain.goods.Good;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.GoodControllerClient;
-import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;
 import cn.aijiamuyingfang.weapp.manager.widgets.GlideUtils;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.CommonAdapter;
@@ -28,13 +27,12 @@ import io.reactivex.disposables.Disposable;
 
 public class VoucherItemAdapter extends CommonAdapter<VoucherItem> {
     private static final String TAG = VoucherItemAdapter.class.getName();
-    private GoodControllerApi goodControllerApi = new GoodControllerClient();
+    private static final GoodControllerApi goodControllerApi = new GoodControllerClient();
+    private final Set<VoucherItem> selectedItems = new HashSet<>();
     /**
      * checkbox的visibility属性值
      */
     private int checkboxVisible = View.GONE;
-
-    private Set<VoucherItem> selectedItems = new HashSet<>();
 
     public VoucherItemAdapter(Context context, List<VoucherItem> data) {
         super(context, data, R.layout.item_voucheritem);
@@ -42,10 +40,10 @@ public class VoucherItemAdapter extends CommonAdapter<VoucherItem> {
 
     @Override
     protected void convert(final RecyclerViewHolder viewHolder, final VoucherItem itemData, int position) {
-        String goodid = itemData.getGoodid();
+        String goodId = itemData.getGoodId();
         viewHolder.setText(R.id.item_name, itemData.getName());
         viewHolder.setText(R.id.item_score, itemData.getScore() + "");
-        goodControllerApi.getGood(CommonApp.getApplication().getUserToken(), goodid).subscribe(new Observer<ResponseBean<Good>>() {
+        goodControllerApi.getGood(goodId).subscribe(new Observer<ResponseBean<Good>>() {
             @Override
             public void onSubscribe(Disposable d) {
             }
@@ -55,7 +53,7 @@ public class VoucherItemAdapter extends CommonAdapter<VoucherItem> {
                 if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
                     Good good = responseBean.getData();
                     viewHolder.setText(R.id.good_name, good.getName());
-                    GlideUtils.load(mContext, good.getCoverImg(), (ImageView) viewHolder.getView(R.id.iv_view));
+                    GlideUtils.load(mContext, good.getCoverImg().getUrl(), (ImageView) viewHolder.getView(R.id.iv_view));
                 } else {
                     Log.e(TAG, responseBean.getMsg());
                     ToastUtils.showSafeToast(mContext, "因服务端的原因,获取兑换项相关的商品信息失败");

@@ -7,7 +7,7 @@ import android.util.SparseArray;
  */
 
 public class ItemViewDelegateManager<T> {
-    private SparseArray<ItemViewDelegate<T>> delegates = new SparseArray<>();
+    private final SparseArray<ItemViewDelegate<T>> delegates = new SparseArray<>();
 
     public int getItemViewDelegateCount() {
         return delegates.size();

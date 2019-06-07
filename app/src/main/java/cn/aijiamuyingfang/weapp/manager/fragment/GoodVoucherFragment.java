@@ -12,15 +12,14 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.coupon.GoodVoucher;
+import cn.aijiamuyingfang.client.domain.coupon.response.GetGoodVoucherListResponse;
 import cn.aijiamuyingfang.client.rest.api.CouponControllerApi;
-import cn.aijiamuyingfang.commons.domain.coupon.GoodVoucher;
-import cn.aijiamuyingfang.commons.domain.coupon.response.GetGoodVoucherListResponse;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.CouponControllerClient;
 import cn.aijiamuyingfang.weapp.manager.activity.GoodActionActivity;
 import cn.aijiamuyingfang.weapp.manager.activity.GoodVoucherActionActivity;
-import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.recycleadapter.GoodVoucherAdapter;
 import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
@@ -31,13 +30,13 @@ import io.reactivex.Observable;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class GoodVoucherFragment extends RefreshableBaseFragment<GoodVoucher, GetGoodVoucherListResponse> {
+    private static final CouponControllerApi couponControllerApi = new CouponControllerClient();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
 
     private int mCurrPage; // 当前页
     private int mTotalPage; // 总页数
     private GoodVoucherAdapter mGoodVoucherAdapter;
-    private CouponControllerApi couponControllerApi = new CouponControllerClient();
 
     @NonNull
     @Override
@@ -54,7 +53,7 @@ public class GoodVoucherFragment extends RefreshableBaseFragment<GoodVoucher, Ge
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(getContext(), GoodVoucherActionActivity.class);
-                intent.putExtra(Constant.INTENT_GOODVOUCHER, mAdapter.getData(position));
+                intent.putExtra(Constant.INTENT_GOOD_VOUCHER, mAdapter.getData(position));
                 startActivity(intent);
             }
 
@@ -74,7 +73,7 @@ public class GoodVoucherFragment extends RefreshableBaseFragment<GoodVoucher, Ge
             mToolBar.setRightButtonText("确认");
             mToolBar.setRightButtonOnClickListener(v -> {
                 Intent intent = new Intent();
-                intent.putExtra(Constant.INTENT_SELECTED_GOODVOUCHER, mGoodVoucherAdapter.getGoodVoucher());
+                intent.putExtra(Constant.INTENT_SELECTED_GOOD_VOUCHER, mGoodVoucherAdapter.getGoodVoucher());
                 Activity activity = GoodVoucherFragment.this.getActivity();
                 if (activity != null) {
                     activity.setResult(0, intent);
@@ -83,7 +82,7 @@ public class GoodVoucherFragment extends RefreshableBaseFragment<GoodVoucher, Ge
 
             });
             mGoodVoucherAdapter.setCheckboxVisible(View.VISIBLE);
-            GoodVoucher goodvoucher = bundle.getParcelable(Constant.INTENT_SELECTED_GOODVOUCHER);
+            GoodVoucher goodvoucher = bundle.getParcelable(Constant.INTENT_SELECTED_GOOD_VOUCHER);
             mGoodVoucherAdapter.setGoodVoucher(goodvoucher);
         } else {
             mToolBar.setRightButtonOnClickListener(v -> {
@@ -95,7 +94,7 @@ public class GoodVoucherFragment extends RefreshableBaseFragment<GoodVoucher, Ge
 
     @Override
     protected Observable<ResponseBean<GetGoodVoucherListResponse>> customGetData(int mCurrPage, int mPageSize) {
-        return couponControllerApi.getGoodVoucherList(CommonApp.getApplication().getUserToken(), mCurrPage, mPageSize);
+        return couponControllerApi.getGoodVoucherList(mCurrPage, mPageSize);
     }
 
     @Override

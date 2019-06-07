@@ -23,8 +23,8 @@ public class FragmentContainerActivity extends BaseActivity {
         FragmentTransaction fmt = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putString(Constant.INTENT_FRAGMENT_FROM, intent.getStringExtra(Constant.INTENT_FRAGMENT_FROM));
-        bundle.putParcelable(Constant.INTENT_SELECTED_GOODVOUCHER, intent.getParcelableExtra(Constant.INTENT_SELECTED_GOODVOUCHER));
-        bundle.putParcelableArrayList(Constant.INTENT_SELECTED_VOUCHERITEM, intent.getParcelableArrayListExtra(Constant.INTENT_SELECTED_VOUCHERITEM));
+        bundle.putParcelable(Constant.INTENT_SELECTED_GOOD_VOUCHER, intent.getParcelableExtra(Constant.INTENT_SELECTED_GOOD_VOUCHER));
+        bundle.putParcelableArrayList(Constant.INTENT_SELECTED_VOUCHER_ITEM, intent.getParcelableArrayListExtra(Constant.INTENT_SELECTED_VOUCHER_ITEM));
         fmt.add(R.id.realtabcontent, Fragment.instantiate(this, fragment, bundle), fragment);
         fmt.commit();
     }

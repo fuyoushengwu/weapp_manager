@@ -36,6 +36,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
+                    android:contentDescription="@string/Default_Content_Description"
                     android:src="@drawable/company_logo" />
 
                 <TextView

@@ -41,13 +41,13 @@ public final class Constant {
     public static final String INTENT_MESSAGE = "intent_message";
 
     /**
-     * intent中保存goodvoucher的key
+     * intent中保存GoodVoucher的key
      */
-    public static final String INTENT_GOODVOUCHER = "intent_goodvoucher";
+    public static final String INTENT_GOOD_VOUCHER = "intent_good_voucher";
     /**
-     * intent中保存voucheritem的key
+     * intent中保存VoucherItem的key
      */
-    public static final String INTENT_VOUCHERITEM = "intent_voucheritem";
+    public static final String INTENT_VOUCHER_ITEM = "intent_voucher_item";
 
     /**
      * intent中保存fragment name的key
@@ -62,27 +62,27 @@ public final class Constant {
     /**
      * intent中保存选中的兑换项的key
      */
-    public static final String INTENT_SELECTED_VOUCHERITEM = "intent_selected_voucheritem";
+    public static final String INTENT_SELECTED_VOUCHER_ITEM = "intent_selected_voucher_item";
 
 
     /**
      * intent中保存选中的兑换券的key
      */
-    public static final String INTENT_SELECTED_GOODVOUCHER = "intent_selected_goodvoucher";
+    public static final String INTENT_SELECTED_GOOD_VOUCHER = "intent_selected_good_voucher";
 
 
     /**
-     * EditableImageView打开系统照相机的requestcode
+     * EditableImageView打开系统照相机的RequestCode
      */
     public static final int REQUEST_IMAGE_BY_CAMERA = 2049;
 
     /**
-     * EditableImageView打开本地相册的requestcode
+     * EditableImageView打开本地相册的RequestCode
      */
     public static final int REQUEST_IMAGE_BY_SDCARD = 2050;
 
     /**
-     * GoodActionActivity打开GoodVoucherFragemnt的requestcode
+     * GoodActionActivity打开GoodVoucherFragment的RequestCode
      */
     public static final int REQUEST_GOOD_VOUCHER = 2051;
     /**

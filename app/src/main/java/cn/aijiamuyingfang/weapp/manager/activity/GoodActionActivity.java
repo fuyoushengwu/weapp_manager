@@ -13,23 +13,23 @@ import android.widget.EditText;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.ResponseCode;
+import cn.aijiamuyingfang.client.domain.coupon.GoodVoucher;
+import cn.aijiamuyingfang.client.domain.goods.Good;
+import cn.aijiamuyingfang.client.domain.goods.GoodDetail;
+import cn.aijiamuyingfang.client.domain.goods.ShelfLife;
 import cn.aijiamuyingfang.client.rest.api.ClassifyControllerApi;
 import cn.aijiamuyingfang.client.rest.api.CouponControllerApi;
 import cn.aijiamuyingfang.client.rest.api.GoodControllerApi;
-import cn.aijiamuyingfang.commons.domain.coupon.GoodVoucher;
-import cn.aijiamuyingfang.commons.domain.goods.Good;
-import cn.aijiamuyingfang.commons.domain.goods.GoodDetail;
-import cn.aijiamuyingfang.commons.domain.goods.ShelfLife;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
-import cn.aijiamuyingfang.commons.utils.StringUtils;
+import cn.aijiamuyingfang.client.rest.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.FragmentContainerActivity;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.ClassifyControllerClient;
@@ -55,6 +55,10 @@ import okhttp3.RequestBody;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class GoodActionActivity extends BaseActivity {
     private static final String TAG = GoodActionActivity.class.getName();
+    private static final ClassifyControllerApi classifyControllerApi = new ClassifyControllerClient();
+    private static final GoodControllerApi goodControllerApi = new GoodControllerClient();
+    private static final CouponControllerApi couponControllerApi = new CouponControllerClient();
+    private final List<Disposable> disposableList = new ArrayList<>();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
     @BindView(R.id.et_good_name)
@@ -107,10 +111,6 @@ public class GoodActionActivity extends BaseActivity {
      */
     private GoodVoucher mGoodVoucher;
 
-    private ClassifyControllerApi classifyControllerApi = new ClassifyControllerClient();
-    private GoodControllerApi goodControllerApi = new GoodControllerClient();
-    private CouponControllerApi couponControllerApi = new CouponControllerClient();
-    private List<Disposable> disposableList = new ArrayList<>();
     private Calendar mCalendar;
     private CustomDatePickerDialogFragment mLifeTimeStartDialog;
     private CustomDatePickerDialogFragment mLifeTimeEndDialog;
@@ -169,7 +169,7 @@ public class GoodActionActivity extends BaseActivity {
                 requestBodyBuilder.addFormDataPart("count", mCountEditText.getText().toString());
                 requestBodyBuilder.addFormDataPart("barcode", mBarCodeEditText.getText().toString());
                 requestBodyBuilder.addFormDataPart("price", mPriceEditText.getText().toString());
-                requestBodyBuilder.addFormDataPart("marketprice", mPriceEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("marketPrice", mPriceEditText.getText().toString());
                 requestBodyBuilder.addFormDataPart("level", mLevelEditText.getText().toString());
                 requestBodyBuilder.addFormDataPart("pack", mPackEditText.getText().toString());
                 String scoreStr = mGoodScoreEditText.getText().toString();
@@ -185,7 +185,7 @@ public class GoodActionActivity extends BaseActivity {
                 if (mGoodVoucher != null) {
                     requestBodyBuilder.addFormDataPart("voucherId", mGoodVoucher.getId() + "");
                 }
-                goodControllerApi.createGood(CommonApp.getApplication().getUserToken(), requestBodyBuilder.build()).subscribe(
+                goodControllerApi.createGood(requestBodyBuilder.build(), CommonApp.getApplication().getUserToken()).subscribe(
                         new Observer<ResponseBean<Good>>() {
                             @Override
                             public void onSubscribe(Disposable d) {
@@ -198,7 +198,7 @@ public class GoodActionActivity extends BaseActivity {
                                     mCurGood = responseBean.getData();
                                     if (StringUtils.hasContent(mCurSubClasifyId) && mCurGood !=
                                             null && StringUtils.hasContent(mCurGood.getId())) {
-                                        classifyControllerApi.addClassifyGood(CommonApp.getApplication().getUserToken(), mCurSubClasifyId, mCurGood.getId())
+                                        classifyControllerApi.addClassifyGood(mCurSubClasifyId, mCurGood.getId(), CommonApp.getApplication().getUserToken())
                                                 .subscribe(new Observer<ResponseBean<Void>>() {
                                                     @Override
                                                     public void onSubscribe(Disposable d) {
@@ -255,7 +255,7 @@ public class GoodActionActivity extends BaseActivity {
         Intent intent = new Intent(this, FragmentContainerActivity.class);
         intent.putExtra(Constant.INTENT_FRAGMENT_NAME, GoodVoucherFragment.class.getName());
         intent.putExtra(Constant.INTENT_FRAGMENT_FROM, GoodActionActivity.class.getName());
-        intent.putExtra(Constant.INTENT_SELECTED_GOODVOUCHER, mGoodVoucher);
+        intent.putExtra(Constant.INTENT_SELECTED_GOOD_VOUCHER, mGoodVoucher);
         startActivityForResult(intent, Constant.REQUEST_GOOD_VOUCHER);
     }
 
@@ -312,13 +312,13 @@ public class GoodActionActivity extends BaseActivity {
             if (monthOfYear > 9) {
                 sb.append(monthOfYear);
             } else {
-                sb.append("0" + monthOfYear);
+                sb.append("0").append(monthOfYear);
             }
             sb.append("-");
             if (dayOfMonth > 9) {
                 sb.append(dayOfMonth);
             } else {
-                sb.append("0" + dayOfMonth);
+                sb.append("0").append(dayOfMonth);
             }
 
             editText.setText(sb.toString());
@@ -351,7 +351,7 @@ public class GoodActionActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(GoodActionActivity.this, GoodVoucherActionActivity.class);
-                intent.putExtra(Constant.INTENT_GOODVOUCHER, mAdapter.getData(position));
+                intent.putExtra(Constant.INTENT_GOOD_VOUCHER, mAdapter.getData(position));
                 startActivity(intent);
             }
 
@@ -362,8 +362,8 @@ public class GoodActionActivity extends BaseActivity {
         });
     }
 
-    private void deleteGood(String goodid) {
-        goodControllerApi.deprecateGood(CommonApp.getApplication().getUserToken(), goodid).subscribe(new Observer<ResponseBean<Void>>() {
+    private void deleteGood(String goodId) {
+        goodControllerApi.deprecateGood(goodId, CommonApp.getApplication().getUserToken()).subscribe(new Observer<ResponseBean<Void>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposableList.add(d);
@@ -410,9 +410,9 @@ public class GoodActionActivity extends BaseActivity {
             mPriceEditText.setText(mCurGood.getPrice() + "");
             mCountEditText.setText(mCurGood.getCount() + "");
             mGoodScoreEditText.setText(mCurGood.getScore() + "");
-            GlideUtils.load(GoodActionActivity.this, mCurGood.getCoverImg(), mLogoImageView);
+            GlideUtils.load(GoodActionActivity.this, mCurGood.getCoverImg().getUrl(), mLogoImageView);
 
-            goodControllerApi.getGoodDetail(CommonApp.getApplication().getUserToken(), mCurGood.getId()).subscribe(new Observer<ResponseBean<GoodDetail>>() {
+            goodControllerApi.getGoodDetail(mCurGood.getId()).subscribe(new Observer<ResponseBean<GoodDetail>>() {
                 @Override
                 public void onSubscribe(Disposable d) {
                     disposableList.add(d);
@@ -430,7 +430,7 @@ public class GoodActionActivity extends BaseActivity {
                         EditableImageView[] imageViews = new EditableImageView[]{mDetail1ImageView, mDetail2ImageView, mDetail3ImageView,
                                 mDetail4ImageView, mDetail5ImageView, mDetail6ImageView,};
                         for (int i = 0; i < goodDetail.getDetailImgList().size(); i++) {
-                            GlideUtils.load(GoodActionActivity.this, goodDetail.getDetailImgList().get(i), imageViews[i]);
+                            GlideUtils.load(GoodActionActivity.this, goodDetail.getDetailImgList().get(i).getUrl(), imageViews[i]);
                         }
                     } else {
                         Log.e(TAG, responseBean.getMsg());
@@ -452,8 +452,8 @@ public class GoodActionActivity extends BaseActivity {
         }
     }
 
-    private void setGoodVoucher(String voucherid) {
-        couponControllerApi.getGoodVoucher(CommonApp.getApplication().getUserToken(), voucherid).subscribe(new Observer<ResponseBean<GoodVoucher>>() {
+    private void setGoodVoucher(String voucherId) {
+        couponControllerApi.getGoodVoucher(voucherId).subscribe(new Observer<ResponseBean<GoodVoucher>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposableList.add(d);
@@ -464,7 +464,7 @@ public class GoodActionActivity extends BaseActivity {
                 if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
                     mGoodVoucher = responseBean.getData();
                     mAdapter.clearData();
-                    mAdapter.setDatas(Arrays.asList(mGoodVoucher));
+                    mAdapter.setDatas(Collections.singletonList(mGoodVoucher));
                 } else {
                     Log.e(TAG, responseBean.getMsg());
                     ToastUtils.showSafeToast(GoodActionActivity.this, "因服务端的原因,获取商品的兑换券失败");
@@ -495,10 +495,10 @@ public class GoodActionActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (Constant.REQUEST_GOOD_VOUCHER == requestCode) {
-            mGoodVoucher = data.getParcelableExtra(Constant.INTENT_SELECTED_GOODVOUCHER);
+            mGoodVoucher = data.getParcelableExtra(Constant.INTENT_SELECTED_GOOD_VOUCHER);
             mAdapter.clearData();
             if (mGoodVoucher != null) {
-                mAdapter.setDatas(Arrays.asList(mGoodVoucher));
+                mAdapter.setDatas(Collections.singletonList(mGoodVoucher));
             }
             return;
         }

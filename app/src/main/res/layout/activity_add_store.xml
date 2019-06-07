@@ -6,12 +6,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+        android:layout_height="wrap_content"
         android:background="@color/light_grey"
         android:clipToPadding="true"
         android:fitsSystemWindows="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar
@@ -35,14 +35,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="店铺名称"
+                    android:text="@string/Activity_Add_Store_Name"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入店铺名称"
+                    android:hint="@string/Activity_Add_Store_Name_Tip"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -65,14 +65,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="开始营业时间"
+                    android:text="@string/Activity_Add_Store_Start_Time"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入开始营业时间"
+                    android:hint="@string/Activity_Add_Store_Start_Time_Tip"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -95,14 +95,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="结束营业时间"
+                    android:text="@string/Activity_Add_Store_End_Time"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入结束营业时间"
+                    android:hint="@string/Activity_Add_Store_End_Time_Tip"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -125,14 +125,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="联系地址"
+                    android:text="@string/Activity_Add_Store_Address"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -140,7 +140,7 @@
 
                 <TextView
                     android:id="@+id/store_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
@@ -155,14 +155,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="详细地址"
+                    android:text="@string/Activity_Add_Store_Detail_Address"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -174,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入详细地址"
+                    android:hint="@string/Activity_Add_Store_Detail_Address_Tip"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -185,9 +185,9 @@
                 android:id="@+id/lv_suggestions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/store_detail_address"
                 android:layout_alignLeft="@+id/store_detail_address"
                 android:layout_alignRight="@+id/store_detail_address"
-                android:layout_below="@+id/store_detail_address"
                 android:background="@android:color/white"
                 android:visibility="gone" />
 
@@ -195,14 +195,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="经度"
+                    android:text="@string/Activity_Add_Store_Longitude"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -220,7 +220,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="纬度"
+                    android:text="@string/Activity_Add_Store_Latitude"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -240,14 +240,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="联系电话"
+                    android:text="@string/Activity_Add_Store_Contact"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -259,7 +259,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="请输入联系电话"
+                    android:hint="@string/Activity_Add_Store_Contact_Tip"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -270,14 +270,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="门店封面"
+                    android:text="@string/Activity_Add_Store_Logo"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -297,14 +297,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/largePadding"
-                android:paddingTop="@dimen/largePadding">
+                android:paddingTop="@dimen/largePadding"
+                android:paddingBottom="@dimen/largePadding">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="门店图片"
+                    android:text="@string/Activity_Add_Store_Picture"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -388,10 +388,9 @@
                 style="@style/bigRedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:text="保存" />
-
+                android:layout_alignParentBottom="true"
+                android:text="@string/Activity_Add_Store_Save_Button" />
         </LinearLayout>
 
 

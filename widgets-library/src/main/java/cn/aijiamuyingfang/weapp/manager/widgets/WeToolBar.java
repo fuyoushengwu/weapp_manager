@@ -25,7 +25,7 @@ import cn.aijiamuyingfang.weapp.manager.commons.R;
  */
 @SuppressLint("RestrictedApi")
 public class WeToolBar extends Toolbar {
-    private Context context;
+    private final Context mContext;
 
     private View mView;
     private TextView mTextTitle;
@@ -43,7 +43,7 @@ public class WeToolBar extends Toolbar {
 
     public WeToolBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context = context;
+        this.mContext = context;
         initView();
         setContentInsetsRelative(10, 10);
 
@@ -109,7 +109,7 @@ public class WeToolBar extends Toolbar {
     }
 
     public void setRightButtonIcon(int icon) {
-        setRightButtonIcon(context.getDrawable(icon));
+        setRightButtonIcon(mContext.getDrawable(icon));
     }
 
 
@@ -148,8 +148,8 @@ public class WeToolBar extends Toolbar {
     public void showLeftButton() {
         mLeftButton.setVisibility(View.VISIBLE);
         mLeftButton.setOnClickListener(view -> {
-            ((Activity) context).finish();
-            ((Activity) context).overridePendingTransition(0, 0);
+            ((Activity) mContext).finish();
+            ((Activity) mContext).overridePendingTransition(0, 0);
         });
     }
 

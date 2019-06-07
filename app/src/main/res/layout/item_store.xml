@@ -21,8 +21,9 @@
             android:id="@+id/iv_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_weight="2"
+            android:contentDescription="@string/Default_Content_Description"
             android:scaleType="fitXY" />
 
         <LinearLayout
@@ -54,9 +55,7 @@
                 style="@style/bigRedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:text="进入店铺" />
+                android:text="@string/Item_Store_Button_Goto_Store" />
         </LinearLayout>
     </LinearLayout>
 

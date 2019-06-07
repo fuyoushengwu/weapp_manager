@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="@color/light_grey"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
@@ -21,7 +20,7 @@
         app:contentInsetEnd="56dp"
         app:isShowLeftIcon="true"
         app:isShowSearchView="false"
-        app:title="商品列表"></cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar>
+        app:title="商品列表"/>
 
 
     <com.cjj.MaterialRefreshLayout

@@ -10,6 +10,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
         android:background="@null"
+        android:contentDescription="@string/Default_Content_Description"
         android:src="@drawable/icon_back_32px"
         android:textColor="@color/white" />
 
@@ -22,7 +23,7 @@
         android:layout_gravity="center"
         android:drawableLeft="@drawable/icon_search"
         android:gravity="center"
-        android:text="请输入搜索内容"
+        android:text="@string/Tool_Bar_Search_Tip"
         android:textColor="@color/white"
         android:visibility="gone" />
 

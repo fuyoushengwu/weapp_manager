@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:clipToPadding="true"
         android:fitsSystemWindows="true"
         android:focusable="true"
@@ -27,14 +27,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/largePadding"
-            android:paddingTop="@dimen/largePadding">
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:text="消息标题"
+                android:text="@string/Activity_Message_Detail_Title"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:hint="请输入消息标题"
+                android:hint="@string/Activity_Message_Detail_Title_Tip"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -57,14 +57,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/largePadding"
-            android:paddingTop="@dimen/largePadding">
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:text="消息摘要"
+                android:text="@string/Activity_Message_Detail_Roundup"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:hint="请输入消息摘要"
+                android:hint="@string/Activity_Message_Detail_Roundup_Tip"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -87,14 +87,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/largePadding"
-            android:paddingTop="@dimen/largePadding">
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:text="消息内容"
+                android:text="@string/Activity_Message_Detail_Content"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:hint="请输入消息内容"
+                android:hint="@string/Activity_Message_Detail_Content_Tip"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -117,14 +117,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/largePadding"
-            android:paddingTop="@dimen/largePadding">
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:text="消息开始时间"
+                android:text="@string/Activity_Message_Detail_Start_Time"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -136,6 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
+                android:hint="@string/Activity_Message_Detail_Start_Time_Tip"
                 android:inputType="none"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -148,14 +149,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/largePadding"
-            android:paddingTop="@dimen/largePadding">
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:text="消息结束时间"
+                android:text="@string/Activity_Message_Detail_End_Time"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -167,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:hint="请输入消息结束时间"
+                android:hint="@string/Activity_Message_Detail_End_Time_Tip"
                 android:inputType="none"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -180,14 +181,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/largePadding"
-            android:paddingTop="@dimen/largePadding">
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:text="消息类型"
+                android:text="@string/Activity_Message_Detail_Type"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -197,7 +198,7 @@
                 android:id="@+id/message_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dialog"></Spinner>
+                android:spinnerMode="dialog" />
         </LinearLayout>
 
         <Button
@@ -205,8 +206,8 @@
             style="@style/bigRedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:text="保存" />
+            android:layout_alignParentBottom="true"
+            android:text="@string/Activity_Message_Detail_Save_Button" />
     </LinearLayout>
 </ScrollView>

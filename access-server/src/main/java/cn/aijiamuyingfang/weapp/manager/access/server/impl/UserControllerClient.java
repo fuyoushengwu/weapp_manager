@@ -2,11 +2,11 @@ package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
 import java.util.List;
 
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.user.RecieveAddress;
+import cn.aijiamuyingfang.client.domain.user.User;
+import cn.aijiamuyingfang.client.domain.user.response.GetUserPhoneResponse;
 import cn.aijiamuyingfang.client.rest.api.UserControllerApi;
-import cn.aijiamuyingfang.commons.domain.address.RecieveAddress;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.user.User;
-import cn.aijiamuyingfang.commons.domain.user.response.GetUserPhoneResponse;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
@@ -21,56 +21,54 @@ import io.reactivex.Observable;
  * @version 1.0.0
  */
 public class UserControllerClient implements UserControllerApi {
-    private static UserControllerApi instance;
+    private static final UserControllerApi instance;
 
     static {
         instance = RxRetrofitClient.createGApi(UserControllerApi.class);
     }
 
     @Override
-    public Observable<ResponseBean<User>> getUser(String token, String userid) {
-        return instance.getUser(token, userid).compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<User>> getUser(String username, String accessToken) {
+        return instance.getUser(username, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<GetUserPhoneResponse>> getUserPhone(String token, String userid) {
-        return instance.getUserPhone(token, userid).compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<User>> registerUser(User user, String accessToken) {
+        return instance.registerUser(user, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<User>> updateUser(String token, String userid, User user) {
-        return instance.updateUser(token, userid, user).compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<GetUserPhoneResponse>> getUserPhone(String username, String accessToken) {
+        return instance.getUserPhone(username, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<List<RecieveAddress>>> getUserRecieveAddressList(String token, String userid) {
-        return instance.getUserRecieveAddressList(token, userid)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<User>> updateUser(String username, User user, String accessToken) {
+        return instance.updateUser(username, user, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<RecieveAddress>> addUserRecieveAddress(String token, String userid,
-                                                                          RecieveAddress request) {
-        return instance.addUserRecieveAddress(token, userid, request)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<List<RecieveAddress>>> getUserRecieveAddressList(String username, String accessToken) {
+        return instance.getUserRecieveAddressList(username, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<RecieveAddress>> getRecieveAddress(String token, String userid, String addressid) {
-        return instance.getRecieveAddress(token, userid, addressid)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<RecieveAddress>> addUserRecieveAddress(String username, RecieveAddress request, String accessToken) {
+        return instance.addUserRecieveAddress(username, request, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<RecieveAddress>> updateRecieveAddress(String token, String userid, String addressid,
-                                                                         RecieveAddress request) {
-        return instance.updateRecieveAddress(token, userid, addressid, request)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<RecieveAddress>> getRecieveAddress(String username, String addressId, String accessToken) {
+        return instance.getRecieveAddress(username, addressId, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<Void>> deprecateRecieveAddress(String token, String userid, String addressid) {
-        return instance.deprecateRecieveAddress(token, userid, addressid)
-                .compose(RxJavaUtils.switchSchedulers());
+    public Observable<ResponseBean<RecieveAddress>> updateRecieveAddress(String username, String addressId, RecieveAddress request, String accessToken) {
+        return instance.updateRecieveAddress(username, addressId, request, accessToken).compose(RxJavaUtils.switchSchedulers());
+    }
+
+    @Override
+    public Observable<ResponseBean<Void>> deprecateRecieveAddress(String username, String addressId, String accessToken) {
+        return instance.deprecateRecieveAddress(username, addressId, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 }

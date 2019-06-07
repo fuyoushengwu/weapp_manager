@@ -28,11 +28,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.ResponseCode;
+import cn.aijiamuyingfang.client.domain.address.City;
+import cn.aijiamuyingfang.client.domain.address.County;
+import cn.aijiamuyingfang.client.domain.address.Province;
+import cn.aijiamuyingfang.client.domain.store.Store;
+import cn.aijiamuyingfang.client.domain.store.WorkTime;
 import cn.aijiamuyingfang.client.rest.api.StoreControllerApi;
-import cn.aijiamuyingfang.commons.domain.goods.Store;
-import cn.aijiamuyingfang.commons.domain.goods.WorkTime;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.StoreControllerClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
@@ -60,6 +63,7 @@ import okhttp3.RequestBody;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class StoreActionActivity extends BaseActivity {
     private static final String TAG = StoreActionActivity.class.getName();
+    private static final StoreControllerApi storeControllerApi = new StoreControllerClient();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
     @BindView(R.id.store_name)
@@ -103,8 +107,7 @@ public class StoreActionActivity extends BaseActivity {
     EditableImageView mStoreDetail9ImageView;
 
     private Store mCurStore;
-    private StoreControllerApi storeControllerApi = new StoreControllerClient();
-    private List<Disposable> storeDisposableList = new ArrayList<>();
+    private final List<Disposable> storeDisposableList = new ArrayList<>();
 
     private List<ProvinceViewData> provinceList = new ArrayList<>();
     private List<List<CityViewData>> cityList = new ArrayList<>();
@@ -204,7 +207,7 @@ public class StoreActionActivity extends BaseActivity {
             mStoreContactPhoneEditText.setText(mCurStore.getStoreAddress().getContactor());
 
             String address = "";
-            cn.aijiamuyingfang.commons.domain.address.Province province = mCurStore.getStoreAddress().getProvince();
+            Province province = mCurStore.getStoreAddress().getProvince();
             if (province != null) {
                 mCurProvinceJsonBean = new ProvinceViewData();
                 mCurProvinceJsonBean.setName(province.getName());
@@ -212,7 +215,7 @@ public class StoreActionActivity extends BaseActivity {
                 address = province.getName();
             }
 
-            cn.aijiamuyingfang.commons.domain.address.City city = mCurStore.getStoreAddress().getCity();
+            City city = mCurStore.getStoreAddress().getCity();
             if (city != null) {
                 mCurCityJsonBean = new CityViewData();
                 mCurCityJsonBean.setName(city.getName());
@@ -220,7 +223,7 @@ public class StoreActionActivity extends BaseActivity {
                 address += "-" + city.getName();
             }
 
-            cn.aijiamuyingfang.commons.domain.address.County county = mCurStore.getStoreAddress().getCounty();
+            County county = mCurStore.getStoreAddress().getCounty();
             if (county != null) {
                 mCurCountyJsonBean = new CountyViewData();
                 mCurCountyJsonBean.setName(county.getName());
@@ -231,13 +234,13 @@ public class StoreActionActivity extends BaseActivity {
             mStoreDetailAddressEditText.setText(mCurStore.getStoreAddress().getDetail());
             mStoreAddressLongitudeTextView.setText(mCurStore.getStoreAddress().getCoordinate().getLongitude() + "");
             mStoreAddressLatitudeTextView.setText(mCurStore.getStoreAddress().getCoordinate().getLatitude() + "");
-            GlideUtils.load(StoreActionActivity.this, mCurStore.getCoverImg(), mStoreCoverImageView);
+            GlideUtils.load(StoreActionActivity.this, mCurStore.getCoverImg().getUrl(), mStoreCoverImageView);
             EditableImageView[] imageViews = new EditableImageView[]{mStoreDetail1ImageView, mStoreDetail2ImageView,
                     mStoreDetail3ImageView, mStoreDetail4ImageView, mStoreDetail5ImageView,
                     mStoreDetail6ImageView, mStoreDetail7ImageView, mStoreDetail8ImageView,
                     mStoreDetail9ImageView,};
             for (int i = 0; i < mCurStore.getDetailImgList().size(); i++) {
-                GlideUtils.load(StoreActionActivity.this, mCurStore.getDetailImgList().get(i), imageViews[i]);
+                GlideUtils.load(StoreActionActivity.this, mCurStore.getDetailImgList().get(i).getUrl(), imageViews[i]);
             }
         }
     }
@@ -299,7 +302,7 @@ public class StoreActionActivity extends BaseActivity {
 
 
     private static class MyHandler extends Handler {
-        private WeakReference<StoreActionActivity> mActivity;
+        private final WeakReference<StoreActionActivity> mActivity;
 
         private MyHandler(StoreActionActivity activity) {
             mActivity = new WeakReference<>(activity);
@@ -433,7 +436,7 @@ public class StoreActionActivity extends BaseActivity {
     }
 
     private void deleteStore(String storeid) {
-        storeControllerApi.deprecateStore(CommonApp.getApplication().getUserToken(), storeid).subscribe(new Observer<ResponseBean<Void>>() {
+        storeControllerApi.deprecateStore(storeid, CommonApp.getApplication().getUserToken()).subscribe(new Observer<ResponseBean<Void>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 storeDisposableList.add(d);
@@ -516,7 +519,7 @@ public class StoreActionActivity extends BaseActivity {
                     requestBodyBuilder.addFormDataPart("id", mCurStore.getId() + "");
                     requestBodyBuilder.addFormDataPart("storeAddress.id", mCurStore.getStoreAddress().getId() + "");
                 }
-                storeControllerApi.createStore(CommonApp.getApplication().getUserToken(), requestBodyBuilder.build()).subscribe(new Observer<ResponseBean<Store>>() {
+                storeControllerApi.createStore(requestBodyBuilder.build(), CommonApp.getApplication().getUserToken()).subscribe(new Observer<ResponseBean<Store>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         storeDisposableList.add(d);
@@ -528,14 +531,14 @@ public class StoreActionActivity extends BaseActivity {
                             StoreActionActivity.this.finish();
                         } else {
                             Log.e(TAG, responseBean.getMsg());
-                            ToastUtils.showSafeToast(StoreActionActivity.this,"因服务端的原因,保存门店失败");
+                            ToastUtils.showSafeToast(StoreActionActivity.this, "因服务端的原因,保存门店失败");
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "create store failed", e);
-                        ToastUtils.showSafeToast(StoreActionActivity.this,"因客户端的原因,保存门店失败");
+                        ToastUtils.showSafeToast(StoreActionActivity.this, "因客户端的原因,保存门店失败");
                     }
 
                     @Override

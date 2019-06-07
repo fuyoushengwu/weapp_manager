@@ -21,11 +21,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.ResponseCode;
+import cn.aijiamuyingfang.client.domain.message.UserMessage;
+import cn.aijiamuyingfang.client.domain.message.UserMessageType;
 import cn.aijiamuyingfang.client.rest.api.UserMessageControllerApi;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
-import cn.aijiamuyingfang.commons.domain.user.UserMessage;
-import cn.aijiamuyingfang.commons.domain.user.UserMessageType;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.UserMessageControllerClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
@@ -42,6 +42,8 @@ import io.reactivex.disposables.Disposable;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class MessageActionActivity extends BaseActivity {
     private static final String TAG = MessageActionActivity.class.getName();
+    private static final UserMessageControllerApi userMessageControllerApi = new UserMessageControllerClient();
+    private final List<Disposable> userDisposableList = new ArrayList<>();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
     @BindView(R.id.message_title)
@@ -62,8 +64,6 @@ public class MessageActionActivity extends BaseActivity {
     private Calendar mFinishCalendar;
     private CustomDatePickerDialogFragment mFinishTimeDialog;
     private UserMessage mCurMessage;
-    private UserMessageControllerApi userMessageControllerApi = new UserMessageControllerClient();
-    private List<Disposable> userDisposableList = new ArrayList<>();
 
     @Override
     protected void init() {
@@ -79,7 +79,7 @@ public class MessageActionActivity extends BaseActivity {
             mToolBar.setRightButtonText("删除");
             mToolBar.setRightButtonOnClickListener(v -> {
                 mToolBar.getRightButton().setClickable(false);
-                userMessageControllerApi.deleteMessage(CommonApp.getApplication().getUserToken(), CommonApp.getApplication().getUserId(), mCurMessage.getId()).subscribe(new Observer<ResponseBean<Void>>() {
+                userMessageControllerApi.deleteMessage(CommonApp.getApplication().getUsername(), mCurMessage.getId(), CommonApp.getApplication().getUserToken()).subscribe(new Observer<ResponseBean<Void>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         userDisposableList.add(d);
@@ -170,7 +170,7 @@ public class MessageActionActivity extends BaseActivity {
     private void saveMessage() {
         mSaveButton.setClickable(false);
         UserMessage userMessage = new UserMessage();
-        userMessage.setUserid(CommonApp.getApplication().getUserId());
+        userMessage.setUsername(CommonApp.getApplication().getUsername());
         userMessage.setTitle(mTitleEditText.getText().toString());
         userMessage.setRoundup(mRoundupEditText.getText().toString());
         userMessage.setContent(mContentEditText.getText().toString());
@@ -181,7 +181,7 @@ public class MessageActionActivity extends BaseActivity {
         if (mCurMessage != null) {
             userMessage.setId(mCurMessage.getId());
         }
-        userMessageControllerApi.createMessage(CommonApp.getApplication().getUserToken(), CommonApp.getApplication().getUserId(), userMessage).subscribe(new Observer<ResponseBean<UserMessage>>() {
+        userMessageControllerApi.createMessage(CommonApp.getApplication().getUsername(), userMessage, CommonApp.getApplication().getUserToken()).subscribe(new Observer<ResponseBean<UserMessage>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 userDisposableList.add(d);
@@ -244,13 +244,13 @@ public class MessageActionActivity extends BaseActivity {
             if (monthOfYear > 9) {
                 sb.append(monthOfYear);
             } else {
-                sb.append("0" + monthOfYear);
+                sb.append("0").append(monthOfYear);
             }
             sb.append("-");
             if (dayOfMonth > 9) {
                 sb.append(dayOfMonth);
             } else {
-                sb.append("0" + dayOfMonth);
+                sb.append("0").append(dayOfMonth);
             }
 
             editText.setText(sb.toString() + " 00:00:00");

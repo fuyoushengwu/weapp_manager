@@ -3,8 +3,6 @@ package cn.aijiamuyingfang.weapp.manager.commons;
 import android.app.Application;
 import android.os.Environment;
 
-import cn.aijiamuyingfang.commons.constants.AuthConstants;
-
 //全局Context
 public class CommonApp extends Application {
     private static CommonApp application;
@@ -19,7 +17,7 @@ public class CommonApp extends Application {
 
     private String userToken;
 
-    private String userId;
+    private String username;
 
 
     @Override
@@ -34,12 +32,12 @@ public class CommonApp extends Application {
                 .getAbsolutePath() + "/" + application.getPackageName() + "/httpcache/";
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getUserToken() {
@@ -47,7 +45,7 @@ public class CommonApp extends Application {
     }
 
     public void setUserToken(String userToken) {
-        this.userToken = AuthConstants.TOKEN_PREFIX + userToken;
+        this.userToken = userToken;
     }
 
     public String getDefaultImageDir() {

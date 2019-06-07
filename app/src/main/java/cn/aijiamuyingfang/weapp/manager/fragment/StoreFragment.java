@@ -10,14 +10,13 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.store.Store;
+import cn.aijiamuyingfang.client.domain.store.response.GetInUseStoreListResponse;
 import cn.aijiamuyingfang.client.rest.api.StoreControllerApi;
-import cn.aijiamuyingfang.commons.domain.goods.Store;
-import cn.aijiamuyingfang.commons.domain.goods.response.GetInUseStoreListResponse;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.StoreControllerClient;
 import cn.aijiamuyingfang.weapp.manager.activity.StoreActionActivity;
-import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.recycleadapter.StoreAdapter;
 import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
@@ -28,12 +27,12 @@ import io.reactivex.Observable;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class StoreFragment extends RefreshableBaseFragment<Store, GetInUseStoreListResponse> {
+    private static final StoreControllerApi storeControllerApi = new StoreControllerClient();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
 
     private int mCurrPage; // 当前页
     private int mTotalPage; // 总页数
-    private StoreControllerApi storeControllerApi = new StoreControllerClient();
 
     @NonNull
     @Override
@@ -71,7 +70,7 @@ public class StoreFragment extends RefreshableBaseFragment<Store, GetInUseStoreL
 
     @Override
     protected Observable<ResponseBean<GetInUseStoreListResponse>> customGetData(int mCurrPage, int mPageSize) {
-        return storeControllerApi.getInUseStoreList(CommonApp.getApplication().getUserToken(), mCurrPage, mPageSize);
+        return storeControllerApi.getInUseStoreList(mCurrPage, mPageSize);
     }
 
     @Override

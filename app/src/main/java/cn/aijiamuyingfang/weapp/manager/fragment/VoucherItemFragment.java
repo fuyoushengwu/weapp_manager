@@ -13,15 +13,14 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.coupon.VoucherItem;
+import cn.aijiamuyingfang.client.domain.coupon.response.GetVoucherItemListResponse;
 import cn.aijiamuyingfang.client.rest.api.CouponControllerApi;
-import cn.aijiamuyingfang.commons.domain.coupon.VoucherItem;
-import cn.aijiamuyingfang.commons.domain.coupon.response.GetVoucherItemListResponse;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.CouponControllerClient;
 import cn.aijiamuyingfang.weapp.manager.activity.GoodVoucherActionActivity;
 import cn.aijiamuyingfang.weapp.manager.activity.VoucherItemActionActivity;
-import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.recycleadapter.VoucherItemAdapter;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.CommonAdapter;
@@ -32,13 +31,13 @@ import io.reactivex.Observable;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class VoucherItemFragment extends RefreshableBaseFragment<VoucherItem, GetVoucherItemListResponse> {
+    private static final CouponControllerApi couponControllerApi = new CouponControllerClient();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
 
     private int mCurrPage; // 当前页
     private int mTotalPage; // 总页数
     private VoucherItemAdapter mVoucherItemAdapter;
-    private CouponControllerApi couponControllerApi = new CouponControllerClient();
 
     @NonNull
     @Override
@@ -57,7 +56,7 @@ public class VoucherItemFragment extends RefreshableBaseFragment<VoucherItem, Ge
                 Intent intent = new Intent(getContext(), VoucherItemActionActivity.class);
                 VoucherItem voucheritem = getData(position);
                 if (voucheritem != null) {
-                    intent.putExtra(Constant.INTENT_VOUCHERITEM, voucheritem);
+                    intent.putExtra(Constant.INTENT_VOUCHER_ITEM, voucheritem);
                 }
                 startActivity(intent);
             }
@@ -79,7 +78,7 @@ public class VoucherItemFragment extends RefreshableBaseFragment<VoucherItem, Ge
                 Intent intent = new Intent();
                 List<VoucherItem> voucherItemList = mVoucherItemAdapter.getSelectedItems();
                 if (voucherItemList != null && !voucherItemList.isEmpty()) {
-                    intent.putParcelableArrayListExtra(Constant.INTENT_SELECTED_VOUCHERITEM, (ArrayList<? extends Parcelable>) voucherItemList);
+                    intent.putParcelableArrayListExtra(Constant.INTENT_SELECTED_VOUCHER_ITEM, (ArrayList<? extends Parcelable>) voucherItemList);
                 }
 
                 Activity activity = VoucherItemFragment.this.getActivity();
@@ -90,7 +89,7 @@ public class VoucherItemFragment extends RefreshableBaseFragment<VoucherItem, Ge
             });
             mToolBar.showLeftButton();
             mVoucherItemAdapter.setCheckboxVisible(View.VISIBLE);
-            List<VoucherItem> selectedHolderCartItems = bundle.getParcelableArrayList(Constant.INTENT_SELECTED_VOUCHERITEM);
+            List<VoucherItem> selectedHolderCartItems = bundle.getParcelableArrayList(Constant.INTENT_SELECTED_VOUCHER_ITEM);
             mVoucherItemAdapter.setSelectedItems(selectedHolderCartItems);
             mVoucherItemAdapter.notifyDataSetChanged();
         } else {
@@ -103,7 +102,7 @@ public class VoucherItemFragment extends RefreshableBaseFragment<VoucherItem, Ge
 
     @Override
     protected Observable<ResponseBean<GetVoucherItemListResponse>> customGetData(int mCurrPage, int mPageSize) {
-        return couponControllerApi.getVoucherItemList(CommonApp.getApplication().getUserToken(), mCurrPage, mPageSize);
+        return couponControllerApi.getVoucherItemList(mCurrPage, mPageSize);
     }
 
     @Override

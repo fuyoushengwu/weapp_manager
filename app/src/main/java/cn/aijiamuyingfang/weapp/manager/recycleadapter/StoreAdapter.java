@@ -6,7 +6,7 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.commons.domain.goods.Store;
+import cn.aijiamuyingfang.client.domain.store.Store;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
@@ -24,7 +24,7 @@ public class StoreAdapter extends CommonAdapter<Store> {
     protected void convert(RecyclerViewHolder viewHolder, final Store itemData, int position) {
         viewHolder.setText(R.id.text_name, itemData.getName());
         viewHolder.setText(R.id.text_address, itemData.getStoreAddress().getDetail());
-        GlideUtils.load(CommonApp.getApplication(), itemData.getCoverImg(), (ImageView) viewHolder.getView(R.id.iv_view));
+        GlideUtils.load(CommonApp.getApplication(), itemData.getCoverImg().getUrl(), (ImageView) viewHolder.getView(R.id.iv_view));
         viewHolder.setOnClickListener(R.id.goto_store, v -> {
             Intent intent = new Intent();
             intent.setAction(Constant.BROADCAST_ACTION_TAB_SELECTED);

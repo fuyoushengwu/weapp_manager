@@ -1,17 +1,15 @@
-// 1.maven-插件
 apply plugin: 'maven'
 
-// 2.maven-信息
 ext {
     PUBLISH_GROUP_ID = 'cn.aijiamuyingfang.android'
     PUBLISH_ARTIFACT_ID = 'cn.aijiamuyingfang.android.access.server'
     PUBLISH_VERSION = android.defaultConfig.versionName
 }
 
-// 3.maven-输出路径
 uploadArchives {
     repositories.mavenDeployer {
-        def localMavenRepo = 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+
+        def localMavenRepo = 'file://' + new File(System.getenv("M2_HOME"),'.m2/repository').absolutePath
         repository(url: localMavenRepo)
 
         pom.project {

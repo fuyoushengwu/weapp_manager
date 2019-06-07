@@ -11,11 +11,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.Calendar;
 
-import butterknife.OnClick;
 import cn.aijiamuyingfang.weapp.manager.R;
 
 public class CustomDatePickerDialogFragment extends DialogFragment implements DatePicker.OnDateChangedListener, View.OnClickListener {
@@ -25,10 +23,7 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
     private Calendar currentDate;
     private Calendar startDate;
     private Calendar endDate;
-
     private DatePicker datePicker;
-    private TextView backButton;
-    private TextView ensureButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +39,7 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (null == inflater) {
-            return super.onCreateView(inflater, container, savedInstanceState);
+            return super.onCreateView(null, container, savedInstanceState);
         }
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         Window window = getDialog().getWindow();
@@ -65,10 +60,8 @@ public class CustomDatePickerDialogFragment extends DialogFragment implements Da
         super.onViewCreated(view, savedInstanceState);
         if (view != null) {
             datePicker = view.findViewById(R.id.datePickerView);
-            backButton = view.findViewById(R.id.back);
-            backButton.setOnClickListener(this);
-            ensureButton = view.findViewById(R.id.ensure);
-            ensureButton.setOnClickListener(this);
+            view.findViewById(R.id.back).setOnClickListener(this);
+            view.findViewById(R.id.ensure).setOnClickListener(this);
             // bug4:LOLLIPOP和Marshmallow上，使用spinner模式，然后隐藏滚轮，显示日历(spinner模式下的日历没有头部)，日历最底部一排日期被截去部分。
             // 所以只能使用calender模式，然后手动隐藏header（系统没有提供隐藏header的api）。
             // 如果只要日历部分，隐藏header

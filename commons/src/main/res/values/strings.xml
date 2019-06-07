@@ -5,4 +5,7 @@
     <string name="photo_btn_show">拍 照</string>
     <string name="choose_pic_btn_show">从手机相册选择</string>
     <string name="title_show">选择Logo</string>
+
+    <string name="Default_Content_Description">Default_Content_Description</string>
+    <string name="Tool_Bar_Search_Tip">请输入搜索内容</string>
 </resources>

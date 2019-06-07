@@ -20,11 +20,12 @@ import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_READ_TI
 import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_WRITE_TIMEOUT;
 
 public class RxRetrofitClient {
+
     private OkHttpClient httpclient;
     private Retrofit retrofit;
 
     public RxRetrofitClient() {
-        final OkHttpClient.Builder httpclientBuilder = ClientRestUtils.getOkHttpClientBuilder(DEFAULT_HOST_NAME,
+        final OkHttpClient.Builder httpclientBuilder = ClientRestUtils.getOkHttpClientBuilder("192.168.0.203:8080"/*DEFAULT_HOST_NAME*/,
                 DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT, DEFAULT_WRITE_TIMEOUT);
         PermissionActivity.checkAndRequestPermission(null, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 () -> {
@@ -36,7 +37,7 @@ public class RxRetrofitClient {
                 });
         httpclient = httpclientBuilder.build();
 
-        Retrofit.Builder retrofitBuilder = ClientRestUtils.getRetrofitBuilder(DEFAULT_BASE_URL)
+        Retrofit.Builder retrofitBuilder = ClientRestUtils.getRetrofitBuilder("http://192.168.0.203:8080"/*DEFAULT_BASE_URL*/)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
         retrofit = retrofitBuilder.client(httpclient).build();
     }
@@ -62,5 +63,4 @@ public class RxRetrofitClient {
     public static <K> K createGApi(final Class<K> cls) {
         return getInstance().retrofit.create(cls);
     }
-
 }

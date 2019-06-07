@@ -10,10 +10,10 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.message.UserMessage;
+import cn.aijiamuyingfang.client.domain.message.response.GetMessagesListResponse;
 import cn.aijiamuyingfang.client.rest.api.UserMessageControllerApi;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.user.UserMessage;
-import cn.aijiamuyingfang.commons.domain.user.response.GetMessagesListResponse;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.UserMessageControllerClient;
 import cn.aijiamuyingfang.weapp.manager.activity.MessageActionActivity;
@@ -28,13 +28,13 @@ import io.reactivex.Observable;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class MessageFragment extends RefreshableBaseFragment<UserMessage, GetMessagesListResponse> {
+    private static final UserMessageControllerApi userMessageControllerApi = new UserMessageControllerClient();
 
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
 
     private int mCurrPage; // 当前页
     private int mTotalPage; // 总页数
-    private UserMessageControllerApi userMessageControllerApi = new UserMessageControllerClient();
 
     @NonNull
     @Override
@@ -72,7 +72,7 @@ public class MessageFragment extends RefreshableBaseFragment<UserMessage, GetMes
 
     @Override
     protected Observable<ResponseBean<GetMessagesListResponse>> customGetData(int mCurrPage, int mPageSize) {
-        return userMessageControllerApi.getUserMessageList(CommonApp.getApplication().getUserToken(), CommonApp.getApplication().getUserId(), mCurrPage, mPageSize);
+        return userMessageControllerApi.getUserMessageList(CommonApp.getApplication().getUsername(), mCurrPage, mPageSize, CommonApp.getApplication().getUserToken());
     }
 
     @Override

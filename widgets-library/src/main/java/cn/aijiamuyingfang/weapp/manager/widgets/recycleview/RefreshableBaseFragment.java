@@ -2,7 +2,6 @@ package cn.aijiamuyingfang.weapp.manager.widgets.recycleview;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,9 +12,9 @@ import com.cjj.MaterialRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.aijiamuyingfang.commons.domain.PageResponse;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
+import cn.aijiamuyingfang.client.domain.PageResponse;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.ResponseCode;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.fragment.BaseFragment;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;
@@ -31,6 +30,7 @@ import io.reactivex.disposables.Disposable;
  */
 public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> extends BaseFragment {
     private static final String TAG = RefreshableBaseFragment.class.getName();
+    private final List<Disposable> disposableList = new ArrayList<>();
     /**
      * 页面状态:初始化
      */
@@ -55,7 +55,6 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
     private MaterialRefreshLayout mRefreshLaout;
     protected RecyclerView mRecyclerView;
     protected CommonAdapter<E> mAdapter;
-    private List<Disposable> disposableList = new ArrayList<>();
 
     /**
      * @return 当前请求的是第几页
@@ -177,7 +176,7 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
             public void onNext(ResponseBean<V> responseBean) {
                 if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
                     PageResponse<E> response = responseBean.getData();
-                    setCurrentPage(response.getCurrentpage());
+                    setCurrentPage(response.getCurrentPage());
                     setTotalPage(response.getTotalpage());
                     List<E> serverDataList = response.getDataList();
                     List<E> beforeDataList = customBeforeServerData();

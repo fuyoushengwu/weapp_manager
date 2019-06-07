@@ -17,11 +17,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.aijiamuyingfang.client.domain.ImageSource;
+import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.domain.ResponseCode;
+import cn.aijiamuyingfang.client.domain.classify.Classify;
 import cn.aijiamuyingfang.client.rest.api.ClassifyControllerApi;
-import cn.aijiamuyingfang.commons.domain.goods.Classify;
-import cn.aijiamuyingfang.commons.domain.response.ResponseBean;
-import cn.aijiamuyingfang.commons.domain.response.ResponseCode;
-import cn.aijiamuyingfang.commons.utils.StringUtils;
+import cn.aijiamuyingfang.client.rest.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.GoodsListActivity;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.ClassifyControllerClient;
@@ -41,6 +42,8 @@ import io.reactivex.disposables.Disposable;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class ClassifyFragment extends BaseFragment {
     private static final String TAG = ClassifyFragment.class.getName();
+    private static final ClassifyControllerApi classifyControllerApi = new ClassifyControllerClient();
+    private final List<Disposable> classifyDisposableList = new ArrayList<>();
     @BindView(R.id.toolbar)
     WeToolBar weToolBar;
     //顶层条目界面相关的属性
@@ -51,14 +54,11 @@ public class ClassifyFragment extends BaseFragment {
     @BindView(R.id.sub_classify)
     RecyclerView mSubRecycler;
     private SubClassifyAdapter mSubClassifyAdapter;
-
     /**
      * 当前顶层条目的ID
      */
     private String mCurTopClassifyId;
 
-    private ClassifyControllerApi classifyControllerApi = new ClassifyControllerClient();
-    private List<Disposable> classifyDisposableList = new ArrayList<>();
 
     @Override
     public int getContentResourceId() {
@@ -133,7 +133,7 @@ public class ClassifyFragment extends BaseFragment {
 
 
     private void requestTopClassifies() {
-        classifyControllerApi.getTopClassifyList(CommonApp.getApplication().getUserToken()).subscribe(new Observer<ResponseBean<List<Classify>>>() {
+        classifyControllerApi.getTopClassifyList().subscribe(new Observer<ResponseBean<List<Classify>>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 classifyDisposableList.add(d);
@@ -171,7 +171,7 @@ public class ClassifyFragment extends BaseFragment {
 
     private void requestSubClassify(final String classifyId) {
         this.mCurTopClassifyId = classifyId;
-        classifyControllerApi.getSubClassifyList(CommonApp.getApplication().getUserToken(), classifyId).subscribe(new Observer<ResponseBean<List<Classify>>>() {
+        classifyControllerApi.getSubClassifyList(classifyId).subscribe(new Observer<ResponseBean<List<Classify>>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 classifyDisposableList.add(d);
@@ -184,7 +184,7 @@ public class ClassifyFragment extends BaseFragment {
                     Classify addClassify = new Classify();
                     addClassify.setLevel(2);
                     addClassify.setName("添加");
-                    addClassify.setCoverImg(getString(R.string.add_logo));
+                    addClassify.setCoverImg(new ImageSource("", getString(R.string.add_logo)));
                     subClassifies.add(0, addClassify);
                     mSubClassifyAdapter.setDatas(responseBean.getData());
                 } else {
@@ -225,7 +225,7 @@ public class ClassifyFragment extends BaseFragment {
                     Classify classify = new Classify();
                     classify.setLevel(1);
                     classify.setName(userInput.getText().toString());
-                    classifyControllerApi.createTopClassify(CommonApp.getApplication().getUserToken(), classify).subscribe(new Observer<ResponseBean<Classify>>() {
+                    classifyControllerApi.createTopClassify(classify, CommonApp.getApplication().getUserToken()).subscribe(new Observer<ResponseBean<Classify>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
                             classifyDisposableList.add(d);

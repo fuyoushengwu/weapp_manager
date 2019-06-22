@@ -1,6 +1,6 @@
 package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
-import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
 import cn.aijiamuyingfang.client.domain.message.UserMessage;
 import cn.aijiamuyingfang.client.domain.message.response.GetMessagesListResponse;
 import cn.aijiamuyingfang.client.rest.api.UserMessageControllerApi;

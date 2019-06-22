@@ -11,8 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import cn.aijiamuyingfang.client.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.ResponseCode;
+import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
+import cn.aijiamuyingfang.client.commons.domain.ResponseCode;
 import cn.aijiamuyingfang.client.domain.coupon.VoucherItem;
 import cn.aijiamuyingfang.client.domain.goods.Good;
 import cn.aijiamuyingfang.client.rest.api.GoodControllerApi;

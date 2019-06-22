@@ -2,7 +2,7 @@ package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
 import cn.aijiamuyingfang.client.domain.previeworder.PreviewOrder;
 import cn.aijiamuyingfang.client.domain.previeworder.PreviewOrderItem;
 import cn.aijiamuyingfang.client.rest.api.PreviewOrderControllerApi;

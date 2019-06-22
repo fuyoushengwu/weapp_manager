@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.List;
 
-import cn.aijiamuyingfang.client.rest.utils.StringUtils;
+import cn.aijiamuyingfang.client.commons.utils.StringUtils;
 
 
 public final class JsonUtils {

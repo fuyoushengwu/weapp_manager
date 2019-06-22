@@ -30,7 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import cn.aijiamuyingfang.client.rest.utils.StringUtils;
+import cn.aijiamuyingfang.client.commons.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.PermissionActivity;
@@ -38,7 +38,6 @@ import cn.aijiamuyingfang.weapp.manager.commons.utils.FileUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.IOUtils;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**

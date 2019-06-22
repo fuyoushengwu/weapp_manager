@@ -11,7 +11,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.aijiamuyingfang.client.domain.ImageSource;
-import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
 import cn.aijiamuyingfang.client.domain.classify.response.GetClassifyGoodListResponse;
 import cn.aijiamuyingfang.client.domain.goods.Good;
 import cn.aijiamuyingfang.client.rest.api.GoodControllerApi;

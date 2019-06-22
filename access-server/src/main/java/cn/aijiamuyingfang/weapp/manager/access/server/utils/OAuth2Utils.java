@@ -4,15 +4,13 @@ import android.util.Log;
 
 import java.io.IOException;
 
-import cn.aijiamuyingfang.client.domain.ResponseCode;
-import cn.aijiamuyingfang.client.domain.exception.OAuthException;
+import cn.aijiamuyingfang.client.commons.domain.ResponseCode;
+import cn.aijiamuyingfang.client.commons.exception.OAuthException;
 import cn.aijiamuyingfang.client.oauth2.Constants;
 import cn.aijiamuyingfang.client.oauth2.OAuth2Client;
 import cn.aijiamuyingfang.client.oauth2.OAuthResponse;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
-import lombok.experimental.UtilityClass;
 
-import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_BASE_URL;
 
 /**
  * OAuth2工具类

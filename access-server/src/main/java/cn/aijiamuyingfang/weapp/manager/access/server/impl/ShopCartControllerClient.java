@@ -1,6 +1,6 @@
 package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
-import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
 import cn.aijiamuyingfang.client.domain.shopcart.ShopCart;
 import cn.aijiamuyingfang.client.domain.shopcart.response.GetShopCartListResponse;
 import cn.aijiamuyingfang.client.domain.shoporder.request.CreateShopCartRequest;

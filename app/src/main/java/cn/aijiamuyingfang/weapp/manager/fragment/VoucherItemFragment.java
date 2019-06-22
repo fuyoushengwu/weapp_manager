@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
 import cn.aijiamuyingfang.client.domain.coupon.VoucherItem;
 import cn.aijiamuyingfang.client.domain.coupon.response.GetVoucherItemListResponse;
 import cn.aijiamuyingfang.client.rest.api.CouponControllerApi;

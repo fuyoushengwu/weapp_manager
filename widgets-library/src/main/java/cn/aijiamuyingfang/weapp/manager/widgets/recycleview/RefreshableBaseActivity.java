@@ -13,9 +13,9 @@ import com.cjj.MaterialRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.aijiamuyingfang.client.domain.PageResponse;
-import cn.aijiamuyingfang.client.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.ResponseCode;
+import cn.aijiamuyingfang.client.commons.domain.PageResponse;
+import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
+import cn.aijiamuyingfang.client.commons.domain.ResponseCode;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.BaseActivity;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;

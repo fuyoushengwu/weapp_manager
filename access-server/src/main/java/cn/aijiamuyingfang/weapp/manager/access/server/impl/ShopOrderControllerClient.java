@@ -4,7 +4,7 @@ package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 import java.util.List;
 import java.util.Map;
 
-import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
 import cn.aijiamuyingfang.client.domain.previeworder.response.GetFinishedPreOrderListResponse;
 import cn.aijiamuyingfang.client.domain.previeworder.response.GetPreOrderGoodListResponse;
 import cn.aijiamuyingfang.client.domain.shoporder.SendType;

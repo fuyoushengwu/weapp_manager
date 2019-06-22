@@ -4,7 +4,8 @@ import android.Manifest;
 
 import java.io.File;
 
-import cn.aijiamuyingfang.client.rest.utils.ClientRestUtils;
+import cn.aijiamuyingfang.client.commons.constant.ClientRestConstants;
+import cn.aijiamuyingfang.client.commons.utils.RetrofitUtils;
 import cn.aijiamuyingfang.weapp.manager.access.server.interceptor.RxCacheInterceptor;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.PermissionActivity;
@@ -13,11 +14,6 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_CONNECT_TIMEOUT;
-import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_HOST_NAME;
-import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_BASE_URL;
-import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_READ_TIMEOUT;
-import static cn.aijiamuyingfang.client.rest.ClientRestConstants.DEFAULT_WRITE_TIMEOUT;
 
 public class RxRetrofitClient {
 
@@ -25,8 +21,7 @@ public class RxRetrofitClient {
     private Retrofit retrofit;
 
     public RxRetrofitClient() {
-        final OkHttpClient.Builder httpclientBuilder = ClientRestUtils.getOkHttpClientBuilder("192.168.0.203:8080"/*DEFAULT_HOST_NAME*/,
-                DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT, DEFAULT_WRITE_TIMEOUT);
+        final OkHttpClient.Builder httpclientBuilder = RetrofitUtils.getOkHttpClientBuilder( ClientRestConstants.DEFAULT_CONNECT_TIMEOUT, ClientRestConstants.DEFAULT_READ_TIMEOUT, ClientRestConstants.DEFAULT_WRITE_TIMEOUT);
         PermissionActivity.checkAndRequestPermission(null, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 () -> {
                     RxCacheInterceptor cacheInterceptor = new RxCacheInterceptor();
@@ -37,7 +32,7 @@ public class RxRetrofitClient {
                 });
         httpclient = httpclientBuilder.build();
 
-        Retrofit.Builder retrofitBuilder = ClientRestUtils.getRetrofitBuilder("http://192.168.0.203:8080"/*DEFAULT_BASE_URL*/)
+        Retrofit.Builder retrofitBuilder = RetrofitUtils.getRetrofitBuilder( ClientRestConstants.DEFAULT_BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
         retrofit = retrofitBuilder.client(httpclient).build();
     }

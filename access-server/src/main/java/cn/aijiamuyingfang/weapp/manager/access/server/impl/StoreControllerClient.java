@@ -2,7 +2,7 @@ package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.client.domain.ResponseBean;
+import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
 import cn.aijiamuyingfang.client.domain.store.Store;
 import cn.aijiamuyingfang.client.domain.store.StoreAddress;
 import cn.aijiamuyingfang.client.domain.store.response.GetDefaultStoreIdResponse;

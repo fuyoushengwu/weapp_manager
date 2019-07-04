@@ -11,6 +11,8 @@ import cn.aijiamuyingfang.client.oauth2.OAuth2Client;
 import cn.aijiamuyingfang.client.oauth2.OAuthResponse;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 
+import static cn.aijiamuyingfang.client.commons.constant.ClientRestConstants.DEFAULT_BASE_URL;
+
 
 /**
  * OAuth2工具类
@@ -21,7 +23,7 @@ public final class OAuth2Utils {
     private static OAuthResponse oAuthResponse;
 
     static {
-        OAuth2Client.Builder builder = new OAuth2Client.Builder("weapp-manager", "weapp-manager", "http://192.168.0.203:8080"/*DEFAULT_BASE_URL*/ + "/oauth/token")
+        OAuth2Client.Builder builder = new OAuth2Client.Builder("weapp-manager", "weapp-manager", DEFAULT_BASE_URL +"/oauth/token")
                 .scope("read,write")
                 .okHttpClient(RxRetrofitClient.getHttpClient());
         oauth2Client = builder.build();

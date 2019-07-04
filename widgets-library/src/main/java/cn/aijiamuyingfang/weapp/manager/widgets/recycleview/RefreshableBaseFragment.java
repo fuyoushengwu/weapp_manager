@@ -62,9 +62,9 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
     public abstract int getCurrentPage();
 
     /**
-     * @param currentpage 当前请求的是第几页
+     * @param currentPage 当前请求的是第几页
      */
-    public abstract void setCurrentPage(int currentpage);
+    public abstract void setCurrentPage(int currentPage);
 
     /**
      * @return 一共有多少页
@@ -72,9 +72,9 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
     public abstract int getTotalPage();
 
     /**
-     * @param totalpage 一共有多少页
+     * @param totalPage 一共有多少页
      */
-    public abstract void setTotalPage(int totalpage);
+    public abstract void setTotalPage(int totalPage);
 
     @Override
     public int getContentResourceId() {
@@ -213,22 +213,22 @@ public abstract class RefreshableBaseFragment<E, V extends PageResponse<E>> exte
                 break;
             case STATE_INIT:
                 mAdapter.clearData();
-                mAdapter.setDatas(dataList);
+                mAdapter.setDataList(dataList);
                 mRecyclerView.scrollToPosition(0);
                 mRefreshLaout.finishRefresh();
                 mCurState = STATE_NORMAL;
                 break;
             case STATE_REFRESH:
                 mAdapter.clearData();
-                mAdapter.setDatas(dataList);
+                mAdapter.setDataList(dataList);
                 mRecyclerView.scrollToPosition(0);
                 mRefreshLaout.finishRefresh();
                 ToastUtils.showSafeToast(mContext, "刷新完成");
                 mCurState = STATE_NORMAL;
                 break;
             case STATE_MORE:
-                mAdapter.addData(mAdapter.getDatas().size(), dataList);
-                mRecyclerView.scrollToPosition(mAdapter.getDatas().size());
+                mAdapter.addData(mAdapter.getDataList().size(), dataList);
+                mRecyclerView.scrollToPosition(mAdapter.getDataList().size());
                 mRefreshLaout.finishRefreshLoadMore();
                 mCurState = STATE_NORMAL;
                 break;

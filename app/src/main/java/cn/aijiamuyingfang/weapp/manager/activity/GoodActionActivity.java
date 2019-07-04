@@ -115,13 +115,13 @@ public class GoodActionActivity extends BaseActivity {
     private CustomDatePickerDialogFragment mLifeTimeStartDialog;
     private CustomDatePickerDialogFragment mLifeTimeEndDialog;
 
-    @OnClick({R.id.save_good, R.id.save_voucheritem, R.id.add_goodvoucher, R.id.et_good_lifetime_start, R.id.et_good_lifetime_end})
+    @OnClick({R.id.save_good, R.id.create_voucherItem, R.id.add_goodvoucher, R.id.et_good_lifetime_start, R.id.et_good_lifetime_end})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.save_good:
                 saveGood();
                 break;
-            case R.id.save_voucheritem:
+            case R.id.create_voucherItem:
                 Intent intent = new Intent(GoodActionActivity.this, VoucherItemActionActivity.class);
                 intent.putExtra(Constant.INTENT_GOOD, mCurGood);
                 startActivity(intent);
@@ -464,7 +464,7 @@ public class GoodActionActivity extends BaseActivity {
                 if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
                     mGoodVoucher = responseBean.getData();
                     mAdapter.clearData();
-                    mAdapter.setDatas(Collections.singletonList(mGoodVoucher));
+                    mAdapter.setDataList(Collections.singletonList(mGoodVoucher));
                 } else {
                     Log.e(TAG, responseBean.getMsg());
                     ToastUtils.showSafeToast(GoodActionActivity.this, "因服务端的原因,获取商品的兑换券失败");
@@ -495,10 +495,11 @@ public class GoodActionActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (Constant.REQUEST_GOOD_VOUCHER == requestCode) {
+            if (null == data) return;
             mGoodVoucher = data.getParcelableExtra(Constant.INTENT_SELECTED_GOOD_VOUCHER);
             mAdapter.clearData();
             if (mGoodVoucher != null) {
-                mAdapter.setDatas(Collections.singletonList(mGoodVoucher));
+                mAdapter.setDataList(Collections.singletonList(mGoodVoucher));
             }
             return;
         }

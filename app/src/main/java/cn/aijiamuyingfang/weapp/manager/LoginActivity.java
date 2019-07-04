@@ -14,7 +14,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.aijiamuyingfang.client.oauth2.OAuthResponse;
 import cn.aijiamuyingfang.client.commons.utils.StringUtils;
-import cn.aijiamuyingfang.weapp.manager.access.server.utils.OAuth2Utils;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.BaseActivity;
@@ -34,6 +32,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static cn.aijiamuyingfang.weapp.manager.access.server.utils.OAuth2Utils.getAccessToken;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class LoginActivity extends BaseActivity {
@@ -129,7 +129,7 @@ public class LoginActivity extends BaseActivity {
 
         showProgress(true);
         Observable.create((ObservableOnSubscribe<OAuthResponse>) e -> {
-            OAuthResponse oAuthResponse = OAuth2Utils.getAccessToken(username, password);
+            OAuthResponse oAuthResponse = getAccessToken(username, password);
             e.onNext(oAuthResponse);
             e.onComplete();
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<OAuthResponse>() {

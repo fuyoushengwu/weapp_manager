@@ -129,7 +129,7 @@ public class GoodVoucherActionActivity extends BaseActivity {
             mScoreEditText.setText(mCurGoodVoucher.getScore() + "");
             mDescriptionEditText.setText(mCurGoodVoucher.getDescription());
             mAdapter.clearData();
-            mAdapter.setDatas(mVoucheritemList);
+            mAdapter.setDataList(mVoucheritemList);
         }
     }
 
@@ -147,7 +147,7 @@ public class GoodVoucherActionActivity extends BaseActivity {
                 public void onNext(ResponseBean<VoucherItem> responseBean) {
                     if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
                         GoodVoucherActionActivity.this.mVoucheritemList.add(responseBean.getData());
-                        GoodVoucherActionActivity.this.mAdapter.setDatas(GoodVoucherActionActivity.this.mVoucheritemList);
+                        GoodVoucherActionActivity.this.mAdapter.setDataList(GoodVoucherActionActivity.this.mVoucheritemList);
                     } else {
                         Log.e(TAG, responseBean.getMsg());
                         ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "因服务端的原因,获取兑换项失败");
@@ -235,9 +235,12 @@ public class GoodVoucherActionActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mAdapter.clearData();
+        if (null == data) {
+            return;
+        }
         mVoucheritemList = data.getParcelableArrayListExtra(Constant.INTENT_SELECTED_VOUCHER_ITEM);
-        mAdapter.setDatas(mVoucheritemList);
+        mAdapter.clearData();
+        mAdapter.setDataList(mVoucheritemList);
     }
 
     @Override

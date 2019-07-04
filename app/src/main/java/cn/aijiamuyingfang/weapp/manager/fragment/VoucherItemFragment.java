@@ -92,11 +92,6 @@ public class VoucherItemFragment extends RefreshableBaseFragment<VoucherItem, Ge
             List<VoucherItem> selectedHolderCartItems = bundle.getParcelableArrayList(Constant.INTENT_SELECTED_VOUCHER_ITEM);
             mVoucherItemAdapter.setSelectedItems(selectedHolderCartItems);
             mVoucherItemAdapter.notifyDataSetChanged();
-        } else {
-            mToolBar.setRightButtonOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), VoucherItemActionActivity.class);
-                startActivity(intent);
-            });
         }
     }
 
@@ -116,8 +111,8 @@ public class VoucherItemFragment extends RefreshableBaseFragment<VoucherItem, Ge
     }
 
     @Override
-    public void setCurrentPage(int currentpage) {
-        this.mCurrPage = currentpage;
+    public void setCurrentPage(int currentPage) {
+        this.mCurrPage = currentPage;
     }
 
     @Override
@@ -126,7 +121,7 @@ public class VoucherItemFragment extends RefreshableBaseFragment<VoucherItem, Ge
     }
 
     @Override
-    public void setTotalPage(int totalpage) {
-        this.mTotalPage = totalpage;
+    public void setTotalPage(int totalPage) {
+        this.mTotalPage = totalPage;
     }
 }

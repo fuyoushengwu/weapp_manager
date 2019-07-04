@@ -37,7 +37,9 @@ import cn.aijiamuyingfang.weapp.manager.commons.activity.PermissionActivity;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.FileUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.IOUtils;
 import io.reactivex.Completable;
-import io.reactivex.Observable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -95,7 +97,7 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
     }
 
     public void init() {
-        Observable.create(e -> {
+        Completable.create(e -> {
             //初始化图片目录
             initIMGDir();
             //初始化默认图片
@@ -103,9 +105,21 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
             //初始化图片文件
             initFile();
             e.onComplete();
-        }).subscribeOn(Schedulers.io()).subscribe(o -> {
-        }, o -> {
-        }, () -> Log.i(TAG, "init finished"));
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "Editable Image View Init Success");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "Editable Image View Init Failed", e);
+            }
+        });
     }
 
     private void initIMGDir() {
@@ -128,15 +142,16 @@ public class EditableImageView extends android.support.v7.widget.AppCompatImageV
         if (drawable != null) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            Completable.create(e -> bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)).subscribeOn(Schedulers.io()).subscribe(() -> {
+            Completable.create(e -> {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                e.onComplete();
+            }).subscribeOn(Schedulers.io()).subscribe(() -> {
                 try {
                     IOUtils.write(defaultImagePath, stream.toByteArray());
                 } catch (IOException e) {
                     Log.e(TAG, "create default img:" + defaultImagePath + ",failed", e);
                 }
             });
-
-
         }
     }
 

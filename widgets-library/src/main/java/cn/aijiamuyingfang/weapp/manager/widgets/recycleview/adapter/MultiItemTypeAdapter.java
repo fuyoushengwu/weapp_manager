@@ -71,22 +71,17 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<RecyclerViewHo
     /**
      * 设置Adapter数据
      *
-     * @param datas
+     * @param dataList
      */
-    public void setDatas(List<T> datas) {
-        if (datas != null) {
-            this.mDataList = datas;
+    public void setDataList(List<T> dataList) {
+        if (dataList != null) {
             this.notifyDataSetChanged();
+            this.mDataList = dataList;
         }
     }
 
-    public List<T> getDatas() {
+    public List<T> getDataList() {
         return mDataList;
-    }
-
-    public void removeData(int position) {
-        mDataList.remove(position);
-        notifyItemRangeRemoved(position, 1);
     }
 
     /**
@@ -100,17 +95,13 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<RecyclerViewHo
     }
 
     public void clearData() {
-        this.mDataList.clear();
         notifyItemRangeRemoved(0, this.mDataList.size());
+        this.mDataList.clear();
     }
 
-    public void addData(List<T> datas) {
-        addData(0, datas);
-    }
-
-    public void addData(int position, List<T> datas) {
-        if (datas != null && !datas.isEmpty()) {
-            mDataList.addAll(datas);
+    public void addData(int position, List<T> dataList) {
+        if (dataList != null && !dataList.isEmpty()) {
+            mDataList.addAll(dataList);
             notifyItemRangeChanged(position, mDataList.size());
         }
 

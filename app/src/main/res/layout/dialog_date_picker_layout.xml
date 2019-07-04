@@ -32,7 +32,7 @@
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="@strig/Dialog_Date_Picker_Layout_Back"
+            android:text="@string/Dialog_Date_Picker_Layout_Back"
             android:textColor="@android:color/black" />
 
         <View

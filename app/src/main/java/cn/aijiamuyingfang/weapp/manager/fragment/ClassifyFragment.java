@@ -143,7 +143,7 @@ public class ClassifyFragment extends BaseFragment {
             public void onNext(ResponseBean<List<Classify>> responseBean) {
                 if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
                     List<Classify> classifyList = responseBean.getData();
-                    mTopClassifyAdapter.setDatas(classifyList);
+                    mTopClassifyAdapter.setDataList(classifyList);
                     mSubClassifyAdapter.clearData();
                     if (StringUtils.hasContent(mCurTopClassifyId)) {
                         requestSubClassify(mCurTopClassifyId);
@@ -186,7 +186,7 @@ public class ClassifyFragment extends BaseFragment {
                     addClassify.setName("添加");
                     addClassify.setCoverImg(new ImageSource("", getString(R.string.add_logo)));
                     subClassifies.add(0, addClassify);
-                    mSubClassifyAdapter.setDatas(responseBean.getData());
+                    mSubClassifyAdapter.setDataList(responseBean.getData());
                 } else {
                     Log.e(TAG, responseBean.getMsg());
                     ToastUtils.showSafeToast(mContext, "因服务端的原因,获取顶层条目的所有子条目失败");

@@ -21,7 +21,7 @@ public class RxRetrofitClient {
     private Retrofit retrofit;
 
     public RxRetrofitClient() {
-        final OkHttpClient.Builder httpclientBuilder = RetrofitUtils.getOkHttpClientBuilder( ClientRestConstants.DEFAULT_CONNECT_TIMEOUT, ClientRestConstants.DEFAULT_READ_TIMEOUT, ClientRestConstants.DEFAULT_WRITE_TIMEOUT);
+        final OkHttpClient.Builder httpclientBuilder = RetrofitUtils.getOkHttpClientBuilder(ClientRestConstants.DEFAULT_CONNECT_TIMEOUT, ClientRestConstants.DEFAULT_READ_TIMEOUT, ClientRestConstants.DEFAULT_WRITE_TIMEOUT);
         PermissionActivity.checkAndRequestPermission(null, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 () -> {
                     RxCacheInterceptor cacheInterceptor = new RxCacheInterceptor();
@@ -32,7 +32,7 @@ public class RxRetrofitClient {
                 });
         httpclient = httpclientBuilder.build();
 
-        Retrofit.Builder retrofitBuilder = RetrofitUtils.getRetrofitBuilder( ClientRestConstants.DEFAULT_BASE_URL)
+        Retrofit.Builder retrofitBuilder = RetrofitUtils.getRetrofitBuilder(ClientRestConstants.DEFAULT_BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
         retrofit = retrofitBuilder.client(httpclient).build();
     }

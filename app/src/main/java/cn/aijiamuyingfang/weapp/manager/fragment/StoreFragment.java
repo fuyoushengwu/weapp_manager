@@ -84,8 +84,8 @@ public class StoreFragment extends RefreshableBaseFragment<Store, GetInUseStoreL
     }
 
     @Override
-    public void setCurrentPage(int currentpage) {
-        this.mCurrPage = currentpage;
+    public void setCurrentPage(int currentPage) {
+        this.mCurrPage = currentPage;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class StoreFragment extends RefreshableBaseFragment<Store, GetInUseStoreL
     }
 
     @Override
-    public void setTotalPage(int totalpage) {
-        this.mTotalPage = totalpage;
+    public void setTotalPage(int totalPage) {
+        this.mTotalPage = totalPage;
     }
 }

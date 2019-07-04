@@ -19,7 +19,6 @@ public class CommonApp extends Application {
 
     private String username;
 
-
     @Override
     public void onCreate() {
         super.onCreate();

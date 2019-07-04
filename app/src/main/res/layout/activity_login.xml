@@ -173,7 +173,6 @@
                 android:text="@string/Activity_Login_Button"
                 android:textColor="#fff"
                 android:textSize="18sp" />
-
         </RelativeLayout>
 
     </ScrollView>

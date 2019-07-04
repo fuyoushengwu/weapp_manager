@@ -86,8 +86,8 @@ public class MessageFragment extends RefreshableBaseFragment<UserMessage, GetMes
     }
 
     @Override
-    public void setCurrentPage(int currentpage) {
-        this.mCurrPage = currentpage;
+    public void setCurrentPage(int currentPage) {
+        this.mCurrPage = currentPage;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class MessageFragment extends RefreshableBaseFragment<UserMessage, GetMes
     }
 
     @Override
-    public void setTotalPage(int totalpage) {
-        this.mTotalPage = totalpage;
+    public void setTotalPage(int totalPage) {
+        this.mTotalPage = totalPage;
     }
 }

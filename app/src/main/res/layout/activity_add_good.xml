@@ -412,7 +412,7 @@
                 <View style="@style/line_horizontal" />
 
                 <Button
-                    android:id="@+id/save_voucheritem"
+                    android:id="@+id/create_voucherItem"
                     style="@style/bigRedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

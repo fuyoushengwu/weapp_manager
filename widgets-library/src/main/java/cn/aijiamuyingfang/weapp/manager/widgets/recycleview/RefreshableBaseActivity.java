@@ -51,6 +51,7 @@ public abstract class RefreshableBaseActivity<E, V extends PageResponse<E>> exte
     private int mCurState = STATE_NORMAL;
     private int mCurrPage = 1;//当前请求的是第几页
     private int mTotalPage = 1;//一共有多少页
+    protected int mCurrPosition = 0;//当前位置
     private MaterialRefreshLayout mRefreshLaout;
     private RecyclerView mRecyclerView;
     protected CommonAdapter<E> mAdapter;
@@ -181,14 +182,14 @@ public abstract class RefreshableBaseActivity<E, V extends PageResponse<E>> exte
                 break;
             case STATE_REFRESH:
                 mAdapter.clearData();
-                mAdapter.setDatas(dataList);
-                mRecyclerView.scrollToPosition(0);
+                mAdapter.setDataList(dataList);
+                mRecyclerView.scrollToPosition(mCurrPosition);
                 mRefreshLaout.finishRefresh();
                 mCurState = STATE_NORMAL;
                 break;
             case STATE_MORE:
-                mAdapter.addData(mAdapter.getDatas().size(), dataList);
-                mRecyclerView.scrollToPosition(mAdapter.getDatas().size());
+                mAdapter.addData(mAdapter.getDataList().size(), dataList);
+                mRecyclerView.scrollToPosition(mAdapter.getDataList().size());
                 mRefreshLaout.finishRefreshLoadMore();
                 mCurState = STATE_NORMAL;
                 break;

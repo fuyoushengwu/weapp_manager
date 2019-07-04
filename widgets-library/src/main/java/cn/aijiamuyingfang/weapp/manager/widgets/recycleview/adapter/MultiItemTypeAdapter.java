@@ -84,6 +84,11 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<RecyclerViewHo
         return mDataList;
     }
 
+    public void removeData(int position) {
+        mDataList.remove(position);
+        notifyItemRangeRemoved(position, 1);
+    }
+
     /**
      * 获取Adapter某个位置对应的数据
      *

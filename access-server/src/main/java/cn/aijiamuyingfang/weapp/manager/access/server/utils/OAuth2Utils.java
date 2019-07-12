@@ -23,7 +23,7 @@ public final class OAuth2Utils {
     private static OAuthResponse oAuthResponse;
 
     static {
-        OAuth2Client.Builder builder = new OAuth2Client.Builder("weapp-manager", "weapp-manager", DEFAULT_BASE_URL +"/oauth/token")
+        OAuth2Client.Builder builder = new OAuth2Client.Builder("weapp-manager", "weapp-manager", DEFAULT_BASE_URL + "/oauth/token")
                 .scope("read,write")
                 .okHttpClient(RxRetrofitClient.getHttpClient());
         oauth2Client = builder.build();
@@ -45,11 +45,12 @@ public final class OAuth2Utils {
             oauth2Client.setUsername(userName);
             oauth2Client.setPassword(password);
             oauth2Client.setGrantType(Constants.GRANT_TYPE_PASSWORD);
-            oAuthResponse = oauth2Client.requestAccessToken();
-            if (!oAuthResponse.isSuccessful()) {
-                Log.e(TAG, "get access token failed", oAuthResponse.getOAuthError().getCause());
-                throw new OAuthException(ResponseCode.BAD_REQUEST, oAuthResponse.getOAuthError().getDescirption());
+            OAuthResponse response = oauth2Client.requestAccessToken();
+            if (!response.isSuccessful()) {
+                Log.e(TAG, "get access token failed", response.getOAuthError() != null ? response.getOAuthError().getCause() : null);
+                throw new OAuthException(ResponseCode.BAD_REQUEST, response.getOAuthError().getDescirption());
             }
+            oAuthResponse = response;
         }
         return oAuthResponse;
     }
@@ -65,11 +66,12 @@ public final class OAuth2Utils {
             throw new IllegalStateException("should get access token before refresh");
         }
         oauth2Client.setGrantType(Constants.GRANT_TYPE_REFRESH);
-        oAuthResponse = oauth2Client.refreshAccessToken(oAuthResponse.getRefreshToken());
-        if (!oAuthResponse.isSuccessful()) {
-            Log.e(TAG, "refresh access token failed", oAuthResponse.getOAuthError().getCause());
-            throw new OAuthException(ResponseCode.BAD_REQUEST, oAuthResponse.getOAuthError().getDescirption());
+        OAuthResponse response = oauth2Client.refreshAccessToken(oAuthResponse.getRefreshToken());
+        if (!response.isSuccessful()) {
+            Log.e(TAG, "refresh access token failed", response.getOAuthError() != null ? response.getOAuthError().getCause() : null);
+            throw new OAuthException(ResponseCode.BAD_REQUEST, response.getOAuthError().getDescirption());
         }
+        oAuthResponse = response;
         return oAuthResponse;
     }
 }

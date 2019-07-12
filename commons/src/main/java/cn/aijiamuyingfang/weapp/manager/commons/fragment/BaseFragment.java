@@ -16,7 +16,6 @@ import butterknife.ButterKnife;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public abstract class BaseFragment extends Fragment {
     protected View fragmentView;
-    protected Bundle mSavedInstanceState;
     protected LayoutInflater mInflater;
     protected Context mContext;
 
@@ -30,7 +29,6 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         mInflater = inflater;
-        mSavedInstanceState = savedInstanceState;
         fragmentView = mInflater.inflate(getContentResourceId(), null);
         ButterKnife.bind(this, fragmentView);
         init();

@@ -14,10 +14,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.commons.domain.ResponseCode;
-import cn.aijiamuyingfang.client.domain.coupon.GoodVoucher;
-import cn.aijiamuyingfang.client.domain.coupon.VoucherItem;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
+import cn.aijiamuyingfang.vo.response.ResponseCode;
+import cn.aijiamuyingfang.vo.coupon.GoodVoucher;
+import cn.aijiamuyingfang.vo.coupon.VoucherItem;
 import cn.aijiamuyingfang.client.rest.api.CouponControllerApi;
 import cn.aijiamuyingfang.weapp.manager.FragmentContainerActivity;
 import cn.aijiamuyingfang.weapp.manager.R;
@@ -134,38 +134,9 @@ public class GoodVoucherActionActivity extends BaseActivity {
     }
 
     private void initVoucherItemList(GoodVoucher goodVoucher) {
-        List<String> voucherItemIdList = goodVoucher.getVoucherItemIdList();
-        GoodVoucherActionActivity.this.mVoucheritemList.clear();
-        for (String itemId : voucherItemIdList) {
-            couponControllerApi.getVoucherItem(itemId).subscribe(new Observer<ResponseBean<VoucherItem>>() {
-                @Override
-                public void onSubscribe(Disposable d) {
-                    couponDisposableList.add(d);
-                }
-
-                @Override
-                public void onNext(ResponseBean<VoucherItem> responseBean) {
-                    if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                        GoodVoucherActionActivity.this.mVoucheritemList.add(responseBean.getData());
-                        GoodVoucherActionActivity.this.mAdapter.setDataList(GoodVoucherActionActivity.this.mVoucheritemList);
-                    } else {
-                        Log.e(TAG, responseBean.getMsg());
-                        ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "因服务端的原因,获取兑换项失败");
-                    }
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    Log.e(TAG, "get voucher item failed", e);
-                    ToastUtils.showSafeToast(GoodVoucherActionActivity.this, "因客户端的原因,获取兑换项失败");
-                }
-
-                @Override
-                public void onComplete() {
-                    Log.i(TAG, "get voucher item complete");
-                }
-            });
-        }
+        mVoucheritemList.clear();
+        mVoucheritemList.addAll(goodVoucher.getVoucherItemList());
+        mAdapter.setDataList(mVoucheritemList);
     }
 
     @OnClick({R.id.save_goodvoucher, R.id.add_voucher_item})
@@ -187,11 +158,7 @@ public class GoodVoucherActionActivity extends BaseActivity {
         goodvoucher.setName(mNameEditText.getText().toString());
         goodvoucher.setDescription(mDescriptionEditText.getText().toString());
         goodvoucher.setScore(Integer.parseInt(mScoreEditText.getText().toString()));
-        List<String> voucheritemidList = new ArrayList<>();
-        for (VoucherItem item : mVoucheritemList) {
-            voucheritemidList.add(item.getId());
-        }
-        goodvoucher.setVoucherItemIdList(voucheritemidList);
+        goodvoucher.setVoucherItemList(mVoucheritemList);
         if (mCurGoodVoucher != null) {
             goodvoucher.setId(mCurGoodVoucher.getId());
         }

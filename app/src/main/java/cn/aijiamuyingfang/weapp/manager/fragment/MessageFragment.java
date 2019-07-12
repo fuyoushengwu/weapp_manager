@@ -10,10 +10,10 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.message.UserMessage;
-import cn.aijiamuyingfang.client.domain.message.response.GetMessagesListResponse;
 import cn.aijiamuyingfang.client.rest.api.UserMessageControllerApi;
+import cn.aijiamuyingfang.vo.message.PagableUserMessageList;
+import cn.aijiamuyingfang.vo.message.UserMessage;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.UserMessageControllerClient;
 import cn.aijiamuyingfang.weapp.manager.activity.MessageActionActivity;
@@ -27,7 +27,7 @@ import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.OnItemClickL
 import io.reactivex.Observable;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
-public class MessageFragment extends RefreshableBaseFragment<UserMessage, GetMessagesListResponse> {
+public class MessageFragment extends RefreshableBaseFragment<UserMessage, PagableUserMessageList> {
     private static final UserMessageControllerApi userMessageControllerApi = new UserMessageControllerClient();
 
     @BindView(R.id.toolbar)
@@ -71,7 +71,7 @@ public class MessageFragment extends RefreshableBaseFragment<UserMessage, GetMes
     }
 
     @Override
-    protected Observable<ResponseBean<GetMessagesListResponse>> customGetData(int mCurrPage, int mPageSize) {
+    protected Observable<ResponseBean<PagableUserMessageList>> customGetData(int mCurrPage, int mPageSize) {
         return userMessageControllerApi.getUserMessageList(CommonApp.getApplication().getUsername(), mCurrPage, mPageSize, CommonApp.getApplication().getUserToken());
     }
 

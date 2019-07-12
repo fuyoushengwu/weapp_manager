@@ -1,10 +1,10 @@
 package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.shopcart.ShopCart;
-import cn.aijiamuyingfang.client.domain.shopcart.response.GetShopCartListResponse;
-import cn.aijiamuyingfang.client.domain.shoporder.request.CreateShopCartRequest;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
 import cn.aijiamuyingfang.client.rest.api.ShopCartControllerApi;
+import cn.aijiamuyingfang.vo.shopcart.CreateShopCartRequest;
+import cn.aijiamuyingfang.vo.shopcart.PagableShopCartList;
+import cn.aijiamuyingfang.vo.shopcart.ShopCart;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
@@ -31,7 +31,7 @@ public class ShopCartControllerClient implements ShopCartControllerApi {
     }
 
     @Override
-    public Observable<ResponseBean<GetShopCartListResponse>> getShopCartList(String username, int currentPage, int pageSize, String accessToken) {
+    public Observable<ResponseBean<PagableShopCartList>> getShopCartList(String username, int currentPage, int pageSize, String accessToken) {
         return instance.getShopCartList(username, currentPage, pageSize, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 

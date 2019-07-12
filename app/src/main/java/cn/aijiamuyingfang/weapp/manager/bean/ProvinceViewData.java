@@ -4,7 +4,8 @@ import com.bigkoo.pickerview.model.IPickerViewData;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.client.domain.address.Province;
+import cn.aijiamuyingfang.vo.address.Province;
+
 
 /**
  * Created by pc on 2018/5/4.

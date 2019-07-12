@@ -20,20 +20,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.commons.domain.ResponseCode;
-import cn.aijiamuyingfang.client.domain.coupon.GoodVoucher;
-import cn.aijiamuyingfang.client.domain.goods.Good;
-import cn.aijiamuyingfang.client.domain.goods.GoodDetail;
-import cn.aijiamuyingfang.client.domain.goods.ShelfLife;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
+import cn.aijiamuyingfang.vo.response.ResponseCode;
+import cn.aijiamuyingfang.vo.coupon.GoodVoucher;
+import cn.aijiamuyingfang.vo.goods.Good;
+import cn.aijiamuyingfang.vo.goods.GoodDetail;
+import cn.aijiamuyingfang.vo.goods.ShelfLife;
 import cn.aijiamuyingfang.client.rest.api.ClassifyControllerApi;
-import cn.aijiamuyingfang.client.rest.api.CouponControllerApi;
 import cn.aijiamuyingfang.client.rest.api.GoodControllerApi;
-import cn.aijiamuyingfang.client.commons.utils.StringUtils;
+import cn.aijiamuyingfang.vo.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.FragmentContainerActivity;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.ClassifyControllerClient;
-import cn.aijiamuyingfang.weapp.manager.access.server.impl.CouponControllerClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.GoodControllerClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
@@ -57,7 +55,6 @@ public class GoodActionActivity extends BaseActivity {
     private static final String TAG = GoodActionActivity.class.getName();
     private static final ClassifyControllerApi classifyControllerApi = new ClassifyControllerClient();
     private static final GoodControllerApi goodControllerApi = new GoodControllerClient();
-    private static final CouponControllerApi couponControllerApi = new CouponControllerClient();
     private final List<Disposable> disposableList = new ArrayList<>();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
@@ -183,7 +180,7 @@ public class GoodActionActivity extends BaseActivity {
                 }
 
                 if (mGoodVoucher != null) {
-                    requestBodyBuilder.addFormDataPart("voucherId", mGoodVoucher.getId() + "");
+                    requestBodyBuilder.addFormDataPart("goodVoucher.voucherId", mGoodVoucher.getId() + "");
                 }
                 goodControllerApi.createGood(requestBodyBuilder.build(), CommonApp.getApplication().getUserToken()).subscribe(
                         new Observer<ResponseBean<Good>>() {
@@ -399,9 +396,10 @@ public class GoodActionActivity extends BaseActivity {
         if (mCurGood != null) {
             mToolBar.setRightButtonText("删除");
             mToolBar.setRightButtonOnClickListener(v -> deleteGood(mCurGood.getId()));
-            String voucherId = mCurGood.getVoucherId();
-            if (StringUtils.hasContent(voucherId)) {
-                setGoodVoucher(voucherId);
+            mGoodVoucher = mCurGood.getGoodVoucher();
+            if (mGoodVoucher != null) {
+                mAdapter.clearData();
+                mAdapter.setDataList(Collections.singletonList(mGoodVoucher));
             }
             mNameEditText.setText(mCurGood.getName());
             mPackEditText.setText(mCurGood.getPack());
@@ -450,38 +448,6 @@ public class GoodActionActivity extends BaseActivity {
                 }
             });
         }
-    }
-
-    private void setGoodVoucher(String voucherId) {
-        couponControllerApi.getGoodVoucher(voucherId).subscribe(new Observer<ResponseBean<GoodVoucher>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                disposableList.add(d);
-            }
-
-            @Override
-            public void onNext(ResponseBean<GoodVoucher> responseBean) {
-                if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                    mGoodVoucher = responseBean.getData();
-                    mAdapter.clearData();
-                    mAdapter.setDataList(Collections.singletonList(mGoodVoucher));
-                } else {
-                    Log.e(TAG, responseBean.getMsg());
-                    ToastUtils.showSafeToast(GoodActionActivity.this, "因服务端的原因,获取商品的兑换券失败");
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "get good voucher failed", e);
-                ToastUtils.showSafeToast(GoodActionActivity.this, "因客户端的原因,获取商品的兑换券失败");
-            }
-
-            @Override
-            public void onComplete() {
-                Log.i(TAG, "get good voucher complete");
-            }
-        });
     }
 
 

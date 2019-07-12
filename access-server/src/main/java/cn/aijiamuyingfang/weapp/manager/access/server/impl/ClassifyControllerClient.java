@@ -2,8 +2,8 @@ package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.classify.Classify;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
+import cn.aijiamuyingfang.vo.classify.Classify;
 import cn.aijiamuyingfang.client.rest.api.ClassifyControllerApi;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;

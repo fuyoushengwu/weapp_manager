@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.Window;
 
-import cn.aijiamuyingfang.client.commons.utils.StringUtils;
+import cn.aijiamuyingfang.vo.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.PermissionUtils;
 
@@ -56,6 +56,7 @@ public class PermissionActivity extends AppCompatActivity {
         permissionRequestCode++;
         permissionCallBacks.put(permissionRequestCode, grantedCallBack);
         Intent intent = new Intent(context, PermissionActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(INTENT_PERMISSION, permission);
         intent.putExtra(INTENT_REQUEST_CODE, permissionRequestCode);
         context.startActivity(intent);

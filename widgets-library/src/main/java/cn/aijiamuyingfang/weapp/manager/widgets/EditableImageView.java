@@ -30,7 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import cn.aijiamuyingfang.client.commons.utils.StringUtils;
+import cn.aijiamuyingfang.vo.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
 import cn.aijiamuyingfang.weapp.manager.commons.activity.PermissionActivity;

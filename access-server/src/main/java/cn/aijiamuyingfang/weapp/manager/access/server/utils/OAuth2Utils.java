@@ -4,11 +4,11 @@ import android.util.Log;
 
 import java.io.IOException;
 
-import cn.aijiamuyingfang.client.commons.domain.ResponseCode;
-import cn.aijiamuyingfang.client.commons.exception.OAuthException;
 import cn.aijiamuyingfang.client.oauth2.Constants;
 import cn.aijiamuyingfang.client.oauth2.OAuth2Client;
 import cn.aijiamuyingfang.client.oauth2.OAuthResponse;
+import cn.aijiamuyingfang.vo.exception.OAuthException;
+import cn.aijiamuyingfang.vo.response.ResponseCode;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 
 import static cn.aijiamuyingfang.client.commons.constant.ClientRestConstants.DEFAULT_BASE_URL;

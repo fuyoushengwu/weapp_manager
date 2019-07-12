@@ -6,7 +6,7 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.client.domain.store.Store;
+import cn.aijiamuyingfang.vo.store.Store;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;

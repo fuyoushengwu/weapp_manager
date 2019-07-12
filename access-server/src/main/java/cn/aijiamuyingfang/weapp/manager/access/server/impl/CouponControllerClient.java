@@ -1,12 +1,12 @@
 package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
 
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.coupon.GoodVoucher;
-import cn.aijiamuyingfang.client.domain.coupon.VoucherItem;
-import cn.aijiamuyingfang.client.domain.coupon.response.GetGoodVoucherListResponse;
-import cn.aijiamuyingfang.client.domain.coupon.response.GetUserVoucherListResponse;
-import cn.aijiamuyingfang.client.domain.coupon.response.GetVoucherItemListResponse;
+import cn.aijiamuyingfang.vo.coupon.PagableGoodVoucherList;
+import cn.aijiamuyingfang.vo.coupon.PagableUserVoucherList;
+import cn.aijiamuyingfang.vo.coupon.PagableVoucherItemList;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
+import cn.aijiamuyingfang.vo.coupon.GoodVoucher;
+import cn.aijiamuyingfang.vo.coupon.VoucherItem;
 import cn.aijiamuyingfang.client.rest.api.CouponControllerApi;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
@@ -29,12 +29,12 @@ public class CouponControllerClient implements CouponControllerApi {
     }
 
     @Override
-    public Observable<ResponseBean<GetUserVoucherListResponse>> getUserVoucherList(String username, int currentPage, int pageSize, String accessToken) {
+    public Observable<ResponseBean<PagableUserVoucherList>> getUserVoucherList(String username, int currentPage, int pageSize, String accessToken) {
         return instance.getUserVoucherList(username, currentPage, pageSize, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<GetGoodVoucherListResponse>> getGoodVoucherList(int currentPage, int pageSize) {
+    public Observable<ResponseBean<PagableGoodVoucherList>> getGoodVoucherList(int currentPage, int pageSize) {
         return instance.getGoodVoucherList(currentPage, pageSize).compose(RxJavaUtils.switchSchedulers());
     }
 
@@ -54,7 +54,7 @@ public class CouponControllerClient implements CouponControllerApi {
     }
 
     @Override
-    public Observable<ResponseBean<GetVoucherItemListResponse>> getVoucherItemList(int currentPage, int pageSize) {
+    public Observable<ResponseBean<PagableVoucherItemList>> getVoucherItemList(int currentPage, int pageSize) {
         return instance.getVoucherItemList(currentPage, pageSize).compose(RxJavaUtils.switchSchedulers());
     }
 

@@ -28,14 +28,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.commons.domain.ResponseCode;
-import cn.aijiamuyingfang.client.domain.address.City;
-import cn.aijiamuyingfang.client.domain.address.County;
-import cn.aijiamuyingfang.client.domain.address.Province;
-import cn.aijiamuyingfang.client.domain.store.Store;
-import cn.aijiamuyingfang.client.domain.store.WorkTime;
+import cn.aijiamuyingfang.vo.address.City;
+import cn.aijiamuyingfang.vo.address.County;
+import cn.aijiamuyingfang.vo.address.Province;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
+import cn.aijiamuyingfang.vo.response.ResponseCode;
 import cn.aijiamuyingfang.client.rest.api.StoreControllerApi;
+import cn.aijiamuyingfang.vo.store.Store;
+import cn.aijiamuyingfang.vo.store.WorkTime;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.StoreControllerClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
@@ -72,8 +72,10 @@ public class StoreActionActivity extends BaseActivity {
     ClearEditText mStoreStartWorkTimeEditText;
     @BindView(R.id.store_endWorkTime)
     ClearEditText mStoreEndWorkTimeEditText;
-    @BindView(R.id.store_contactNumber)
-    ClearEditText mStoreContactPhoneEditText;
+    @BindView(R.id.store_contactor)
+    ClearEditText mStoreContactorEditText;
+    @BindView(R.id.store_phone)
+    ClearEditText mStorePhoneEditText;
     @BindView(R.id.store_address)
     TextView mStoreAddressTextView;
     @BindView(R.id.store_detail_address)
@@ -204,7 +206,8 @@ public class StoreActionActivity extends BaseActivity {
                 mStoreStartWorkTimeEditText.setText(workTime.getStart());
                 mStoreEndWorkTimeEditText.setText(workTime.getEnd());
             }
-            mStoreContactPhoneEditText.setText(mCurStore.getStoreAddress().getContactor());
+            mStoreContactorEditText.setText(mCurStore.getStoreAddress().getContactor());
+            mStorePhoneEditText.setText(mCurStore.getStoreAddress().getPhone());
 
             String address = "";
             Province province = mCurStore.getStoreAddress().getProvince();
@@ -495,7 +498,8 @@ public class StoreActionActivity extends BaseActivity {
                 requestBodyBuilder.addFormDataPart("workTime.end", mStoreEndWorkTimeEditText.getText().toString());
 
                 requestBodyBuilder.addFormDataPart("storeAddress.detail", mStoreDetailAddressEditText.getText().toString());
-                requestBodyBuilder.addFormDataPart("storeAddress.phone", mStoreContactPhoneEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("storeAddress.phone", mStorePhoneEditText.getText().toString());
+                requestBodyBuilder.addFormDataPart("storeAddress.contactor", mStoreContactorEditText.getText().toString());
 
                 requestBodyBuilder.addFormDataPart("storeAddress.coordinate.longitude", mStoreAddressLongitudeTextView.getText().toString());
                 requestBodyBuilder.addFormDataPart("storeAddress.coordinate.latitude", mStoreAddressLatitudeTextView.getText().toString());

@@ -10,10 +10,10 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.store.Store;
-import cn.aijiamuyingfang.client.domain.store.response.GetInUseStoreListResponse;
 import cn.aijiamuyingfang.client.rest.api.StoreControllerApi;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
+import cn.aijiamuyingfang.vo.store.PagableStoreList;
+import cn.aijiamuyingfang.vo.store.Store;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.StoreControllerClient;
 import cn.aijiamuyingfang.weapp.manager.activity.StoreActionActivity;
@@ -26,7 +26,7 @@ import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.OnItemClickL
 import io.reactivex.Observable;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
-public class StoreFragment extends RefreshableBaseFragment<Store, GetInUseStoreListResponse> {
+public class StoreFragment extends RefreshableBaseFragment<Store, PagableStoreList> {
     private static final StoreControllerApi storeControllerApi = new StoreControllerClient();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
@@ -69,7 +69,7 @@ public class StoreFragment extends RefreshableBaseFragment<Store, GetInUseStoreL
     }
 
     @Override
-    protected Observable<ResponseBean<GetInUseStoreListResponse>> customGetData(int mCurrPage, int mPageSize) {
+    protected Observable<ResponseBean<PagableStoreList>> customGetData(int mCurrPage, int mPageSize) {
         return storeControllerApi.getInUseStoreList(mCurrPage, mPageSize);
     }
 

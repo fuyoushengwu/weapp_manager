@@ -2,7 +2,8 @@ package cn.aijiamuyingfang.weapp.manager.bean;
 
 import com.bigkoo.pickerview.model.IPickerViewData;
 
-import cn.aijiamuyingfang.client.domain.address.County;
+import cn.aijiamuyingfang.vo.address.County;
+
 
 /**
  * Created by pc on 2018/5/4.

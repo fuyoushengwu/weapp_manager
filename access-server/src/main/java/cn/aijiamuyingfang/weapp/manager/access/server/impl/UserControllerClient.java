@@ -2,11 +2,10 @@ package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.user.RecieveAddress;
-import cn.aijiamuyingfang.client.domain.user.User;
-import cn.aijiamuyingfang.client.domain.user.response.GetUserPhoneResponse;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
 import cn.aijiamuyingfang.client.rest.api.UserControllerApi;
+import cn.aijiamuyingfang.vo.user.RecieveAddress;
+import cn.aijiamuyingfang.vo.user.User;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
@@ -38,7 +37,7 @@ public class UserControllerClient implements UserControllerApi {
     }
 
     @Override
-    public Observable<ResponseBean<GetUserPhoneResponse>> getUserPhone(String username, String accessToken) {
+    public Observable<ResponseBean<String>> getUserPhone(String username, String accessToken) {
         return instance.getUserPhone(username, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 

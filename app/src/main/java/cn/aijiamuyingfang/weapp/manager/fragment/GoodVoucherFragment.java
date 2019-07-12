@@ -12,10 +12,10 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.coupon.GoodVoucher;
-import cn.aijiamuyingfang.client.domain.coupon.response.GetGoodVoucherListResponse;
+import cn.aijiamuyingfang.vo.coupon.GoodVoucher;
 import cn.aijiamuyingfang.client.rest.api.CouponControllerApi;
+import cn.aijiamuyingfang.vo.coupon.PagableGoodVoucherList;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.CouponControllerClient;
 import cn.aijiamuyingfang.weapp.manager.activity.GoodActionActivity;
@@ -29,7 +29,7 @@ import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.OnItemClickL
 import io.reactivex.Observable;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
-public class GoodVoucherFragment extends RefreshableBaseFragment<GoodVoucher, GetGoodVoucherListResponse> {
+public class GoodVoucherFragment extends RefreshableBaseFragment<GoodVoucher, PagableGoodVoucherList> {
     private static final CouponControllerApi couponControllerApi = new CouponControllerClient();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
@@ -93,7 +93,7 @@ public class GoodVoucherFragment extends RefreshableBaseFragment<GoodVoucher, Ge
     }
 
     @Override
-    protected Observable<ResponseBean<GetGoodVoucherListResponse>> customGetData(int mCurrPage, int mPageSize) {
+    protected Observable<ResponseBean<PagableGoodVoucherList>> customGetData(int mCurrPage, int mPageSize) {
         return couponControllerApi.getGoodVoucherList(mCurrPage, mPageSize);
     }
 

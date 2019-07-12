@@ -4,18 +4,17 @@ package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 import java.util.List;
 import java.util.Map;
 
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.previeworder.response.GetFinishedPreOrderListResponse;
-import cn.aijiamuyingfang.client.domain.previeworder.response.GetPreOrderGoodListResponse;
-import cn.aijiamuyingfang.client.domain.shoporder.SendType;
-import cn.aijiamuyingfang.client.domain.shoporder.ShopOrder;
-import cn.aijiamuyingfang.client.domain.shoporder.ShopOrderStatus;
-import cn.aijiamuyingfang.client.domain.shoporder.request.CreateShopOrderRequest;
-import cn.aijiamuyingfang.client.domain.shoporder.request.UpdateShopOrderStatusRequest;
-import cn.aijiamuyingfang.client.domain.shoporder.response.ConfirmShopOrderFinishedResponse;
-import cn.aijiamuyingfang.client.domain.shoporder.response.GetShopOrderListResponse;
-import cn.aijiamuyingfang.client.domain.shoporder.response.GetShopOrderVoucherListResponse;
+import cn.aijiamuyingfang.vo.preorder.PagablePreOrderGoodList;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
 import cn.aijiamuyingfang.client.rest.api.ShopOrderControllerApi;
+import cn.aijiamuyingfang.vo.shoporder.ConfirmShopOrderFinishedResponse;
+import cn.aijiamuyingfang.vo.shoporder.CreateShopOrderRequest;
+import cn.aijiamuyingfang.vo.shoporder.PagableShopOrderList;
+import cn.aijiamuyingfang.vo.shoporder.SendType;
+import cn.aijiamuyingfang.vo.shoporder.ShopOrder;
+import cn.aijiamuyingfang.vo.shoporder.ShopOrderStatus;
+import cn.aijiamuyingfang.vo.shoporder.ShopOrderVoucher;
+import cn.aijiamuyingfang.vo.shoporder.UpdateShopOrderStatusRequest;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
@@ -37,17 +36,17 @@ public class ShopOrderControllerClient implements ShopOrderControllerApi {
     }
 
     @Override
-    public Observable<ResponseBean<GetShopOrderListResponse>> getUserShopOrderList(String username, List<ShopOrderStatus> status, List<SendType> sendType, int currentPage, int pageSize, String accessToken) {
+    public Observable<ResponseBean<PagableShopOrderList>> getUserShopOrderList(String username, List<ShopOrderStatus> status, List<SendType> sendType, int currentPage, int pageSize, String accessToken) {
         return instance.getUserShopOrderList(username, status, sendType, currentPage, pageSize, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<GetShopOrderVoucherListResponse>> getUserShopOrderVoucherList(String username, List<String> goodIdList, String accessToken) {
+    public Observable<ResponseBean<List<ShopOrderVoucher>>> getUserShopOrderVoucherList(String username, List<String> goodIdList, String accessToken) {
         return instance.getUserShopOrderVoucherList(username, goodIdList, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
     @Override
-    public Observable<ResponseBean<GetShopOrderListResponse>> getShopOrderList(List<ShopOrderStatus> status, List<SendType> sendType, int currentPage, int pageSize, String accessToken) {
+    public Observable<ResponseBean<PagableShopOrderList>> getShopOrderList(List<ShopOrderStatus> status, List<SendType> sendType, int currentPage, int pageSize, String accessToken) {
         return instance.getShopOrderList(status, sendType, currentPage, pageSize, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
@@ -77,7 +76,7 @@ public class ShopOrderControllerClient implements ShopOrderControllerApi {
     }
 
     @Override
-    public Observable<ResponseBean<GetFinishedPreOrderListResponse>> getFinishedPreOrderList(int currentPage, int pageSize, String accessToken) {
+    public Observable<ResponseBean<PagableShopOrderList>> getFinishedPreOrderList(int currentPage, int pageSize, String accessToken) {
         return instance.getFinishedPreOrderList(currentPage, pageSize, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 
@@ -97,7 +96,7 @@ public class ShopOrderControllerClient implements ShopOrderControllerApi {
     }
 
     @Override
-    public Observable<ResponseBean<GetPreOrderGoodListResponse>> getPreOrderGoodList(int currentPage, int pageSize, String accessToken) {
+    public Observable<ResponseBean<PagablePreOrderGoodList>> getPreOrderGoodList(int currentPage, int pageSize, String accessToken) {
         return instance.getPreOrderGoodList(currentPage, pageSize, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 

@@ -10,11 +10,11 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.aijiamuyingfang.client.domain.ImageSource;
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.classify.response.GetClassifyGoodListResponse;
-import cn.aijiamuyingfang.client.domain.goods.Good;
+import cn.aijiamuyingfang.vo.ImageSource;
+import cn.aijiamuyingfang.vo.goods.Good;
 import cn.aijiamuyingfang.client.rest.api.GoodControllerApi;
+import cn.aijiamuyingfang.vo.goods.PagableGoodList;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.GoodControllerClient;
 import cn.aijiamuyingfang.weapp.manager.activity.GoodActionActivity;
 import cn.aijiamuyingfang.weapp.manager.commons.Constant;
@@ -26,7 +26,7 @@ import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.OnItemClickL
 import io.reactivex.Observable;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
-public class GoodsListActivity extends RefreshableBaseActivity<Good, GetClassifyGoodListResponse> {
+public class GoodsListActivity extends RefreshableBaseActivity<Good, PagableGoodList> {
     private static final GoodControllerApi goodControllerApi = new GoodControllerClient();
 
     @BindView(R.id.toolbar)
@@ -73,7 +73,7 @@ public class GoodsListActivity extends RefreshableBaseActivity<Good, GetClassify
     }
 
     @Override
-    protected Observable<ResponseBean<GetClassifyGoodListResponse>> customGetData(int mCurrPage, int mPageSize) {
+    protected Observable<ResponseBean<PagableGoodList>> customGetData(int mCurrPage, int mPageSize) {
         return goodControllerApi.getClassifyGoodList(mCurClassifyId, null,
                 null, null, null, mCurrPage, mPageSize);
     }

@@ -6,7 +6,7 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.client.domain.classify.Classify;
+import cn.aijiamuyingfang.vo.classify.Classify;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.CommonAdapter;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.RecyclerViewHolder;

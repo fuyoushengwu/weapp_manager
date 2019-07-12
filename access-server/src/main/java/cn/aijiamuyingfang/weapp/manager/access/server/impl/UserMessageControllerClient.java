@@ -1,8 +1,8 @@
 package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.message.UserMessage;
-import cn.aijiamuyingfang.client.domain.message.response.GetMessagesListResponse;
+import cn.aijiamuyingfang.vo.message.PagableUserMessageList;
+import cn.aijiamuyingfang.vo.message.UserMessage;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
 import cn.aijiamuyingfang.client.rest.api.UserMessageControllerApi;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
@@ -30,7 +30,7 @@ public class UserMessageControllerClient implements UserMessageControllerApi {
     }
 
     @Override
-    public Observable<ResponseBean<GetMessagesListResponse>> getUserMessageList(String username, int currentPage, int pageSize, String accessToken) {
+    public Observable<ResponseBean<PagableUserMessageList>> getUserMessageList(String username, int currentPage, int pageSize, String accessToken) {
         return instance.getUserMessageList(username, currentPage, pageSize, accessToken).compose(RxJavaUtils.switchSchedulers());
     }
 

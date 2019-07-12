@@ -17,12 +17,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.aijiamuyingfang.client.domain.ImageSource;
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.commons.domain.ResponseCode;
-import cn.aijiamuyingfang.client.domain.classify.Classify;
+import cn.aijiamuyingfang.vo.ImageSource;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
+import cn.aijiamuyingfang.vo.response.ResponseCode;
+import cn.aijiamuyingfang.vo.classify.Classify;
 import cn.aijiamuyingfang.client.rest.api.ClassifyControllerApi;
-import cn.aijiamuyingfang.client.commons.utils.StringUtils;
+import cn.aijiamuyingfang.vo.utils.StringUtils;
 import cn.aijiamuyingfang.weapp.manager.GoodsListActivity;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.access.server.impl.ClassifyControllerClient;
@@ -34,7 +34,6 @@ import cn.aijiamuyingfang.weapp.manager.commons.fragment.BaseFragment;
 import cn.aijiamuyingfang.weapp.manager.commons.utils.ToastUtils;
 import cn.aijiamuyingfang.weapp.manager.recycleadapter.SubClassifyAdapter;
 import cn.aijiamuyingfang.weapp.manager.recycleadapter.TopClassifyRecyclerAdapter;
-import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.OnItemClickListener;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -44,8 +43,6 @@ public class ClassifyFragment extends BaseFragment {
     private static final String TAG = ClassifyFragment.class.getName();
     private static final ClassifyControllerApi classifyControllerApi = new ClassifyControllerClient();
     private final List<Disposable> classifyDisposableList = new ArrayList<>();
-    @BindView(R.id.toolbar)
-    WeToolBar weToolBar;
     //顶层条目界面相关的属性
     @BindView(R.id.top_classify)
     RecyclerView mTopRecycler;

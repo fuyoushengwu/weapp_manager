@@ -6,7 +6,7 @@ import android.widget.CheckBox;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.client.domain.coupon.GoodVoucher;
+import cn.aijiamuyingfang.vo.coupon.GoodVoucher;
 import cn.aijiamuyingfang.weapp.manager.R;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.CommonAdapter;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.RecyclerViewHolder;

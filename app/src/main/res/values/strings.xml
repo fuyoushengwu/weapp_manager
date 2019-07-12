@@ -55,8 +55,10 @@
     <string name="Activity_Add_Store_Detail_Address_Tip">请输入详细地址</string>
     <string name="Activity_Add_Store_Longitude">经度</string>
     <string name="Activity_Add_Store_Latitude">纬度</string>
-    <string name="Activity_Add_Store_Contact">联系电话</string>
-    <string name="Activity_Add_Store_Contact_Tip">请输入联系电话</string>
+    <string name="Activity_Add_Store_Contact">联系人</string>
+    <string name="Activity_Add_Store_Contact_Tip">请输入联系人姓名</string>
+    <string name="Activity_Add_Store_Phone">联系电话</string>
+    <string name="Activity_Add_Store_Phone_Tip">请输入联系电话</string>
     <string name="Activity_Add_Store_Logo">门店封面</string>
     <string name="Activity_Add_Store_Picture">门店图片</string>
     <string name="Activity_Add_Store_Save_Button">保存</string>
@@ -89,7 +91,7 @@
     <string name="Activity_Voucher_Item_Detail_Score">兑换值</string>
     <string name="Activity_Voucher_Item_Detail_Description">兑换信息</string>
     <string name="Activity_Voucher_Item_Detail_Save_Button">保存</string>
-    
+
     <string name="Add_Classify_Dialog_Name">增加顶层条目:</string>
     <string name="Add_Classify_Dialog_Name_Tip">请输入顶层条目名</string>
 

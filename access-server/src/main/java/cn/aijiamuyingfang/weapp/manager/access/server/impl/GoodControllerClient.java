@@ -2,10 +2,10 @@ package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.classify.response.GetClassifyGoodListResponse;
-import cn.aijiamuyingfang.client.domain.goods.Good;
-import cn.aijiamuyingfang.client.domain.goods.GoodDetail;
+import cn.aijiamuyingfang.vo.goods.PagableGoodList;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
+import cn.aijiamuyingfang.vo.goods.Good;
+import cn.aijiamuyingfang.vo.goods.GoodDetail;
 import cn.aijiamuyingfang.client.rest.api.GoodControllerApi;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
@@ -29,7 +29,7 @@ public class GoodControllerClient implements GoodControllerApi {
     }
 
     @Override
-    public Observable<ResponseBean<GetClassifyGoodListResponse>> getClassifyGoodList(String classifyId, List<String> packFilter, List<String> levelFilter, String orderType, String orderValue, int currentPage, int pageSize) {
+    public Observable<ResponseBean<PagableGoodList>> getClassifyGoodList(String classifyId, List<String> packFilter, List<String> levelFilter, String orderType, String orderValue, int currentPage, int pageSize) {
         return instance.getClassifyGoodList(classifyId, packFilter, levelFilter, orderType, orderValue, currentPage, pageSize).compose(RxJavaUtils.switchSchedulers());
     }
 

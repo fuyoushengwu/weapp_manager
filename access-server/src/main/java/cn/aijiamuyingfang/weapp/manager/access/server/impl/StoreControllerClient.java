@@ -2,12 +2,11 @@ package cn.aijiamuyingfang.weapp.manager.access.server.impl;
 
 import java.util.List;
 
-import cn.aijiamuyingfang.client.commons.domain.ResponseBean;
-import cn.aijiamuyingfang.client.domain.store.Store;
-import cn.aijiamuyingfang.client.domain.store.StoreAddress;
-import cn.aijiamuyingfang.client.domain.store.response.GetDefaultStoreIdResponse;
-import cn.aijiamuyingfang.client.domain.store.response.GetInUseStoreListResponse;
+import cn.aijiamuyingfang.vo.response.ResponseBean;
 import cn.aijiamuyingfang.client.rest.api.StoreControllerApi;
+import cn.aijiamuyingfang.vo.store.PagableStoreList;
+import cn.aijiamuyingfang.vo.store.Store;
+import cn.aijiamuyingfang.vo.store.StoreAddress;
 import cn.aijiamuyingfang.weapp.manager.access.server.rxjava.RxRetrofitClient;
 import cn.aijiamuyingfang.weapp.manager.access.server.utils.RxJavaUtils;
 import io.reactivex.Observable;
@@ -30,7 +29,7 @@ public class StoreControllerClient implements StoreControllerApi {
     }
 
     @Override
-    public Observable<ResponseBean<GetInUseStoreListResponse>> getInUseStoreList(int currentPage, int pageSize) {
+    public Observable<ResponseBean<PagableStoreList>> getInUseStoreList(int currentPage, int pageSize) {
         return instance.getInUseStoreList(currentPage, pageSize).compose(RxJavaUtils.switchSchedulers());
     }
 
@@ -60,7 +59,7 @@ public class StoreControllerClient implements StoreControllerApi {
     }
 
     @Override
-    public Observable<ResponseBean<GetDefaultStoreIdResponse>> getDefaultStoreId() {
+    public Observable<ResponseBean<String>> getDefaultStoreId() {
         return instance.getDefaultStoreId().compose(RxJavaUtils.switchSchedulers());
     }
 

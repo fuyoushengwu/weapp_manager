@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import java.util.Set;
 
 import cn.aijiamuyingfang.weapp.manager.commons.CommonApp;
-import lombok.experimental.UtilityClass;
 
 /**
  * Created by pc on 2018/3/31.

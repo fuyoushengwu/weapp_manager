@@ -489,6 +489,9 @@ public class StoreActionActivity extends BaseActivity {
                 detailImageList.add(mStoreDetail8ImageView.getImageFileSync());
                 detailImageList.add(mStoreDetail9ImageView.getImageFileSync());
                 for (File detailImageFile : detailImageList) {
+                    if (null == detailImageFile || "default.jpg".equals(detailImageFile.getName())) {
+                        continue;
+                    }
                     RequestBody requestDetail = RequestBody.create(MultipartBody.FORM, detailImageFile);
                     requestBodyBuilder.addFormDataPart("detailImages", detailImageFile.getName(), requestDetail);
                 }

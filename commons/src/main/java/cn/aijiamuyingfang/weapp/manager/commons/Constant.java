@@ -85,6 +85,11 @@ public final class Constant {
      * GoodActionActivity打开GoodVoucherFragment的RequestCode
      */
     public static final int REQUEST_GOOD_VOUCHER = 2051;
+
+    /**
+     * 代开GoodActionActivity的RequestCode
+     */
+    public static final int REQUEST_GOOD_ACTION = 2052;
     /**
      * intent中保存shoporderId的key
      */

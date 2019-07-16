@@ -55,7 +55,7 @@ public class GoodsListActivity extends RefreshableBaseActivity<Good, PagableGood
                 } else {
                     Intent intent = new Intent(GoodsListActivity.this, GoodActionActivity.class);
                     intent.putExtra(Constant.INTENT_GOOD, mAdapter.getData(position));
-                    startActivity(intent);
+                    startActivityForResult(intent, Constant.REQUEST_GOOD_ACTION);
                 }
             }
 
@@ -91,5 +91,19 @@ public class GoodsListActivity extends RefreshableBaseActivity<Good, PagableGood
     @Override
     public int getContentResourceId() {
         return R.layout.activity_goods_list;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (null == data) {
+            return;
+        }
+        Good good = data.getParcelableExtra(Constant.INTENT_GOOD);
+        if (null == good) {
+            return;
+        }
+        mAdapter.getDataList().set(mCurrPosition, good);
+        mAdapter.notifyItemChanged(mCurrPosition);
     }
 }

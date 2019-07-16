@@ -44,6 +44,7 @@ import cn.aijiamuyingfang.weapp.manager.widgets.ClearEditText;
 import cn.aijiamuyingfang.weapp.manager.widgets.EditableImageView;
 import cn.aijiamuyingfang.weapp.manager.widgets.GlideUtils;
 import cn.aijiamuyingfang.weapp.manager.widgets.WeToolBar;
+import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.RefreshableBaseActivity;
 import cn.aijiamuyingfang.weapp.manager.widgets.recycleview.adapter.OnItemClickListener;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -53,8 +54,8 @@ import okhttp3.RequestBody;
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class GoodActionActivity extends BaseActivity {
     private static final String TAG = GoodActionActivity.class.getName();
-    private static final ClassifyControllerApi classifyControllerApi = new ClassifyControllerClient();
     private static final GoodControllerApi goodControllerApi = new GoodControllerClient();
+    private static final ClassifyControllerApi classifyControllerApi = new ClassifyControllerClient();
     private final List<Disposable> disposableList = new ArrayList<>();
     @BindView(R.id.toolbar)
     WeToolBar mToolBar;
@@ -102,7 +103,70 @@ public class GoodActionActivity extends BaseActivity {
      * 当前商品
      */
     private Good mCurGood;
+    private Observer<ResponseBean<Good>> createGoodObserver = new Observer<ResponseBean<Good>>() {
+        @Override
+        public void onSubscribe(Disposable d) {
+            disposableList.add(d);
+        }
 
+        @Override
+        public void onNext(ResponseBean<Good> responseBean) {
+            if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                mCurGood = responseBean.getData();
+                if (StringUtils.hasContent(mCurSubClasifyId) && mCurGood !=
+                        null && StringUtils.hasContent(mCurGood.getId())) {
+                    classifyControllerApi.addClassifyGood(mCurSubClasifyId, mCurGood.getId(), CommonApp.getApplication().getUserToken())
+                            .subscribe(new Observer<ResponseBean<Void>>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+                                    disposableList.add(d);
+                                }
+
+                                @Override
+                                public void onNext(ResponseBean<Void> responseBean) {
+                                    if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                                        RefreshableBaseActivity.setNeedRefresh(true);
+                                        GoodActionActivity.this.finish();
+                                    } else {
+                                        Log.e(TAG, responseBean.getMsg());
+                                        ToastUtils.showSafeToast(GoodActionActivity.this, "因服务端的原因,将商品添加到条目失败");
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Log.e(TAG, "add classify good failed", e);
+                                    ToastUtils.showSafeToast(GoodActionActivity.this, "因客户端的原因,将商品添加到条目失败");
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    Log.i(TAG, "add classify good complete");
+                                }
+                            });
+                } else {
+                    Intent intent = new Intent();
+                    intent.putExtra(Constant.INTENT_GOOD, mCurGood);
+                    GoodActionActivity.this.setResult(Constant.REQUEST_GOOD_ACTION, intent);
+                    GoodActionActivity.this.finish();
+                }
+            } else {
+                Log.e(TAG, responseBean.getMsg());
+                ToastUtils.showSafeToast(GoodActionActivity.this, "因服务端的原因,保存商品失败");
+            }
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.e(TAG, "create good failed", e);
+            ToastUtils.showSafeToast(GoodActionActivity.this, "因客户端的原因,保存商品失败");
+        }
+
+        @Override
+        public void onComplete() {
+            Log.i(TAG, "create good complete");
+        }
+    };
     /**
      * 商品关联的抵用券
      */
@@ -135,6 +199,7 @@ public class GoodActionActivity extends BaseActivity {
         }
     }
 
+
     private void saveGood() {
         Thread thread = new Thread() {
             @Override
@@ -157,6 +222,9 @@ public class GoodActionActivity extends BaseActivity {
                 detailImageList.add(mDetail5ImageView.getImageFileSync());
                 detailImageList.add(mDetail6ImageView.getImageFileSync());
                 for (File detailImageFile : detailImageList) {
+                    if (null == detailImageFile || "default.jpg".equals(detailImageFile.getName())) {
+                        continue;
+                    }
                     RequestBody requestDetail = RequestBody.create(MultipartBody.FORM, detailImageFile);
                     requestBodyBuilder.addFormDataPart("detailImages", detailImageFile.getName(), requestDetail);
                 }
@@ -180,69 +248,9 @@ public class GoodActionActivity extends BaseActivity {
                 }
 
                 if (mGoodVoucher != null) {
-                    requestBodyBuilder.addFormDataPart("goodVoucher.voucherId", mGoodVoucher.getId() + "");
+                    requestBodyBuilder.addFormDataPart("goodVoucher.id", mGoodVoucher.getId() + "");
                 }
-                goodControllerApi.createGood(requestBodyBuilder.build(), CommonApp.getApplication().getUserToken()).subscribe(
-                        new Observer<ResponseBean<Good>>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-                                disposableList.add(d);
-                            }
-
-                            @Override
-                            public void onNext(ResponseBean<Good> responseBean) {
-                                if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                                    mCurGood = responseBean.getData();
-                                    if (StringUtils.hasContent(mCurSubClasifyId) && mCurGood !=
-                                            null && StringUtils.hasContent(mCurGood.getId())) {
-                                        classifyControllerApi.addClassifyGood(mCurSubClasifyId, mCurGood.getId(), CommonApp.getApplication().getUserToken())
-                                                .subscribe(new Observer<ResponseBean<Void>>() {
-                                                    @Override
-                                                    public void onSubscribe(Disposable d) {
-                                                        disposableList.add(d);
-                                                    }
-
-                                                    @Override
-                                                    public void onNext(ResponseBean<Void> responseBean) {
-                                                        if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
-                                                            GoodActionActivity.this.finish();
-                                                        } else {
-                                                            Log.e(TAG, responseBean.getMsg());
-                                                            ToastUtils.showSafeToast(GoodActionActivity.this, "因服务端的原因,将商品添加到条目失败");
-                                                        }
-                                                    }
-
-                                                    @Override
-                                                    public void onError(Throwable e) {
-                                                        Log.e(TAG, "add classify good failed", e);
-                                                        ToastUtils.showSafeToast(GoodActionActivity.this, "因客户端的原因,将商品添加到条目失败");
-                                                    }
-
-                                                    @Override
-                                                    public void onComplete() {
-                                                        Log.i(TAG, "add classify good complete");
-                                                    }
-                                                });
-                                    } else {
-                                        GoodActionActivity.this.finish();
-                                    }
-                                } else {
-                                    Log.e(TAG, responseBean.getMsg());
-                                    ToastUtils.showSafeToast(GoodActionActivity.this, "因服务端的原因,保存商品失败");
-                                }
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.e(TAG, "create good failed", e);
-                                ToastUtils.showSafeToast(GoodActionActivity.this, "因客户端的原因,保存商品失败");
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                Log.i(TAG, "create good complete");
-                            }
-                        });
+                goodControllerApi.createGood(requestBodyBuilder.build(), CommonApp.getApplication().getUserToken()).subscribe(createGoodObserver);
             }
         };
         thread.start();
@@ -369,6 +377,7 @@ public class GoodActionActivity extends BaseActivity {
             @Override
             public void onNext(ResponseBean<Void> responseBean) {
                 if (ResponseCode.OK.getCode().equals(responseBean.getCode())) {
+                    RefreshableBaseActivity.setNeedRefresh(true);
                     GoodActionActivity.this.finish();
                 } else {
                     Log.e(TAG, responseBean.getMsg());

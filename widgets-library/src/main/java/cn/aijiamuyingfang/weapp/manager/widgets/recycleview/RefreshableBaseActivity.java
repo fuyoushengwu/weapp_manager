@@ -107,11 +107,27 @@ public abstract class RefreshableBaseActivity<E, V extends PageResponse<E>> exte
         mAdapter.setOnItemClickListener(getOnItemClickListener());
     }
 
+    /**
+     * 是否重新展示数据
+     */
+    private static boolean needRefresh = false;
+
+    public static void setNeedRefresh(boolean refresh) {
+        needRefresh = refresh;
+    }
+
+    private boolean inited;
+
     @Override
     public void onStart() {
         super.onStart();
-        refreshData();
+        if (needRefresh || !inited) {
+            refreshData();
+            inited = true;
+            needRefresh = false;
+        }
     }
+
 
     /**
      * 刷新数据
